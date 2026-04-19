@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>NeoXell — Beauty Clinic Amsterdam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Karla:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dark-green: #1c3a1c;
+    --mid-green: #2f4a2f;
+    --bright-green: #2c5f2e;
+    --light-green: #3a5a3a;
+    --gold: #c4a96a;
+    --cream: #fdfcf9;
+    --cream2: #f7f5f0;
+    --cream3: #eae5dc;
+    --text-dark: #2a2a26;
+    --text-mid: #7a7a72;
+    --tag-bg: #e8f0e8;
+    --green-bg: #E6F0E5;
+    --grey-bg: #f8f8f8;
+    --grey-light: #e9e9e9;
+    --border-green: #c8ddbf;
+    --rating-bg: #82a374;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Karla', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    max-width: 430px;
+    margin: 0 auto;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: linear-gradient(180deg, #fff 0%, #eef4ea 100%);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; height: 72px;
+    border-bottom: none;
+    transition: box-shadow .3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 20px rgba(28,58,28,.08); }
+  .logo {
+    display: flex; align-items: center; text-decoration: none; flex-shrink: 0;
+  }
+  .logo img { display: block; height: 36px; width: auto; }
+  .nav-right { display: flex; gap: 12px; align-items: center; }
+  .btn-book-nav {
+    background: #31351b; color: var(--cream);
+    border: none; border-radius: 100px;
+    padding: 0 16px; height: 36px;
+    font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 0.168px;
+    cursor: pointer; transition: background .2s, opacity .2s, transform .2s; white-space: nowrap;
+    opacity: 0; pointer-events: none; transform: scale(0.9);
+  }
+  nav.scrolled .btn-book-nav {
+    opacity: 1; pointer-events: auto; transform: scale(1);
+  }
+  .btn-book-nav:hover { background: #1e2112; }
+  .burger {
+    width: 36px; height: 36px; border: none; background: none;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+  .burger-icon { display: flex; flex-direction: column; gap: 5px; }
+  .burger-icon span {
+    display: block; width: 20px; height: 1.5px;
+    background: var(--dark-green); transition: all .3s;
+  }
+  .burger.open .burger-icon span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .burger.open .burger-icon span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .burger.open .burger-icon span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* ANNOUNCEMENT BANNER */
+  .announcement-bar {
+    background: var(--rating-bg);
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 16px; height: 36px; gap: 8px; position: relative;
+  }
+  .announcement-bar p {
+    font-size: 13px; font-weight: 600; color: #fff;
+    letter-spacing: 0.1px; line-height: 1;
+  }
+  .announcement-bar p span {
+    font-weight: 400; opacity: .85;
+  }
+  .announcement-close {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer;
+    color: rgba(255,255,255,.7); line-height: 1; padding: 4px;
+    font-size: 16px;
+  }
+  .announcement-close:hover { color: #fff; }
+
+  /* MENU OVERLAY */
+  .menu-overlay {
+    position: fixed; inset: 0; z-index: 99;
+    background: #fff;
+    display: flex; flex-direction: column;
+    transform: translateX(100%);
+    transition: transform .4s cubic-bezier(.77,0,.18,1);
+    overflow: hidden;
+  }
+  .menu-overlay.open { transform: translateX(0); }
+  .menu-overlay-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #fff;
+    height: 72px; min-height: 72px;
+    padding: 0 20px; flex-shrink: 0;
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .menu-overlay-nav .logo {
+    text-decoration: none; display: flex; align-items: center;
+  }
+  .menu-overlay-nav-right { display: flex; align-items: center; gap: 12px; }
+  .menu-overlay-book {
+    font-family: 'Karla', sans-serif;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.168px;
+    color: #fff; background: #31351b;
+    border: none;
+    padding: 0 18px; height: 36px; cursor: pointer;
+    border-radius: 100px;
+  }
+  .menu-overlay-close {
+    background: none; border: none; cursor: pointer;
+    padding: 6px; display: flex; align-items: center; color: var(--dark-green);
+  }
+  .menu-items-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+  .menu-item {
+    display: flex; align-items: center;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--grey-light);
+    cursor: pointer; text-decoration: none;
+    opacity: 0; transform: translateX(30px);
+    transition: opacity .3s, transform .3s;
+  }
+  .menu-overlay.open .menu-item { opacity: 1; transform: translateX(0); }
+  .menu-item.services-open { border-bottom: none; }
+  .menu-item-num {
+    font-family: 'Karla', sans-serif;
+    font-size: 12px; font-weight: 400; color: #82a374;
+    letter-spacing: .08em; margin-right: 16px;
+    flex-shrink: 0; align-self: flex-start; padding-top: 5px;
+  }
+  .menu-item-label {
+    font-family: 'Karla', sans-serif;
+    font-size: 28px; font-weight: 700; color: var(--dark-green); flex: 1; line-height: 1.1;
+    letter-spacing: -0.5px;
+  }
+  .menu-item-chevron { margin-left: auto; flex-shrink: 0; color: #82a374; transition: transform .3s; }
+  .menu-item.services-open .menu-item-chevron { transform: rotate(180deg); }
+  .menu-sub-items { display: none; flex-direction: column; background: var(--cream2); }
+  .menu-sub-items.open { display: flex; border-bottom: 1px solid var(--grey-light); }
+  .menu-sub-item {
+    padding: 12px 20px 12px 52px;
+    font-family: 'Karla', sans-serif;
+    font-size: 16px; font-weight: 400; color: var(--text-mid);
+    text-decoration: none;
+    opacity: 0; transform: translateX(16px);
+    transition: opacity .25s, transform .25s, color .2s;
+  }
+  .menu-sub-items.open .menu-sub-item { opacity: 1; transform: translateX(0); }
+  .menu-sub-items.open .menu-sub-item:nth-child(1) { transition-delay: .05s; }
+  .menu-sub-items.open .menu-sub-item:nth-child(2) { transition-delay: .1s; }
+  .menu-sub-items.open .menu-sub-item:nth-child(3) { transition-delay: .15s; }
+  .menu-sub-items.open .menu-sub-item:nth-child(4) { transition-delay: .2s; }
+  .menu-sub-item:hover { color: var(--bright-green); }
+  .menu-footer {
+    padding: 24px 20px; display: flex; flex-direction: column; gap: 12px; flex-shrink: 0;
+    border-top: 1px solid var(--grey-light);
+  }
+  .menu-lang { display: flex; gap: 16px; }
+  .menu-lang span {
+    font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 500;
+    color: var(--text-mid); cursor: pointer; transition: color .2s;
+  }
+  .menu-lang span.active { color: var(--bright-green); text-decoration: underline; }
+  .menu-lang span:hover { color: var(--bright-green); }
+  .menu-social { display: flex; gap: 16px; }
+  .menu-social a {
+    font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 300;
+    color: var(--text-mid); text-decoration: none; transition: color .2s;
+  }
+  .menu-social a:hover { color: var(--dark-green); }
+
+  /* HERO */
+  #hero {
+    background: #eef4ea;
+    display: flex; flex-direction: column;
+    padding: 24px 20px 32px;
+    gap: 24px;
+  }
+  .hero-photo { display: none; }
+  .hero-overlay { display: none; }
+  .hero-content {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .hero-content > * {
+    opacity: 0; transform: translateY(20px);
+    animation: heroIn .7s ease forwards;
+  }
+  .hero-content > *:nth-child(1) { animation-delay: .1s; }
+  .hero-content > *:nth-child(2) { animation-delay: .2s; }
+  .hero-content > *:nth-child(3) { animation-delay: .3s; }
+  .hero-content > *:nth-child(4) { animation-delay: .45s; }
+  @keyframes heroIn { to { opacity: 1; transform: translateY(0); } }
+
+  .hero-eyebrow {
+    font-size: 14px; letter-spacing: 1.12px;
+    color: #586344; font-weight: 300;
+    text-transform: none;
+  }
+  .hero-title {
+    font-family: 'Karla', sans-serif;
+    font-size: clamp(36px, 13vw, 56px); line-height: 1;
+    color: #0b1807; font-weight: 500;
+    letter-spacing: -2.8px;
+  }
+  .hero-sub {
+    font-size: 16px; font-weight: 500; line-height: 1.5;
+    color: #0b1807;
+    max-width: 280px;
+  }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 8px; width: 100%; }
+  .hero-ctas > * { flex: 1 1 auto; min-width: 0; }
+  .btn-pill-white {
+    background: #31351b; color: #fff;
+    border: none; border-radius: 100px;
+    height: 48px; padding: 0 16px;
+    font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 700;
+    letter-spacing: 0.14px; cursor: pointer; transition: opacity .2s;
+  }
+  .btn-pill-white:hover { opacity: .88; }
+  .btn-pill-frosted {
+    background: rgba(255,255,255,.1); color: #fff;
+    border: 1px solid rgba(255,255,255,.3); border-radius: 100px;
+    height: 48px; padding: 0 20px;
+    font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: background .2s;
+    backdrop-filter: blur(4px);
+  }
+  .btn-pill-frosted:hover { background: rgba(255,255,255,.18); }
+  /* Hero frosted in light context */
+  #hero .btn-pill-frosted {
+    background: transparent; color: #586344;
+    border: 1px solid #586344;
+    backdrop-filter: none;
+    font-weight: 700;
+  }
+  #hero .btn-pill-frosted:hover { background: rgba(88,99,68,.08); }
+  .hero-photo-card {
+    width: 100%; height: 266px;
+    border-radius: 30px; overflow: hidden; flex-shrink: 0;
+    background: #141a14;
+  }
+  .hero-photo-card img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center top;
+  }
+
+  /* MARQUEE */
+  .marquee-strip {
+    background: var(--mid-green); height: 44px;
+    overflow: hidden; display: flex; align-items: center;
+  }
+  .marquee-track {
+    display: flex; align-items: center;
+    white-space: nowrap;
+    animation: marquee 22s linear infinite;
+  }
+  .marquee-track span {
+    font-size: 10px; letter-spacing: 1.5px;
+    color: rgba(255,255,255,.65); padding-right: 60px;
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* WHAT WE OFFER — SERVICES */
+  #services {
+    background: #fff;
+    padding: 40px 20px 32px;
+  }
+  .section-eyebrow {
+    font-size: 14px; letter-spacing: 1.12px;
+    color: var(--bright-green); font-weight: 400;
+    margin-bottom: 12px; display: block;
+  }
+  .section-title-new {
+    font-family: 'Karla', sans-serif;
+    font-size: 32px; line-height: 1; color: var(--dark-green);
+    margin-bottom: 28px; font-weight: 600;
+    letter-spacing: -0.96px;
+  }
+  .section-title-new .accent { color: var(--light-green); }
+
+  /* Scrollable card row */
+  .cards-scroll-wrap {
+    display: flex; gap: 10px;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    scrollbar-width: none; margin: 0 0px; 
+    
+  }
+  .cards-scroll-wrap::-webkit-scrollbar { display: none; }
+
+  /* Left tall card */
+  .svc-card-left {
+    flex-shrink: 0; width: 260px; height: 405px;
+    border-radius: 20px; overflow: hidden; 
+    position: relative; scroll-snap-align: start;
+    padding-left: 20px;
+  }
+
+  .svc-card-left img.card-bg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .svc-card-left .botanical-overlay {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; mix-blend-mode: overlay; opacity: .55;
+  }
+  .svc-card-left .card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(28,58,28,.88) 0%, rgba(28,58,28,.1) 60%, transparent 100%);
+  }
+  .svc-card-left .card-content {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 24px 20px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .svc-card-left .card-text {
+    font-family: 'Karla', sans-serif;
+    font-size: 22px; font-weight: 600; line-height: 1.15;
+    color: #fff; letter-spacing: -0.5px;
+  }
+
+  /* Right card (image + text below) */
+  .svc-card-right {
+    flex-shrink: 0; width: 260px;
+    border-radius: 20px; overflow: hidden;
+    scroll-snap-align: start;
+    display: flex; flex-direction: column;
+  }
+  .svc-card-right .card-img-wrap {
+    position: relative; flex-shrink: 0;
+  }
+  .svc-card-right img {
+    width: 100%; height: 260px;  border-radius: 20px; object-fit: cover; display: block;
+  }
+  .svc-card-promo {
+    position: absolute; top: 0; left: 0;
+    background: #f0f3e8;
+    border-radius: 0 0 30px 0;
+    padding: 12px 16px;
+    font-family: 'Karla', sans-serif;
+    font-size: 14px; font-weight: 700;
+    color: #31351b; letter-spacing: 0.14px;
+    line-height: 1;
+  }
+  .svc-card-right .card-body {
+    padding: 20px; display: flex; flex-direction: column; gap: 6px; flex: 1; background: transparent;
+  }
+  .svc-card-right .card-title {
+    font-family: 'Karla', sans-serif;
+    font-size: 22px; font-weight: 600; color: var(--dark-green);
+    letter-spacing: -0.5px;
+  }
+  .svc-card-right .card-desc {
+    font-size: 16px; font-weight: 400; color: #5e5e5e; line-height: 1.4;
+  }
+  .svc-card-right .card-link {
+    font-size: 14px; font-weight: 600; color: var(--bright-green);
+    text-decoration: underline; margin-top: 8px; cursor: pointer;
+  }
+
+  /* Progress bar indicator */
+  .scroll-progress {
+    margin-top: 20px;
+    height: 3px; background: #e0e0e0; border-radius: 2px;
+    position: relative; overflow: hidden;
+  }
+  .scroll-progress-fill {
+    height: 100%; width: 40%; background: var(--bright-green); border-radius: 2px;
+    transition: transform .3s;
+  }
+
+  /* RATING BAR */
+  #rating {
+    background: #eff3e9;
+    display: flex; align-items: center;
+    padding: 16px 20px; gap: 16px;
+  }
+  .rating-block {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .rating-score-row {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .rating-number {
+    font-family: 'Karla', sans-serif;
+    font-size: 52px; line-height: 1; color: #1f2a19; font-weight: 400;
+  }
+  .rating-star {
+    font-size: 38px; color: #1f2a19;
+    line-height: 1;
+  }
+  .rating-label {
+    font-size: 15px; color: #1f2a19; font-weight: 400;
+  }
+  .rating-logos {
+    display: flex; flex-direction: column; gap: 10px; margin-left: auto;
+    align-items: flex-start;
+  }
+  .rating-logos-row {
+    display: flex; gap: 16px; align-items: center;
+  }
+  .rating-logos-row img[alt="Treatwell"] {
+    filter: brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(110%);
+  }
+  .rating-logos-row img[alt="Google"] {
+    filter: brightness(0) saturate(100%) invert(13%) sepia(18%) saturate(600%) hue-rotate(75deg) brightness(90%);
+  }
+  .logo-text {
+    font-family: 'Karla', sans-serif;
+    font-size: 16px; color: #1f2a19; font-weight: 400; letter-spacing: -0.5px;
+  }
+  .logo-text.treatwell { font-style: normal; }
+  .logo-text.google { font-weight: 400; }
+
+  /* LASER / SKIN SOLUTIONS */
+  #laser {
+    background: var(--grey-bg);
+    padding: 26px 20px;
+  }
+  .laser-eyebrow {
+    font-size: 14px; letter-spacing: 1.12px;
+    color: var(--bright-green); font-weight: 400;
+    margin-bottom: 12px; display: block;
+  }
+  .laser-title {
+    font-family: 'Karla', sans-serif;
+    font-size: 32px; line-height: 1; margin-bottom: 16px;
+    font-weight: 600; letter-spacing: -0.96px; color: var(--dark-green);
+  }
+  .laser-title .accent { color: var(--light-green); }
+  .laser-desc {
+    font-size: 16px; font-weight: 400; line-height: 1.5;
+    color: #5e5e5e; margin-bottom: 24px;
+  }
+  .laser-desc strong { font-weight: 700; color: var(--text-dark); }
+
+  /* Laser image */
+  .laser-image-wrap {
+    border-radius: 30px; overflow: hidden;
+    height: 320px; margin-bottom: 20px;
+    position: relative;
+  }
+  .laser-image-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+
+  /* Feature tag pills */
+  .feature-tags {
+    display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;
+    margin: 0 -20px; padding: 0 20px 4px;
+  }
+  .feature-tags::-webkit-scrollbar { display: none; }
+  .feature-tag {
+    display: flex; align-items: center; gap: 4px;
+    background: var(--grey-light); border-radius: 20px;
+    padding: 4px 12px 4px 8px; flex-shrink: 0;
+  }
+  .feature-tag-check {
+    width: 20px; height: 20px; flex-shrink: 0;
+  }
+  .feature-tag span {
+    font-size: 14px; font-weight: 300; color: var(--text-dark); white-space: nowrap;
+  }
+
+  /* Laser CTAs */
+  .laser-ctas {
+    margin-top: 24px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .btn-primary-full {
+    background: #31351b; color: #fff;
+    border: none; border-radius: 100px;
+    height: 48px; width: 100%;
+    font-family: 'Karla', sans-serif; font-size: 16px; font-weight: 700;
+    letter-spacing: 0.16px; cursor: pointer; transition: background .2s;
+  }
+  .btn-primary-full:hover { background: #1e2112; }
+  .promo-tag {
+    text-align: center; padding: 8px 0;
+    font-size: 16px; font-weight: 600; color: var(--bright-green);
+  }
+
+  /* INSTAGRAM / RESULTS */
+  #instagram {
+    background: #fff;
+    padding: 26px 0;
+  }
+  .instagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; margin-bottom: 20px;
+  }
+  .instagram-label {
+    font-size: 14px; letter-spacing: 1.12px;
+    color: var(--bright-green); font-weight: 400;
+  }
+  .instagram-link {
+    font-size: 14px; font-weight: 600; color: var(--bright-green);
+    text-decoration: underline; cursor: pointer; letter-spacing: 0.14px;
+  }
+  .instagram-photos {
+    display: flex; gap: 8px;
+    overflow-x: auto; scrollbar-width: none;
+    padding: 0 20px 4px;
+  }
+  .instagram-photos::-webkit-scrollbar { display: none; }
+  .insta-photo {
+    flex-shrink: 0; width: 150px; height: 200px;
+    border-radius: 16px; overflow: hidden;
+  }
+  .insta-photo img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+
+  /* SKIN CONCERNS / SOLUTIONS */
+  #concerns {
+    background: var(--grey-bg);
+    padding: 26px 20px;
+  }
+  .concerns-grid-new {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-top: 24px;
+  }
+  .concern-card {
+    background: #fff; border: 1px solid var(--border-green);
+    border-radius: 10px; padding: 16px;
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer; transition: background .2s, border-color .2s;
+  }
+  .concern-card:hover { background: #f0f7ef; border-color: var(--bright-green); }
+  .concern-card-label {
+    font-size: 16px; font-weight: 400; color: var(--dark-green);
+    letter-spacing: -0.48px; flex: 1;
+  }
+  .concern-arrow {
+    width: 16px; height: 16px; flex-shrink: 0; opacity: .65;
+  }
+
+  /* MEET THE TEAM */
+  #team {
+    background: #fff;
+    padding: 26px 20px 32px;
+  }
+  .team-cards-scroll {
+    display: flex; gap: 10px;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    scrollbar-width: none; margin: 0 0px; padding: 0 20px 4px;
+    margin-top: 24px;
+  }
+  .team-cards-scroll::-webkit-scrollbar { display: none; }
+  .team-card {
+    flex-shrink: 0; width: 260px;
+    border-radius: 20px; overflow: hidden;
+    scroll-snap-align: start;
+    display: flex; flex-direction: column;
+  }
+  .team-card-photo {
+    width: 100%; height: 280px;
+    object-fit: cover; object-position: top;
+    display: block; flex-shrink: 0;
+  }
+  .team-card-info {
+    padding: 8px 8px 16px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .team-card-name {
+    font-family: 'Karla', sans-serif;
+    font-size: 22px; font-weight: 600;
+    color: var(--dark-green); line-height: normal;
+  }
+  .team-card-desc {
+    font-family: 'Karla', sans-serif;
+    font-size: 16px; font-weight: 400;
+    color: var(--text-mid); line-height: 24px;
+  }
+
+  /* TESTIMONIALS */
+  #testimonials {
+    background: var(--grey-bg);
+    padding: 26px 20px;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 24px; text-align: center;
+  }
+  .testimonials-eyebrow {
+    font-size: 14px; letter-spacing: 1.12px;
+    color: var(--bright-green); font-weight: 400;
+  }
+  .testimonials-stars { display: flex; justify-content: center; }
+  .testimonials-stars img { display: block; height: 24px; width: 145px; object-fit: contain; }
+  #testimonials .testimonials-author img[alt="Treatwell"] {
+    filter: brightness(0) saturate(100%) invert(42%) sepia(96%) saturate(800%) hue-rotate(340deg) brightness(108%);
+  }
+  .testimonials-quote {
+    font-family: 'Karla', sans-serif;
+    font-size: 19px; font-weight: 400; line-height: 1.45;
+    color: var(--dark-green); max-width: 320px;
+  }
+  .testimonials-author {
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px;
+  }
+  .testimonials-avatar {
+    width: 26px; height: 26px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
+  }
+  .testimonials-name {
+    font-size: 16px; font-weight: 400; color: #5e5e5e; white-space: nowrap;
+  }
+  .testimonials-cta { width: 100%; }
+
+  /* MORE REASONS */
+  #reasons {
+    background: #eef4ea;
+    padding: 36px 20px;
+    display: flex; flex-direction: column; gap: 32px;
+    position: relative; overflow: hidden;
+  }
+  .reasons-deco {
+    position: absolute; top: 0; left: 20px;
+    width: 513px; height: 527px;
+    opacity: .1; pointer-events: none; object-fit: cover;
+  }
+  .reasons-header {
+    display: flex; flex-direction: column; gap: 12px;
+    position: relative; z-index: 1;
+  }
+  .reasons-eyebrow {
+    font-size: 14px; letter-spacing: 1.12px; font-weight: 300; color: #586344;
+  }
+  .reasons-title {
+    font-family: 'Karla', sans-serif;
+    font-size: 32px; font-weight: 600; line-height: 32px;
+    letter-spacing: -0.96px; color: #31351b;
+  }
+  .reasons-desc {
+    font-size: 16px; font-weight: 400; line-height: 24px; color: #5e5e5e;
+  }
+  .reasons-list {
+    display: flex; flex-direction: column; gap: 4px;
+    position: relative; z-index: 1;
+  }
+  .reasons-card {
+    background: rgba(255,255,255,.8);
+    border-radius: 10px; padding: 16px;
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer; transition: background .2s;
+  }
+  .reasons-card:hover { background: rgba(255,255,255,.92); }
+  .reasons-card-text { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .reasons-card-title {
+    font-family: 'Karla', sans-serif;
+    font-size: 22px; font-weight: 600; letter-spacing: -1.1px; color: var(--dark-green);
+  }
+  .reasons-card-sub {
+    font-size: 16px; font-weight: 500; line-height: 24px; color: var(--text-mid);
+  }
+  .reasons-arrow { flex-shrink: 0; }
+
+  /* BEAUTY DEEPER */
+  #beauty-deeper {
+    background: var(--cream);
+    padding: 36px 20px;
+    display: flex; flex-direction: column; gap: 24px;
+  }
+  .beauty-header { display: flex; flex-direction: column; gap: 16px; }
+  .beauty-eyebrow {
+    font-size: 14px; letter-spacing: 1.12px; font-weight: 400; color: var(--bright-green);
+  }
+  .beauty-title {
+    font-family: 'Karla', sans-serif;
+    font-size: 32px; font-weight: 600; line-height: 32px;
+    letter-spacing: -0.96px; color: var(--dark-green);
+  }
+  .beauty-accent { color: var(--bright-green); }
+  .beauty-desc {
+    font-size: 16px; font-weight: 400; line-height: 24px; color: #5e5e5e;
+  }
+  .beauty-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  }
+  .beauty-card {
+    background: rgba(154,191,138,.18);
+    border-radius: 10px; padding: 16px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .beauty-card-title {
+    font-size: 16px; font-weight: 500; letter-spacing: -0.32px; color: var(--dark-green);
+  }
+  .beauty-card-sub {
+    font-size: 14px; font-weight: 300; line-height: 18px; color: var(--text-mid);
+  }
+
+  /* REVIEWS */
+  #reviews { background: var(--cream); padding: 40px 20px; overflow: hidden; }
+  .reviews-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 32px;
+  }
+  .rating-num { font-family: 'Cormorant Garamond', serif; font-size: 52px; line-height: 1; color: var(--dark-green); }
+  .rating-stars { font-size: 13px; color: var(--gold); letter-spacing: 2px; text-align: right; }
+  .reviews-track {
+    display: flex; gap: 16px;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    scrollbar-width: none; padding-bottom: 4px;
+  }
+  .reviews-track::-webkit-scrollbar { display: none; }
+  .review-card {
+    min-width: calc(85vw - 40px); max-width: 320px; flex-shrink: 0;
+    background: var(--cream2); border: 1px solid var(--cream3);
+    border-radius: 12px; padding: 28px 20px;
+    scroll-snap-align: start;
+  }
+  .review-stars { font-size: 13px; color: var(--gold); margin-bottom: 14px; }
+  .review-text { font-size: 15px; font-weight: 300; line-height: 1.6; color: var(--text-dark); margin-bottom: 16px; }
+  .review-name { font-size: 12px; color: var(--dark-green); letter-spacing: .5px; margin-bottom: 4px; font-weight: 500; }
+  .review-source { font-size: 11px; font-weight: 300; color: var(--text-mid); }
+  .carousel-dots { display: flex; gap: 6px; justify-content: center; margin-top: 20px; }
+  .carousel-dot {
+    width: 6px; height: 6px; border-radius: 3px;
+    background: var(--cream3); cursor: pointer;
+    transition: background .2s, width .2s;
+  }
+  .carousel-dot.active { background: var(--bright-green); width: 18px; }
+
+  /* PARTNERS */
+  #partners {
+    background: var(--grey-bg);
+    padding: 26px 0;
+    display: flex; flex-direction: column; gap: 24px; align-items: center;
+    overflow: hidden;
+  }
+  .partners-eyebrow {
+    font-size: 14px; letter-spacing: 1.12px; font-weight: 400;
+    color: var(--bright-green); text-align: center;
+  }
+  .partners-track-wrap {
+    width: 100%; overflow-x: auto; overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    cursor: grab;
+  }
+  .partners-track-wrap::-webkit-scrollbar { display: none; }
+  .partners-track-wrap:active { cursor: grabbing; }
+  .partners-track {
+    display: flex; align-items: center; gap: 40px;
+    padding: 0 20px; width: max-content;
+  }
+  .partners-track img { object-fit: contain; display: block; flex-shrink: 0; }
+
+  /* CTA */
+  #cta {
+    background: #2f4a2f;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: flex-start;
+    padding: 40px 20px; gap: 32px;
+  }
+  #cta .cta-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background: url('unsplash_RbIcMsh0NSk1.png') center/cover no-repeat;
+    opacity: 0.6; pointer-events: none;
+  }
+  #cta .cta-body {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; gap: 8px; width: 100%;
+  }
+  .cta-eyebrow { font-size: 14px; letter-spacing: 1.12px; color: #82a374; font-weight: 500; }
+  .cta-title {
+    font-family: 'Karla', sans-serif;
+    font-size: 46px; line-height: 52px; color: #fff;
+    font-weight: 700; letter-spacing: -2.3px;
+  }
+  .btn-cta-pill {
+    position: relative; z-index: 1;
+    background: #ebf1e5; color: #1c3a1c;
+    border: none; border-radius: 100px;
+    width: 100%; height: 48px;
+    font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 700;
+    letter-spacing: 0.14px;
+    cursor: pointer; transition: opacity .2s;
+  }
+  .btn-cta-pill:hover { opacity: .88; }
+
+  /* FOOTER */
+  footer {
+    background: var(--cream2); padding: 36px 20px;
+    display: flex; flex-direction: column;
+  }
+  .footer-logo-wrap {
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(130,163,116,0.2);
+    margin-bottom: 0;
+  }
+  .footer-logo-wrap img { height: 36px; display: block; }
+  .footer-links {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    padding: 12px 0;
+  }
+  .footer-links a {
+    font-size: 14px; font-weight: 300;
+    color: #1c3a1c; text-decoration: none; transition: color .2s;
+  }
+  .footer-links a:hover { color: var(--bright-green); }
+  .footer-lang { display: flex; gap: 10px; padding: 12px 0; }
+  .footer-lang span {
+    font-size: 14px; font-weight: 500; cursor: pointer; transition: color .2s;
+  }
+  .footer-lang span.active { color: #2c5f2e; text-decoration: underline; }
+  .footer-lang span.inactive { color: #5e5e5e; }
+  .footer-kvk {
+    font-size: 14px; font-weight: 300; color: #5e5e5e;
+    padding: 12px 0 6px;
+  }
+  .footer-legal { display: flex; gap: 10px; flex-wrap: wrap; padding: 6px 0; }
+  .footer-legal a {
+    font-size: 14px; font-weight: 300;
+    color: #1c3a1c; text-decoration: none; transition: color .2s;
+  }
+  .footer-legal a:hover { color: var(--bright-green); }
+  .footer-copy {
+    font-size: 14px; font-weight: 300; color: #5e5e5e;
+    padding: 6px 0 0;
+  }
+
+  /* BOOKING MODAL */
+  .modal-backdrop {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(28,58,28,.85);
+    display: flex; align-items: flex-end;
+    opacity: 0; pointer-events: none;
+    transition: opacity .3s;
+  }
+  .modal-backdrop.open { opacity: 1; pointer-events: all; }
+  .modal-sheet {
+    background: var(--cream); width: 100%;
+    border-radius: 20px 20px 0 0;
+    padding: 40px 24px 48px;
+    transform: translateY(100%);
+    transition: transform .4s cubic-bezier(.77,0,.18,1);
+    text-align: center;
+  }
+  .modal-backdrop.open .modal-sheet { transform: translateY(0); }
+  .modal-handle {
+    width: 40px; height: 4px; border-radius: 2px;
+    background: var(--cream3); margin: 0 auto 32px;
+  }
+  .modal-icon { font-size: 40px; margin-bottom: 16px; }
+  .modal-title { font-family: 'Karla', sans-serif; font-size: 32px; font-weight: 700; color: var(--dark-green); margin-bottom: 12px; letter-spacing: -1px; }
+  .modal-sub { font-size: 15px; font-weight: 300; line-height: 1.6; color: var(--text-mid); margin-bottom: 32px; }
+  .modal-treatwell {
+    display: block; width: 100%;
+    background: var(--bright-green); color: var(--cream);
+    border: none; border-radius: 100px; height: 52px;
+    font-family: 'Karla', sans-serif; font-size: 16px; font-weight: 700;
+    cursor: pointer; margin-bottom: 12px; transition: background .2s;
+  }
+  .modal-treatwell:hover { background: var(--dark-green); }
+  .modal-close {
+    font-size: 13px; font-weight: 300; color: var(--text-mid);
+    cursor: pointer; background: none; border: none; padding: 12px;
+  }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="#hero" class="logo">
+    <img src="Logo1.svg" alt="NeoXell" height="36">
+  </a>
+  <div class="nav-right">
+    <button class="btn-book-nav" onclick="openModal()">Book Now</button>
+    <button class="burger" id="burger-btn" aria-label="Menu" onclick="toggleMenu()">
+      <div class="burger-icon">
+        <span></span><span></span><span></span>
+      </div>
+    </button>
+  </div>
+</nav>
+
+<!-- ANNOUNCEMENT BANNER -->
+<!--div class="announcement-bar" id="announcement-bar">
+  <p>🌿 Spring — 30% off laser &nbsp;<span>·&nbsp; Claim! →</span></p>
+  <button class="announcement-close" onclick="document.getElementById('announcement-bar').style.display='none'" aria-label="Dismiss">✕</button>
+</div-->
+
+<!-- MENU OVERLAY -->
+<div class="menu-overlay" id="menu-overlay">
+  <div class="menu-overlay-nav">
+    <a href="#hero" class="logo" onclick="closeMenu()">
+      <img src="Logo1.svg" alt="NeoXell" height="36">
+    </a>
+    <div class="menu-overlay-nav-right">
+      <button class="menu-overlay-book" onclick="openModal(); closeMenu();">BOOK NOW</button>
+      <button class="menu-overlay-close" onclick="closeMenu()" aria-label="Close menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="menu-items-list">
+    <a href="#hero" class="menu-item" onclick="closeMenu()" style="transition-delay:.05s">
+      <span class="menu-item-num">01</span>
+      <span class="menu-item-label">Home</span>
+    </a>
+    <div class="menu-item" onclick="toggleServices()" style="transition-delay:.1s">
+      <span class="menu-item-num">02</span>
+      <span class="menu-item-label">Services</span>
+      <svg class="menu-item-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="menu-sub-items" id="services-sub">
+      <a href="#laser" class="menu-sub-item" onclick="closeMenu()">Laser Hair Removal</a>
+      <a href="#services" class="menu-sub-item" onclick="closeMenu()">Facial Treatments</a>
+      <a href="#concerns" class="menu-sub-item" onclick="closeMenu()">Skin Solutions</a>
+      <a href="#team" class="menu-sub-item" onclick="closeMenu()">Meet the Team</a>
+    </div>
+    <a href="#reviews" class="menu-item" onclick="closeMenu()" style="transition-delay:.15s">
+      <span class="menu-item-num">03</span>
+      <span class="menu-item-label">Reviews</span>
+    </a>
+    <a href="#cta" class="menu-item" onclick="closeMenu()" style="transition-delay:.2s">
+      <span class="menu-item-num">04</span>
+      <span class="menu-item-label">Book</span>
+    </a>
+    <a href="#instagram" class="menu-item" onclick="closeMenu()" style="transition-delay:.25s">
+      <span class="menu-item-num">05</span>
+      <span class="menu-item-label">Results</span>
+    </a>
+    <a href="#team" class="menu-item" onclick="closeMenu()" style="transition-delay:.3s">
+      <span class="menu-item-num">06</span>
+      <span class="menu-item-label">Team</span>
+    </a>
+    <a href="#cta" class="menu-item" onclick="closeMenu()" style="transition-delay:.35s">
+      <span class="menu-item-num">07</span>
+      <span class="menu-item-label">Contact</span>
+    </a>
+  </div>
+  <div class="menu-footer">
+    <div class="menu-lang">
+      <span class="active">NL</span>
+      <span>EN</span>
+      <span>UA</span>
+    </div>
+    <div class="menu-social">
+      <a href="#">Instagram</a>
+      <a href="#">Tiktok</a>
+      <a href="#">WhatsApp</a>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-content">
+    <p class="hero-eyebrow">Beauty clinic Amsterdam</p>
+    <h1 class="hero-title">Where science<br>meets nature.</h1>
+    <p class="hero-sub">Advanced skin treatments rooted in science, guided by nature.</p>
+    <div class="hero-ctas">
+      <button class="btn-pill-white" onclick="openModal()">Book free intake</button>
+      <button class="btn-pill-frosted" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Explore treatments</button>
+    </div>
+  </div>
+  <div class="hero-photo-card">
+    <img src="unsplash_QXQIFum_qEY.png" alt="Beauty clinic treatment">
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<!--div class="marquee-strip">
+  <div class="marquee-track">
+    <span>LASER HAIR REMOVAL &nbsp;·&nbsp; MICRONEEDLING DERMAPEN 4 &nbsp;·&nbsp; HYDROPEELING FACIAL &nbsp;·&nbsp; RF VACUUM LIFTING &nbsp;·&nbsp; BIOREPEELCL3 &nbsp;·&nbsp; FACE SCULPTING &nbsp;·&nbsp; PRX-T33 &nbsp;·&nbsp; NON-INJECTABLE MESOTHERAPY &nbsp;·&nbsp;</span>
+    <span>LASER HAIR REMOVAL &nbsp;·&nbsp; MICRONEEDLING DERMAPEN 4 &nbsp;·&nbsp; HYDROPEELING FACIAL &nbsp;·&nbsp; RF VACUUM LIFTING &nbsp;·&nbsp; BIOREPEELCL3 &nbsp;·&nbsp; FACE SCULPTING &nbsp;·&nbsp; PRX-T33 &nbsp;·&nbsp; NON-INJECTABLE MESOTHERAPY &nbsp;·&nbsp;</span>
+  </div>
+</div-->
+
+<!-- WHAT WE OFFER -->
+<section id="services">
+  <span class="section-eyebrow reveal">What we offer</span>
+  <h2 class="section-title-new reveal">Tailored treatments<br><span class="accent">for every concern</span></h2>
+
+  <div class="cards-scroll-wrap" id="services-cards">
+    <!-- Left tall card: botanical/services overview -->
+    <!--div class="svc-card-left">
+      <img class="card-bg"
+        src="unsplash_RbIcMsh0NSk1.png"
+        alt="Botanical beauty">
+      <img class="botanical-overlay"
+        src="https://www.figma.com/api/mcp/asset/2f9a1212-6504-40fa-8ac7-1787ed23f41d"
+        alt="">
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <p class="card-text">Where beauty meets health, rooted in science</p>
+        <button class="btn-pill-frosted" style="width:fit-content; font-size:13px; height:38px; padding:0 16px;"
+          onclick="document.getElementById('concerns').scrollIntoView({behavior:'smooth'})">
+          Explore all services
+        </button>
+      </div>
+    </div-->
+
+    <!-- Right card: Facials service -->
+    <div class="svc-card-right">
+      <div class="card-img-wrap">
+        <img
+          src="unsplash_k8tUVXlMTRU.png"
+          alt="Laser Hair Removal">
+        <span class="svc-card-promo">-30% off</span>
+      </div>
+      <div class="card-body">
+        <p class="card-title">Laser Hair Removal</p>
+        <p class="card-desc">Enjoy smooth skin with advanced laser hair removal.</p>
+        <p class="card-link">Explore →</p>
+      </div>
+    </div>
+
+     <div class="svc-card-right">
+      <img
+        src="unsplash_RbIcMsh0NSk.png"
+        alt="Facials treatment">
+      <div class="card-body">
+        <p class="card-title">Facials</p>
+        <p class="card-desc">HydroPeeling & bespoke skin rituals</p>
+        <p class="card-link">Explore →</p>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="scroll-progress">
+    <div class="scroll-progress-fill" id="services-progress"></div>
+  </div>
+</section>
+
+<!-- RATING BAR -->
+<div id="rating">
+  <div class="rating-block">
+    <div class="rating-score-row">
+      <span class="rating-number">5.0</span>
+      <span class="rating-star">★</span>
+    </div>
+    <span class="rating-label">based on 122 reviews</span>
+  </div>
+  <div class="rating-logos">
+    <div class="rating-logos-row">
+      <img src="Treatwell_idNu9SbqSn_0 1.svg" alt="Treatwell" height="18">
+      <img src="Google_Logo_0 1.svg" alt="Google" height="20">
+    </div>
+  </div>
+</div>
+
+<!-- LASER HAIR REMOVAL -->
+<section id="laser">
+  <span class="laser-eyebrow reveal">Laser hair removal</span>
+  <h2 class="laser-title reveal">Permanent results.<br><span class="accent">Zero compromise.</span></h2>
+  <p class="laser-desc reveal">Germany's <strong>most advanced</strong> diode laser. Permanent hair reduction for all skin types – with clinical precision.</p>
+
+  <div class="laser-image-wrap reveal">
+    <img
+      src="unsplash__A0jYQvTm9M.png"
+      alt="Laser hair removal treatment">
+  </div>
+
+  <div class="feature-tags reveal">
+    <div class="feature-tag">
+      <svg class="feature-tag-check" viewBox="0 0 20 20" fill="none">
+        <path d="M6 10.5L8.5 13L14 7.5" stroke="#586344" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>All skin types</span>
+    </div>
+    <div class="feature-tag">
+      <svg class="feature-tag-check" viewBox="0 0 20 20" fill="none">
+        <path d="M6 10.5L8.5 13L14 7.5" stroke="#586344" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Zero downtime</span>
+    </div>
+    <div class="feature-tag">
+      <svg class="feature-tag-check" viewBox="0 0 20 20" fill="none">
+        <path d="M6 10.5L8.5 13L14 7.5" stroke="#586344" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Permanent</span>
+    </div>
+    <div class="feature-tag">
+      <svg class="feature-tag-check" viewBox="0 0 20 20" fill="none">
+        <path d="M6 10.5L8.5 13L14 7.5" stroke="#586344" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Medically proven</span>
+    </div>
+  </div>
+
+  <div class="laser-ctas reveal">
+    <button class="btn-primary-full" onclick="openModal()">Book free intake</button>
+    <p class="promo-tag">🌿 Spring — 30% off laser</p>
+  </div>
+</section>
+
+<!-- INSTAGRAM / RESULTS -->
+<section id="instagram">
+  <div class="instagram-header reveal">
+    <span class="instagram-label">Results · @neoxell</span>
+    <span class="instagram-link">Instagram →</span>
+  </div>
+  <div class="instagram-photos reveal">
+    <div class="insta-photo">
+      <img src="https://www.figma.com/api/mcp/asset/d759e13c-4792-40c9-aa8b-b1927c919184" alt="Client result 1">
+    </div>
+    <div class="insta-photo">
+      <img src="https://www.figma.com/api/mcp/asset/57190e54-66a8-4a00-8dfd-af283ec3ac5e" alt="Client result 2">
+    </div>
+    <div class="insta-photo">
+      <img src="https://www.figma.com/api/mcp/asset/e33ed9be-56ae-42f4-86ff-098cbfcbbb53" alt="Client result 3">
+    </div>
+  </div>
+</section>
+
+<!-- SKIN CONCERNS / SOLUTIONS -->
+<section id="concerns">
+  <span class="section-eyebrow reveal">Solutions based on problem</span>
+  <h2 class="section-title-new reveal" style="margin-bottom:12px;">Your concern.<br><span class="accent">Our expertise.</span></h2>
+  <p class="reveal" style="font-size:16px;font-weight:400;color:#5e5e5e;line-height:1.5;">We treat the root - not just the surface. Every protocol is tailored to your skin.</p>
+
+  <div class="concerns-grid-new reveal">
+    <div class="concern-card">
+      <span class="concern-card-label">Scars &amp; Texture</span>
+      <svg class="concern-arrow" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="#1c3a1c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="concern-card">
+      <span class="concern-card-label">Face Sculpting</span>
+      <svg class="concern-arrow" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="#1c3a1c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="concern-card">
+      <span class="concern-card-label">Skin Quality</span>
+      <svg class="concern-arrow" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="#1c3a1c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="concern-card">
+      <span class="concern-card-label">Pigmentation</span>
+      <svg class="concern-arrow" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="#1c3a1c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="concern-card">
+      <span class="concern-card-label">Dehydrated Skin</span>
+      <svg class="concern-arrow" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="#1c3a1c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="concern-card">
+      <span class="concern-card-label">Scalp Health</span>
+      <svg class="concern-arrow" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="#1c3a1c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="concern-card">
+      <span class="concern-card-label">Skin Barrier</span>
+      <svg class="concern-arrow" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="#1c3a1c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="concern-card">
+      <span class="concern-card-label">Skin Check-up</span>
+      <svg class="concern-arrow" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="#1c3a1c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- MEET THE TEAM -->
+<section id="team">
+  <span class="section-eyebrow reveal">Our beauty experts</span>
+  <h2 class="section-title-new reveal" style="margin-bottom:0;">Meet the team</h2>
+
+  <div class="team-cards-scroll">
+    <!-- Olena Tykhan -->
+    <div class="team-card">
+      <img class="team-card-photo" src="Group 14.png" alt="Olena Tykhan">
+      <div class="team-card-info">
+        <p class="team-card-name">Olena Tykhan</p>
+        <p class="team-card-desc">6+ years of international experience. A medical background.</p>
+      </div>
+    </div>
+
+    <!-- Sofia Petrenko -->
+    <div class="team-card">
+      <img class="team-card-photo" src="Group 15.png" alt="Sofia Petrenko">
+      <div class="team-card-info">
+        <p class="team-card-name">Sofia Petrenko</p>
+        <p class="team-card-desc">Advanced techniques and a passion for natural, radiant skin.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <span class="testimonials-eyebrow reveal">What our clients say</span>
+  <div class="testimonials-stars reveal">
+    <img src="https://www.figma.com/api/mcp/asset/13659ce3-ef1c-4f54-a986-bb61bbaf8e6d" alt="5 stars" height="24">
+  </div>
+  <p class="testimonials-quote reveal">"Painless, fast, and professional - best laser experience ever"</p>
+  <div class="testimonials-author reveal">
+    <img class="testimonials-avatar" src="https://www.figma.com/api/mcp/asset/43ae9fa8-7700-43da-bd64-d66c28c11aa8" alt="Sarah K.">
+    <span class="testimonials-name">Sarah K. thought</span>
+    <img src="Treatwell_idNu9SbqSn_0 1.svg" alt="Treatwell" height="18">
+  </div>
+  <div class="testimonials-cta reveal">
+    <button class="btn-primary-full" onclick="openModal()">Book free intake</button>
+  </div>
+</section>
+
+<!-- MORE REASONS -->
+<section id="reasons">
+  <img class="reasons-deco" src="Deco.svg" alt="">
+  <div class="reasons-header reveal">
+    <span class="reasons-eyebrow">Offers</span>
+    <h2 class="reasons-title">More reasons to start.</h2>
+    <p class="reasons-desc">We treat the root - not just the surface. Every protocol is tailored to your skin.</p>
+  </div>
+  <div class="reasons-list reveal">
+    <div class="reasons-card">
+      <div class="reasons-card-text">
+        <p class="reasons-card-title">Bring a Friend</p>
+        <p class="reasons-card-sub">Both get 15% off</p>
+      </div>
+      <svg class="reasons-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1c3a1c" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="reasons-card">
+      <div class="reasons-card-text">
+        <p class="reasons-card-title">Free Intake</p>
+        <p class="reasons-card-sub">No commitment, no cost</p>
+      </div>
+      <svg class="reasons-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1c3a1c" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="reasons-card">
+      <div class="reasons-card-text">
+        <p class="reasons-card-title">Skincare Gift</p>
+        <p class="reasons-card-sub">Personalised routine check</p>
+      </div>
+      <svg class="reasons-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1c3a1c" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- BEAUTY DEEPER -->
+<section id="beauty-deeper">
+  <div class="beauty-header reveal">
+    <span class="beauty-eyebrow">Why us</span>
+    <h2 class="beauty-title">Beauty that<br>goes <span class="beauty-accent">deeper</span></h2>
+    <p class="beauty-desc">Founded in Amsterdam on the belief that real beauty comes from healthy, balanced skin.</p>
+  </div>
+  <div class="beauty-grid reveal">
+    <div class="beauty-card">
+      <p class="beauty-card-title">Science-backed</p>
+      <p class="beauty-card-sub">Clinically proven technology</p>
+    </div>
+    <div class="beauty-card">
+      <p class="beauty-card-title">Personalized</p>
+      <p class="beauty-card-sub">Tailored to your unique skin</p>
+    </div>
+    <div class="beauty-card">
+      <p class="beauty-card-title">Nature-rooted</p>
+      <p class="beauty-card-sub">Respects skin and environment</p>
+    </div>
+    <div class="beauty-card">
+      <p class="beauty-card-title">Expat-friendly</p>
+      <p class="beauty-card-sub">Dutch, Ukrainian &amp; English</p>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<section id="partners">
+  <p class="partners-eyebrow reveal">Our partners</p>
+  <div class="partners-track-wrap">
+    <div class="partners-track">
+      <img src="image 21.png" alt="Dermapen" height="24">
+      <img src="image 20.png" alt="Prague" height="36">
+      <img src="image 22.png" alt="HydroPeptide" height="36">
+    </div>
+  </div>
+</section>
+
+
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-bg"></div>
+  <div class="cta-body">
+    <span class="cta-eyebrow">Ready to begin?</span>
+    <h2 class="cta-title">Start your skin<br>transformation.</h2>
+  </div>
+  <button class="btn-cta-pill" onclick="openModal()">Book free intake</button>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo-wrap">
+    <img src="Logo1.svg" alt="NeoXell Beauty Clinic">
+  </div>
+  <div class="footer-links">
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Schedule</a>
+    <a href="#">Prices</a>
+    <a href="#">Cosmetics</a>
+    <a href="#">Gift Cards</a>
+  </div>
+  <div class="footer-lang">
+    <span class="active">NL</span>
+    <span class="inactive">EN</span>
+    <span class="active">UA</span>
+  </div>
+  <p class="footer-kvk">KVK 97558796&nbsp;&nbsp;•&nbsp;&nbsp;VAT NL00239823982749287342942</p>
+  <div class="footer-legal">
+    <a href="#">Privacy</a>
+    <a href="#">Cookies</a>
+    <a href="#">Terms</a>
+  </div>
+  <p class="footer-copy">2025 NeoXell Beauty Clinic - Amsterdam</p>
+</footer>
+
+<!-- BOOKING MODAL -->
+<div class="modal-backdrop" id="booking-modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-icon">🌿</div>
+    <h3 class="modal-title">Book free intake</h3>
+    <p class="modal-sub">30-minute personalised consultation — free of charge. We'll build your skin protocol together.</p>
+    <button class="modal-treatwell" onclick="closeModal()">Continue to Treatwell</button>
+    <button class="modal-close" onclick="closeModal()">Maybe later</button>
+  </div>
+</div>
+
+<script>
+  // NAV scroll shadow
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  });
+
+  // Menu toggle
+  function toggleMenu() {
+    document.getElementById('menu-overlay').classList.toggle('open');
+    document.getElementById('burger-btn').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('menu-overlay').classList.remove('open');
+    document.getElementById('burger-btn').classList.remove('open');
+  }
+
+  // Services sub-menu toggle
+  function toggleServices() {
+    const sub = document.getElementById('services-sub');
+    const item = sub.previousElementSibling;
+    sub.classList.toggle('open');
+    item.classList.toggle('services-open');
+  }
+
+  // Booking modal
+  function openModal() {
+    document.getElementById('booking-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('booking-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Services scroll progress bar
+  const servicesCards = document.getElementById('services-cards');
+  const progressFill = document.getElementById('services-progress');
+  if (servicesCards && progressFill) {
+    servicesCards.addEventListener('scroll', () => {
+      const { scrollLeft, scrollWidth, clientWidth } = servicesCards;
+      const pct = scrollWidth > clientWidth ? (scrollLeft / (scrollWidth - clientWidth)) * 100 : 0;
+      progressFill.style.width = Math.max(20, Math.min(100, 20 + pct * 0.8)) + '%';
+    });
+  }
+
+  // Reviews carousel dots
+  const reviewsTrack = document.getElementById('reviews-track');
+  const reviewDots = document.querySelectorAll('#review-dots .carousel-dot');
+  if (reviewsTrack) {
+    reviewsTrack.addEventListener('scroll', () => {
+      const cards = reviewsTrack.querySelectorAll('.review-card');
+      let activeIdx = 0;
+      cards.forEach((card, i) => {
+        if (card.getBoundingClientRect().left <= reviewsTrack.getBoundingClientRect().left + 40) {
+          activeIdx = i;
+        }
+      });
+      reviewDots.forEach((dot, i) => dot.classList.toggle('active', i === activeIdx));
+    });
+  }
+
+  // Partners drag-to-scroll (desktop mouse)
+  const partnersWrap = document.querySelector('.partners-track-wrap');
+  if (partnersWrap) {
+    let isDown = false, startX, scrollLeft;
+    partnersWrap.addEventListener('mousedown', e => {
+      isDown = true;
+      startX = e.pageX - partnersWrap.offsetLeft;
+      scrollLeft = partnersWrap.scrollLeft;
+    });
+    partnersWrap.addEventListener('mouseleave', () => isDown = false);
+    partnersWrap.addEventListener('mouseup', () => isDown = false);
+    partnersWrap.addEventListener('mousemove', e => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - partnersWrap.offsetLeft;
+      partnersWrap.scrollLeft = scrollLeft - (x - startX);
+    });
+  }
+</script>
+</body>
+</html>

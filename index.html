@@ -56,7 +56,11 @@
     border: none; border-radius: 2px;
     padding: 0 20px; height: 36px;
     font-family: 'Karla', sans-serif; font-size: 11px; letter-spacing: 1.2px;
-    cursor: pointer; transition: background .2s;
+    cursor: pointer; transition: background .2s, opacity .2s, transform .2s;
+    opacity: 0; pointer-events: none; transform: scale(0.9);
+  }
+  nav.scrolled .btn-book-nav {
+    opacity: 1; pointer-events: auto; transform: scale(1);
   }
   .btn-book-nav:hover { background: var(--dark-green); }
   .burger {
@@ -494,9 +498,8 @@
 <body>
 
 <nav id="main-nav">
-  <a href="#hero" class="logo">
-    NeoXell
-    <span>BEAUTY CLINIC</span>
+   <a href="#hero" class="logo">
+    <img src="Logo1.svg" alt="NeoXell" height="36">
   </a>
   <div class="nav-right">
     <button class="btn-book-nav" onclick="openModal()">BOOK NOW</button>
