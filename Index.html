@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>NeoXell — Beauty Clinic Amsterdam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dark-green: #1c3a1c;
+    --mid-green: #2f4a2f;
+    --bright-green: #2c5f2e;
+    --light-green: #3a5a3a;
+    --gold: #c4a96a;
+    --cream: #fdfcf9;
+    --cream2: #f7f5f0;
+    --cream3: #eae5dc;
+    --text-dark: #2a2a26;
+    --text-mid: #7a7a72;
+    --tag-bg: #e8f0e8;
+    --green-bg:#E6F0E5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Karla', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    max-width: 430px;
+    margin: 0 auto;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--cream);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; height: 72px;
+    border-bottom: 1px solid var(--cream3);
+    transition: box-shadow .3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 20px rgba(28,58,28,.12); }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; letter-spacing: 1px;
+    color: var(--dark-green); text-decoration: none;
+    display: flex; flex-direction: column; line-height: 1;
+  }
+  .logo span { font-size: 8px; letter-spacing: 3px; color: var(--text-mid); font-family: 'Karla', sans-serif; font-weight: 300; margin-top: 3px; }
+  .nav-right { display: flex; gap: 12px; align-items: center; }
+  .btn-book-nav {
+    background: var(--bright-green); color: var(--cream);
+    border: none; border-radius: 2px;
+    padding: 0 20px; height: 36px;
+    font-family: 'Karla', sans-serif; font-size: 11px; letter-spacing: 1.2px;
+    cursor: pointer; transition: background .2s;
+  }
+  .btn-book-nav:hover { background: var(--dark-green); }
+  .burger {
+    width: 36px; height: 36px; border: none; background: none;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+  .burger-icon { display: flex; flex-direction: column; gap: 5px; }
+  .burger-icon span {
+    display: block; width: 20px; height: 1.5px;
+    background: var(--dark-green); transition: all .3s;
+  }
+  .burger.open .burger-icon span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .burger.open .burger-icon span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .burger.open .burger-icon span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* MENU OVERLAY */
+  .menu-overlay {
+    position: fixed; inset: 0; z-index: 99;
+    background: var(--dark-green);
+    display: flex; flex-direction: column;
+    transform: translateX(100%);
+    transition: transform .4s cubic-bezier(.77,0,.18,1);
+    overflow: hidden;
+  }
+  .menu-overlay.open { transform: translateX(0); }
+  /* Inner nav bar */
+  .menu-overlay-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--cream);
+    height: 72px; min-height: 72px;
+    padding: 0 20px;
+    flex-shrink: 0;
+  }
+  .menu-overlay-nav .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; color: var(--dark-green);
+    text-decoration: none; line-height: 1;
+  }
+  .menu-overlay-nav .logo span {
+    display: block; font-family: 'Karla', sans-serif;
+    font-size: 8px; letter-spacing: 3px;
+    color: var(--dark-green); opacity: .65;
+  }
+  .menu-overlay-nav-right { display: flex; align-items: center; gap: 12px; }
+  .menu-overlay-book {
+    font-family: 'Karla', sans-serif;
+    font-size: 11px; letter-spacing: 1.5px;
+    color: var(--dark-green); background: none;
+    border: 1px solid var(--dark-green);
+    padding: 7px 14px; cursor: pointer; text-transform: uppercase;
+  }
+  .menu-overlay-close {
+    background: none; border: none; cursor: pointer;
+    padding: 6px; display: flex; align-items: center; color: var(--dark-green);
+  }
+  /* Menu items */
+  .menu-items-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+  .menu-item {
+    display: flex; align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(230,240,229,.5);
+    cursor: pointer; text-decoration: none;
+    opacity: 0; transform: translateX(30px);
+    transition: opacity .3s, transform .3s;
+  }
+  .menu-overlay.open .menu-item { opacity: 1; transform: translateX(0); }
+  .menu-item.services-open { border-bottom: none; }
+  .menu-item-num {
+    font-family: 'Karla', sans-serif;
+    font-size: 12px; color: #e6f0e5;
+    letter-spacing: .08em; margin-right: 16px;
+    flex-shrink: 0; align-self: flex-start; padding-top: 7px;
+  }
+  .menu-item-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; color: #fff; flex: 1; line-height: 1.1;
+  }
+  .menu-item-chevron { margin-left: auto; flex-shrink: 0; color: #e6f0e5; transition: transform .3s; }
+  .menu-item.services-open .menu-item-chevron { transform: rotate(180deg); }
+  /* Sub-items */
+  .menu-sub-items { display: none; flex-direction: column; }
+  .menu-sub-items.open { display: flex; border-bottom: 1px solid rgba(230,240,229,.5); }
+  .menu-sub-item {
+    padding: 10px 24px 10px 52px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; color: rgba(255,255,255,.75);
+    text-decoration: none;
+    opacity: 0; transform: translateX(16px);
+    transition: opacity .25s, transform .25s, color .2s;
+  }
+  .menu-sub-items.open .menu-sub-item { opacity: 1; transform: translateX(0); }
+  .menu-sub-items.open .menu-sub-item:nth-child(1) { transition-delay: .05s; }
+  .menu-sub-items.open .menu-sub-item:nth-child(2) { transition-delay: .1s; }
+  .menu-sub-items.open .menu-sub-item:nth-child(3) { transition-delay: .15s; }
+  .menu-sub-items.open .menu-sub-item:nth-child(4) { transition-delay: .2s; }
+  .menu-sub-item:hover { color: var(--gold); }
+  /* Overlay footer */
+  .menu-footer { padding: 36px 20px; display: flex; flex-direction: column; gap: 16px; flex-shrink: 0; }
+  .menu-lang { display: flex; gap: 20px; }
+  .menu-lang span {
+    font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 500;
+    color: #fff; cursor: pointer; opacity: .65; transition: opacity .2s;
+  }
+  .menu-lang span.active { text-decoration: underline; opacity: 1; }
+  .menu-lang span:hover { opacity: 1; }
+  .menu-social { display: flex; gap: 20px; }
+  .menu-social a {
+    font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 300;
+    color: #fff; text-decoration: none; opacity: .65; transition: opacity .2s;
+  }
+  .menu-social a:hover { opacity: 1; }
+
+  /* HERO */
+  #hero {
+    background: var(--dark-green);
+    min-height: 560px;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 40px 20px 72px;
+  }
+  .hero-video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    opacity: .45;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, rgba(28,58,28,.2) 0%, rgba(14,30,14,.42) 100%);
+    z-index: 1;
+  }
+  .hero-deco {
+    position: absolute; top: -400px; right: -200px;
+    width: 480px; opacity: .05;
+    pointer-events: none; z-index: 2;
+  }
+  .hero-content { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 28px; }
+  .hero-content > * {
+    opacity: 0; transform: translateY(20px);
+    animation: heroIn .7s ease forwards;
+  }
+  .hero-content > *:nth-child(1) { animation-delay: .1s; }
+  .hero-content > *:nth-child(2) { animation-delay: .2s; }
+  .hero-content > *:nth-child(3) { animation-delay: .35s; }
+  .hero-content > *:nth-child(4) { animation-delay: .5s; }
+  @keyframes heroIn { to { opacity: 1; transform: translateY(0); } }
+
+  .hero-eyebrow { font-size: 11px; letter-spacing: 2.75px; color: #c4bcae; font-weight: 300; }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px; line-height: 1; color: var(--cream);
+    font-weight: 400;
+  }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-sub { font-size: 15px; font-weight: 300; line-height: 1.6; color: #c4bcae; }
+  .hero-ctas { display: flex; flex-direction: column; gap: 12px; }
+  .btn-primary {
+    background: var(--gold); color: var(--dark-green);
+    border: none; border-radius: 2px; height: 48px; width: 100%;
+    font-family: 'Karla', sans-serif; font-size: 12px; letter-spacing: 1px;
+    cursor: pointer; transition: opacity .2s;
+  }
+  .btn-primary:hover { opacity: .88; }
+  .btn-outline {
+    background: transparent; color: var(--cream);
+    border: 1px solid var(--gold); border-radius: 2px;
+    height: 48px; width: 100%;
+    font-family: 'Karla', sans-serif; font-size: 12px; letter-spacing: 1px;
+    cursor: pointer; transition: background .2s;
+  }
+  .btn-outline:hover { background: rgba(196,169,106,.1); }
+
+  /* MARQUEE */
+  .marquee-strip {
+    background: var(--mid-green); height: 44px;
+    overflow: hidden; display: flex; align-items: center;
+  }
+  .marquee-track {
+    display: flex; align-items: center;
+    white-space: nowrap;
+    animation: marquee 22s linear infinite;
+  }
+  .marquee-track span {
+    font-size: 10px; letter-spacing: 1.5px;
+    color: rgba(255,255,255,.65); padding-right: 60px;
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* SECTIONS */
+  section { padding: 40px 20px; }
+  .eyebrow {
+    font-size: 11px; letter-spacing: 2.75px;
+    color: var(--bright-green); font-weight: 400;
+    margin-bottom: 24px; display: block;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; line-height: 1; color: var(--dark-green);
+    margin-bottom: 32px; font-weight: 400;
+  }
+  .section-title em { font-style: italic; color: var(--mid-green); }
+
+  /* SERVICES */
+  #services { background: #fdfcfa; }
+  .services-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--cream3);
+    border: 1px solid var(--cream3); border-radius: 2px; overflow: hidden;
+  }
+  .svc-card {
+    background: var(--cream); padding: 28px 20px;
+    display: flex; flex-direction: column; gap: 12px;
+    cursor: pointer; transition: background .25s;
+    border-bottom: 2px solid transparent;
+  }
+  .svc-card:hover, .svc-card.active {
+    background: #e6f0e5; border-bottom-color: var(--bright-green);
+  }
+  .svc-icon {
+    width: 40px; height: 40px; background: var(--green-bg); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .svc-icon svg { width: 24px; height: 24px; }
+  .svc-name { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--dark-green); }
+  .svc-desc { font-size: 13px; font-weight: 300; line-height: 1.55; color: var(--text-mid); }
+  .svc-link { font-size: 11px; color: var(--bright-green); letter-spacing: .5px; }
+
+  /* CONCERNS */
+  #concerns { background: var(--cream2); }
+  .skin-concern-img {
+    width: 100%; height: 260px; border-radius: 2px; margin-bottom: 28px;
+    object-fit: cover; object-position: center;
+    display: block;
+  }
+  .concerns-desc { font-size: 14px; font-weight: 300; line-height: 1.6; color: var(--text-mid); margin-bottom: 24px; }
+  .concerns-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .concern-tag {
+    background: var(--cream); border: 1px solid var(--cream3);
+    border-radius: 2px; height: 40px;
+    display: flex; align-items: center; gap: 8px;
+    padding: 0 16px; cursor: pointer;
+    transition: border-color .2s, background .2s;
+  }
+  .concern-tag:hover { border-color: var(--bright-green); background: #f0f7f0; }
+  .concern-tag .dot { width: 6px; height: 6px; border-radius: 3px; background: var(--bright-green); flex-shrink: 0; }
+  .concern-tag span { font-size: 13px; font-weight: 300; color: var(--text-dark); white-space: nowrap; }
+
+  /* LASER */
+  #laser { background: var(--dark-green); }
+  #laser .eyebrow { color: var(--gold); }
+  #laser .section-title { color: var(--cream); }
+  #laser .section-title em { color: var(--gold); }
+  .laser-sub { font-size: 14px; font-weight: 300; line-height: 1.6; color: #c4bcae; margin-bottom: 32px; }
+  .device-card {
+    border: 1px solid var(--gold); border-radius: 2px;
+    background: rgba(255,255,255,.07); padding: 28px 20px;
+  }
+  .device-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--cream); margin-bottom: 8px; }
+  .device-origin { font-size: 10px; letter-spacing: 1.2px; color: var(--gold); margin-bottom: 16px; }
+  .specs { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+  .spec {
+    background: rgba(255,255,255,.04); border-radius: 2px;
+    padding: 10px 8px; text-align: center;
+  }
+  .spec-val { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--gold); display: block; margin-bottom: 4px; }
+  .spec-label { font-size: 9px; font-weight: 300; color: #c4bcae; }
+
+  /* PHOTOS */
+  #photos { background: var(--cream3); padding: 40px 20px; }
+  .photos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; height: 320px; }
+  .photo-left { border-radius: 2px; overflow: hidden; }
+  .photo-left img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .photo-right { display: flex; flex-direction: column; gap: 8px; }
+  .photo-top { flex: 1; border-radius: 2px; overflow: hidden; }
+  .photo-top img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .photo-bottom {
+    flex: 1; background: var(--dark-green); border-radius: 2px;
+    display: flex; align-items: center; justify-content: center; padding: 16px;
+  }
+  .photo-bottom p { font-family: 'Cormorant Garamond', serif; font-size: 18px; line-height: 1.35; color: var(--cream); font-weight: 400; }
+
+  /* ABOUT */
+  #about { background: var(--cream3); }
+  .about-body { font-size: 14px; font-weight: 300; line-height: 1.6; color: var(--text-mid); margin-bottom: 28px; }
+  .values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .value-card {
+    background: var(--cream); border-radius: 2px; padding: 16px;
+    transition: transform .2s;
+  }
+  .value-card:hover { transform: translateY(-2px); }
+  .value-name { font-size: 13px; font-weight: 400; color: var(--dark-green); margin-bottom: 6px; }
+  .value-desc { font-size: 12px; font-weight: 300; line-height: 1.5; color: var(--text-mid); }
+
+  /* TREATMENTS */
+  #treatments { background: var(--cream); }
+  .treatments-sub { font-size: 14px; font-weight: 300; line-height: 1.6; color: var(--text-mid); margin-bottom: 32px; }
+  .treatment-list { display: flex; flex-direction: column; gap: 1px; background: var(--cream3); }
+  .treatment-item { background: var(--cream); padding: 20px 24px; cursor: pointer; transition: background .2s; }
+  .treatment-item:hover { background: #f5f9f5; }
+  .treatment-header { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
+  .t-num { font-size: 12px; color: var(--bright-green); letter-spacing: .8px; font-weight: 400; flex-shrink: 0; }
+  .t-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--dark-green); }
+  .t-tag {
+    display: inline-flex; align-items: center;
+    background: var(--tag-bg); border-radius: 2px;
+    padding: 0 10px; height: 24px;
+    font-size: 9px; letter-spacing: .9px;
+    color: var(--bright-green); font-weight: 400;
+  }
+
+  /* REVIEWS */
+  #reviews { background: var(--cream); overflow: hidden; }
+  .reviews-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 32px;
+  }
+  .rating-num { font-family: 'Cormorant Garamond', serif; font-size: 52px; line-height: 1; color: var(--dark-green); }
+  .rating-stars { font-size: 13px; color: var(--gold); letter-spacing: 2px; text-align: right; }
+  .reviews-track {
+    display: flex; gap: 16px;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    scrollbar-width: none; padding-bottom: 4px;
+  }
+  .reviews-track::-webkit-scrollbar { display: none; }
+  .review-card {
+    min-width: calc(85vw - 40px); max-width: 320px; flex-shrink: 0;
+    background: var(--cream2); border: 1px solid var(--cream3);
+    border-radius: 2px; padding: 28px 20px;
+    scroll-snap-align: start;
+  }
+  .review-stars { font-size: 13px; color: var(--gold); margin-bottom: 14px; }
+  .review-text { font-family: 'Cormorant Garamond', serif; font-size: 16px; line-height: 1.55; color: var(--text-dark); margin-bottom: 16px; }
+  .review-name { font-size: 12px; color: var(--dark-green); letter-spacing: .5px; margin-bottom: 4px; }
+  .review-source { font-size: 11px; font-weight: 300; color: var(--text-mid); }
+  .carousel-dots { display: flex; gap: 6px; justify-content: center; margin-top: 20px; }
+  .carousel-dot {
+    width: 6px; height: 6px; border-radius: 3px;
+    background: var(--cream3); cursor: pointer;
+    transition: background .2s, width .2s;
+  }
+  .carousel-dot.active { background: var(--bright-green); width: 18px; }
+
+  /* PARTNERS */
+  #partners {
+    background: var(--cream2); padding: 26px 20px;
+    display: flex; gap: 24px; align-items: center; overflow: hidden;
+  }
+  .partners-label { font-size: 11px; letter-spacing: 1.5px; color: var(--text-mid); white-space: nowrap; text-transform: uppercase; }
+  .partners-logos { display: flex; gap: 20px; align-items: center; }
+  .partner-logo { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--text-mid); opacity: .6; letter-spacing: 1px; white-space: nowrap; }
+
+  /* CTA */
+  #cta {
+    background: var(--mid-green); min-height: 320px;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; text-align: center;
+    padding: 60px 32px; gap: 28px;
+  }
+  #cta .eyebrow { color: var(--gold); margin-bottom: 0; }
+  .cta-title { font-family: 'Cormorant Garamond', serif; font-size: 48px; line-height: 1.05; color: var(--cream); font-weight: 400; }
+  .cta-title em { font-style: italic; color: var(--gold); }
+  .btn-cta {
+    background: var(--gold); color: var(--dark-green);
+    border: none; border-radius: 2px;
+    padding: 0 36px; height: 48px;
+    font-family: 'Karla', sans-serif; font-size: 11px; letter-spacing: 1.1px;
+    cursor: pointer; transition: opacity .2s;
+  }
+  .btn-cta:hover { opacity: .88; }
+
+  /* FOOTER */
+  footer { background: #2a2a26; padding: 36px 20px; }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--cream);
+    padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,.15);
+    margin-bottom: 16px; display: block;
+  }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 10px 16px; margin-bottom: 16px; }
+  .footer-links a {
+    font-size: 14px; font-weight: 300;
+    color: rgba(255,255,255,.85); text-decoration: none; transition: color .2s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-lang { display: flex; gap: 10px; margin-bottom: 16px; }
+  .footer-lang span { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.85); cursor: pointer; text-decoration: underline; transition: color .2s; }
+  .footer-lang span:hover { color: var(--gold); }
+  .footer-meta { font-size: 12px; font-weight: 300; color: rgba(255,255,255,.35); line-height: 1.8; }
+  .footer-legal { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+  .footer-legal a { font-size: 13px; font-weight: 300; color: rgba(255,255,255,.4); text-decoration: none; transition: color .2s; }
+  .footer-legal a:hover { color: rgba(255,255,255,.8); }
+
+  /* BOOKING MODAL */
+  .modal-backdrop {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(28,58,28,.85);
+    display: flex; align-items: flex-end;
+    opacity: 0; pointer-events: none;
+    transition: opacity .3s;
+  }
+  .modal-backdrop.open { opacity: 1; pointer-events: all; }
+  .modal-sheet {
+    background: var(--cream); width: 100%;
+    border-radius: 12px 12px 0 0;
+    padding: 40px 24px 48px;
+    transform: translateY(100%);
+    transition: transform .4s cubic-bezier(.77,0,.18,1);
+    text-align: center;
+  }
+  .modal-backdrop.open .modal-sheet { transform: translateY(0); }
+  .modal-handle {
+    width: 40px; height: 4px; border-radius: 2px;
+    background: var(--cream3); margin: 0 auto 32px;
+  }
+  .modal-icon { font-size: 40px; margin-bottom: 16px; }
+  .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; color: var(--dark-green); margin-bottom: 12px; }
+  .modal-sub { font-size: 15px; font-weight: 300; line-height: 1.6; color: var(--text-mid); margin-bottom: 32px; }
+  .modal-treatwell {
+    display: block; width: 100%;
+    background: var(--bright-green); color: var(--cream);
+    border: none; border-radius: 2px; height: 52px;
+    font-family: 'Karla', sans-serif; font-size: 12px; letter-spacing: 1.2px;
+    cursor: pointer; margin-bottom: 12px; transition: background .2s;
+  }
+  .modal-treatwell:hover { background: var(--dark-green); }
+  .modal-close {
+    font-size: 13px; font-weight: 300; color: var(--text-mid);
+    cursor: pointer; background: none; border: none; padding: 12px;
+  }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <a href="#hero" class="logo">
+    NeoXell
+    <span>BEAUTY CLINIC</span>
+  </a>
+  <div class="nav-right">
+    <button class="btn-book-nav" onclick="openModal()">BOOK NOW</button>
+    <button class="burger" id="burger-btn" aria-label="Menu" onclick="toggleMenu()">
+      <div class="burger-icon">
+        <span></span><span></span><span></span>
+      </div>
+    </button>
+  </div>
+</nav>
+
+<div class="menu-overlay" id="menu-overlay">
+  <div class="menu-overlay-nav">
+    <a href="#hero" class="logo" onclick="closeMenu()">
+      NeoXell
+      <span>BEAUTY CLINIC</span>
+    </a>
+    <div class="menu-overlay-nav-right">
+      <button class="menu-overlay-book" onclick="openModal(); closeMenu();">BOOK NOW</button>
+      <button class="menu-overlay-close" onclick="closeMenu()" aria-label="Close menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="menu-items-list">
+    <a href="#hero" class="menu-item" onclick="closeMenu()" style="transition-delay:.05s">
+      <span class="menu-item-num">01</span>
+      <span class="menu-item-label">Home</span>
+    </a>
+    <div class="menu-item" onclick="toggleServices()" style="transition-delay:.1s">
+      <span class="menu-item-num">02</span>
+      <span class="menu-item-label">Services</span>
+      <svg class="menu-item-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="menu-sub-items" id="services-sub">
+      <a href="#laser" class="menu-sub-item" onclick="closeMenu()">Laser Hair Removal</a>
+      <a href="#services" class="menu-sub-item" onclick="closeMenu()">Facial Treatments</a>
+      <a href="#treatments" class="menu-sub-item" onclick="closeMenu()">Body Wellness</a>
+      <a href="#services" class="menu-sub-item" onclick="closeMenu()">Cosmetics</a>
+    </div>
+    <a href="#prices" class="menu-item" onclick="closeMenu()" style="transition-delay:.15s">
+      <span class="menu-item-num">03</span>
+      <span class="menu-item-label">Prices</span>
+    </a>
+    <a href="#offers" class="menu-item" onclick="closeMenu()" style="transition-delay:.2s">
+      <span class="menu-item-num">04</span>
+      <span class="menu-item-label">Offers</span>
+    </a>
+    <a href="#gift-cards" class="menu-item" onclick="closeMenu()" style="transition-delay:.25s">
+      <span class="menu-item-num">05</span>
+      <span class="menu-item-label">Gift Cards</span>
+    </a>
+    <a href="#about" class="menu-item" onclick="closeMenu()" style="transition-delay:.3s">
+      <span class="menu-item-num">06</span>
+      <span class="menu-item-label">About</span>
+    </a>
+    <a href="#contact" class="menu-item" onclick="closeMenu()" style="transition-delay:.35s">
+      <span class="menu-item-num">07</span>
+      <span class="menu-item-label">Contact</span>
+    </a>
+  </div>
+  <div class="menu-footer">
+    <div class="menu-lang">
+      <span class="active">NL</span>
+      <span>EN</span>
+      <span>UA</span>
+    </div>
+    <div class="menu-social">
+      <a href="#">Instagram</a>
+      <a href="#">Tiktok</a>
+      <a href="#">WhatsApp</a>
+    </div>
+  </div>
+</div>
+
+<section id="hero">
+  <video class="hero-video" autoplay muted loop playsinline>
+    <source src="/Users/antoninatrofimchuk/Downloads/Icons/Images/istockphoto-2217277037-640_adpp_is.mp4" type="video/mp4">
+  </video>
+  <svg class="hero-deco" width="783" height="805" viewBox="0 0 783 805" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_128_1431)">
+<path d="M98.5199 492.65C86.6399 492.65 74.9799 479.13 71.3699 461.2C69.4699 451.74 70.0199 442.36 72.9099 434.79C75.8799 427.02 80.9599 422.05 87.2199 420.8C88.2299 420.6 89.2599 420.5 90.2899 420.5C102.17 420.5 113.83 434.02 117.44 451.95C119.34 461.41 118.79 470.79 115.9 478.36C112.93 486.13 107.85 491.1 101.59 492.35C100.58 492.55 99.5499 492.65 98.5199 492.65Z" fill="white"/>
+<path d="M273.86 136.41C265.94 136.41 259.8 133.68 256.59 128.72C249.56 117.88 258.66 99.4499 276.88 87.6399C286.15 81.6299 296.54 78.1799 305.39 78.1799C313.31 78.1799 319.45 80.9099 322.67 85.8799C326.15 91.2399 325.87 98.5199 321.9 106.36C318.04 113.99 311.11 121.3 302.38 126.96C293.11 132.97 282.72 136.42 273.87 136.42L273.86 136.41Z" fill="white"/>
+<path d="M609.89 244.69C600.92 244.69 591.08 240.49 582.91 233.17C576 226.98 571.14 219.31 569.21 211.58C567.24 203.67 568.57 196.62 572.96 191.73C576.58 187.69 581.87 185.55 588.25 185.55C597.22 185.55 607.06 189.75 615.23 197.07C622.14 203.26 627.01 210.93 628.93 218.66C630.9 226.57 629.57 233.62 625.18 238.51C621.56 242.55 616.27 244.69 609.89 244.69Z" fill="white"/>
+<path d="M488.73 724.65C477.49 724.65 468.96 720.54 465.34 713.36C458.7 700.23 470.67 680.76 492.02 669.97C501 665.43 510.72 662.93 519.38 662.93C530.62 662.93 539.15 667.04 542.77 674.22C549.41 687.36 537.44 706.82 516.09 717.61C507.11 722.15 497.39 724.65 488.73 724.65Z" fill="white"/>
+<path d="M485.66 351.94C474.99 351.94 464.14 345.42 457.34 334.93C452.5 327.47 450.28 318.93 451.09 310.88C451.91 302.73 455.73 296.06 461.84 292.09C465.51 289.71 469.88 288.45 474.46 288.45C485.13 288.45 495.98 294.97 502.78 305.46C507.62 312.92 509.84 321.46 509.03 329.51C508.21 337.66 504.39 344.33 498.28 348.3C494.61 350.68 490.24 351.94 485.66 351.94Z" fill="white"/>
+<path d="M681.58 549.04C680.44 549.04 679.29 548.94 678.16 548.73C670.95 547.42 664.95 542.1 661.26 533.75C657.65 525.57 656.69 515.42 658.55 505.16C662.09 485.67 675.1 470.97 688.82 470.97C689.96 470.97 691.12 471.07 692.24 471.28C706.93 473.95 715.73 493.5 711.84 514.85C708.3 534.34 695.29 549.04 681.57 549.04H681.58Z" fill="white"/>
+<path d="M236.64 714.12C228.11 714.12 219.03 710.17 211.73 703.29C198.68 690.98 195.52 673.07 204.69 663.35C208.48 659.34 213.79 657.22 220.07 657.22C228.6 657.22 237.68 661.17 244.98 668.05C258.03 680.36 261.18 698.27 252.02 707.99C248.24 712 242.92 714.12 236.64 714.12Z" fill="white"/>
+<path d="M291.52 551.67C284.2 551.67 275.86 548.75 268.63 543.67C261.76 538.84 256.5 532.57 253.82 526.01C251.06 519.26 251.33 512.99 254.59 508.35C257.64 504.02 263 501.63 269.69 501.63C277.01 501.63 285.35 504.55 292.58 509.63C299.45 514.46 304.71 520.73 307.39 527.29C310.15 534.04 309.88 540.31 306.62 544.95C303.57 549.28 298.21 551.67 291.52 551.67Z" fill="white"/>
+<path d="M436.85 134.33C436.85 134.33 436.07 137.48 436.05 137.69C436.03 137.9 440.53 132.91 440.53 132.91L436.85 134.33Z" fill="white"/>
+<path d="M335.54 692.97C333.03 692.97 330.59 692.45 328.27 691.43C319.19 687.41 315.07 676.73 319.1 667.61C322 661.06 328.48 656.83 335.63 656.83C338.14 656.83 340.58 657.35 342.89 658.37C347.29 660.32 350.67 663.87 352.4 668.37C354.13 672.87 354.01 677.77 352.05 682.19C349.15 688.74 342.67 692.97 335.53 692.97H335.54Z" fill="white"/>
+<path d="M303.51 650.25C302.35 650.25 301.23 650.01 300.16 649.54C295.98 647.69 294.08 642.77 295.94 638.57C297.27 635.55 300.26 633.61 303.55 633.61C304.71 633.61 305.83 633.85 306.89 634.32C308.92 635.22 310.47 636.85 311.27 638.92C312.07 640.99 312.01 643.25 311.11 645.28C309.78 648.3 306.79 650.24 303.5 650.24L303.51 650.25Z" fill="white"/>
+<path d="M147.59 633.46C146.05 633.46 144.56 633.14 143.14 632.52C137.58 630.06 135.06 623.52 137.53 617.94C139.3 613.93 143.28 611.34 147.65 611.34C149.19 611.34 150.68 611.66 152.1 612.28C154.8 613.47 156.86 615.65 157.92 618.4C158.98 621.15 158.9 624.16 157.71 626.86C155.94 630.87 151.97 633.46 147.59 633.46Z" fill="white"/>
+<path d="M304.96 453.09C303.42 453.09 301.93 452.77 300.51 452.15C294.95 449.69 292.43 443.15 294.9 437.57C296.67 433.56 300.65 430.97 305.02 430.97C306.56 430.97 308.05 431.29 309.47 431.91C312.17 433.1 314.23 435.28 315.29 438.03C316.35 440.78 316.27 443.79 315.08 446.49C313.31 450.5 309.34 453.09 304.96 453.09Z" fill="white"/>
+<path d="M493.32 518.21C491.78 518.21 490.29 517.89 488.87 517.27C483.31 514.81 480.79 508.27 483.26 502.69C485.03 498.68 489.01 496.09 493.38 496.09C494.92 496.09 496.41 496.41 497.83 497.03C500.53 498.22 502.59 500.4 503.65 503.15C504.71 505.9 504.63 508.91 503.44 511.61C501.67 515.62 497.7 518.21 493.32 518.21Z" fill="white"/>
+<path d="M501.79 587.69C500.56 587.69 499.37 587.44 498.24 586.94C493.8 584.98 491.79 579.75 493.76 575.3C495.18 572.1 498.35 570.03 501.84 570.03C503.07 570.03 504.26 570.28 505.39 570.78C507.54 571.73 509.19 573.47 510.04 575.67C510.89 577.87 510.83 580.27 509.87 582.42C508.45 585.62 505.29 587.69 501.79 587.69Z" fill="white"/>
+<path d="M508.725 581.899C510.421 578.066 508.696 573.587 504.872 571.896C501.049 570.205 496.575 571.941 494.879 575.775C493.184 579.609 494.909 584.087 498.732 585.778C502.556 587.47 507.03 585.733 508.725 581.899Z" fill="white"/>
+<path d="M165.03 412.9C163.95 412.9 162.9 412.68 161.9 412.24C157.99 410.51 156.21 405.91 157.95 401.98C159.2 399.16 161.99 397.34 165.07 397.34C166.15 397.34 167.2 397.56 168.2 398C170.1 398.84 171.55 400.37 172.3 402.31C173.05 404.25 172.99 406.36 172.15 408.26C170.9 411.08 168.11 412.9 165.03 412.9Z" fill="white"/>
+<path d="M214.59 402.34C213.08 402.34 211.62 402.03 210.24 401.42C204.79 399.01 202.33 392.61 204.75 387.14C206.49 383.22 210.37 380.68 214.66 380.68C216.16 380.68 217.63 380.99 219.01 381.6C221.65 382.77 223.67 384.9 224.71 387.59C225.75 390.29 225.67 393.23 224.5 395.87C222.76 399.79 218.88 402.33 214.6 402.33L214.59 402.34Z" fill="white"/>
+<path d="M276.1 311.86C274.32 311.86 272.6 311.49 270.96 310.77C264.53 307.93 261.63 300.37 264.48 293.93C266.53 289.3 271.12 286.31 276.17 286.31C277.94 286.31 279.67 286.68 281.31 287.4C284.42 288.78 286.81 291.29 288.04 294.47C289.26 297.65 289.18 301.12 287.8 304.24C285.75 308.87 281.16 311.86 276.11 311.86H276.1Z" fill="white"/>
+<path d="M398.54 191.97C396.06 191.97 393.65 191.46 391.36 190.45C382.39 186.48 378.32 175.93 382.3 166.92C385.16 160.45 391.57 156.27 398.62 156.27C401.1 156.27 403.51 156.78 405.79 157.79C410.14 159.71 413.48 163.22 415.19 167.67C416.9 172.11 416.78 176.96 414.85 181.32C411.99 187.79 405.58 191.97 398.53 191.97H398.54Z" fill="white"/>
+<path d="M455.71 179.06C454.56 179.06 453.44 178.82 452.37 178.35C448.2 176.51 446.31 171.6 448.16 167.42C449.49 164.41 452.47 162.47 455.75 162.47C456.9 162.47 458.02 162.71 459.08 163.18C461.1 164.07 462.65 165.7 463.45 167.77C464.24 169.83 464.19 172.09 463.29 174.11C461.96 177.12 458.98 179.06 455.7 179.06H455.71Z" fill="white"/>
+<path d="M459.52 20.13C458.5 20.13 457.52 19.92 456.58 19.51C452.9 17.88 451.24 13.56 452.87 9.87001C454.04 7.22001 456.67 5.51001 459.56 5.51001C460.58 5.51001 461.56 5.72001 462.5 6.13001C464.28 6.92001 465.65 8.35001 466.35 10.18C467.05 12 467 13.98 466.21 15.77C465.04 18.42 462.41 20.13 459.52 20.13Z" fill="white"/>
+<path d="M597.55 82.14C596.27 82.14 595.03 81.88 593.86 81.36C589.24 79.32 587.15 73.89 589.2 69.26C590.67 65.93 593.97 63.78 597.6 63.78C598.88 63.78 600.12 64.04 601.29 64.56C603.53 65.55 605.24 67.35 606.12 69.64C607 71.93 606.94 74.42 605.94 76.66C604.47 79.99 601.17 82.14 597.54 82.14H597.55Z" fill="white"/>
+<path d="M698.18 177.95C696.99 177.95 695.84 177.71 694.75 177.22C690.46 175.32 688.51 170.27 690.42 165.97C691.79 162.88 694.85 160.88 698.23 160.88C699.42 160.88 700.57 161.12 701.66 161.61C703.74 162.53 705.34 164.21 706.15 166.33C706.97 168.45 706.91 170.77 705.99 172.86C704.62 175.95 701.56 177.95 698.18 177.95Z" fill="white"/>
+<path d="M680.83 332.64C679.64 332.64 678.49 332.4 677.4 331.91C673.11 330.01 671.16 324.96 673.07 320.66C674.44 317.57 677.5 315.57 680.88 315.57C682.07 315.57 683.22 315.81 684.31 316.3C686.39 317.22 687.99 318.9 688.8 321.02C689.62 323.14 689.56 325.46 688.64 327.55C687.27 330.64 684.21 332.64 680.83 332.64Z" fill="white"/>
+<path d="M638.63 118.86C636.86 118.86 635.13 118.49 633.5 117.77C627.08 114.93 624.18 107.38 627.02 100.95C629.07 96.3301 633.65 93.3401 638.69 93.3401C640.46 93.3401 642.19 93.7101 643.82 94.4301C646.93 95.8101 649.32 98.3101 650.54 101.49C651.76 104.67 651.68 108.13 650.3 111.25C648.25 115.87 643.67 118.86 638.63 118.86Z" fill="white"/>
+<path d="M717.11 220.36C715.21 220.36 713.35 219.97 711.6 219.19C704.72 216.14 701.6 208.05 704.65 201.14C706.85 196.18 711.76 192.97 717.18 192.97C719.08 192.97 720.93 193.36 722.68 194.14C726.02 195.62 728.58 198.31 729.89 201.72C731.2 205.13 731.11 208.85 729.63 212.19C727.44 217.15 722.52 220.36 717.11 220.36Z" fill="white"/>
+<path d="M743.27 314.52C740.76 314.52 738.32 314 736.02 312.98C726.95 308.97 722.84 298.3 726.87 289.2C729.76 282.66 736.24 278.44 743.37 278.44C745.88 278.44 748.32 278.96 750.62 279.98C755.02 281.93 758.39 285.47 760.12 289.96C761.85 294.45 761.72 299.35 759.78 303.76C756.89 310.3 750.41 314.52 743.28 314.52H743.27Z" fill="white"/>
+<path d="M592.78 343.66C590.72 343.66 588.72 343.24 586.83 342.4C579.39 339.11 576.02 330.36 579.32 322.89C581.69 317.53 587.01 314.06 592.86 314.06C594.92 314.06 596.92 314.48 598.81 315.32C602.42 316.92 605.18 319.82 606.6 323.51C608.02 327.19 607.92 331.21 606.32 334.83C603.95 340.19 598.64 343.66 592.78 343.66Z" fill="white"/>
+<path d="M101.38 491.138C113.438 488.715 120.104 471.274 116.268 452.182C112.432 433.09 99.5474 419.577 87.489 422C75.4306 424.422 68.7648 441.863 72.6005 460.955C76.4363 480.047 89.3211 493.561 101.38 491.138Z" fill="white"/>
+<path d="M301.674 125.886C319.334 114.435 328.252 96.828 321.594 86.5592C314.935 76.2904 295.221 77.2487 277.561 88.6997C259.901 100.151 250.983 117.758 257.641 128.027C264.3 138.296 284.014 137.337 301.674 125.886Z" fill="white"/>
+<path d="M624.221 237.659C632.682 228.213 628.271 210.463 614.37 198.012C600.469 185.561 582.342 183.125 573.882 192.571C565.421 202.016 569.832 219.767 583.733 232.218C597.634 244.668 615.761 247.105 624.221 237.659Z" fill="white"/>
+<path d="M515.527 716.477C536.287 705.981 547.981 687.316 541.647 674.787C535.313 662.259 513.348 660.61 492.589 671.106C471.829 681.602 460.134 700.267 466.469 712.796C472.803 725.324 494.767 726.973 515.527 716.477Z" fill="white"/>
+<path d="M349.74 681.145C353.212 673.296 349.688 664.129 341.869 660.671C334.05 657.213 324.898 660.772 321.426 668.621C317.954 676.47 321.478 685.637 329.297 689.095C337.116 692.553 346.269 688.994 349.74 681.145Z" fill="white"/>
+<path d="M497.59 347.23C509.55 339.475 511.395 321.081 501.711 306.145C492.027 291.21 474.48 285.39 462.52 293.145C450.56 300.9 448.715 319.294 458.399 334.229C468.083 349.165 485.63 354.985 497.59 347.23Z" fill="white"/>
+<path d="M710.641 514.671C714.406 493.974 706.09 475.128 692.065 472.577C678.041 470.026 663.62 484.736 659.855 505.432C656.09 526.129 664.407 544.976 678.431 547.527C692.455 550.078 706.877 535.368 710.641 514.671Z" fill="white"/>
+<path d="M251.098 707.108C259.799 697.884 256.672 680.803 244.114 668.956C231.556 657.109 214.321 654.983 205.62 664.207C196.919 673.431 200.045 690.512 212.604 702.359C225.162 714.205 242.396 716.332 251.098 707.108Z" fill="white"/>
+<path d="M305.579 544.2C311.788 535.373 305.637 520.351 291.84 510.648C278.044 500.944 261.827 500.234 255.619 509.061C249.411 517.888 255.562 532.91 269.358 542.613C283.154 552.316 299.371 553.027 305.579 544.2Z" fill="white"/>
+<path d="M310.048 644.798C311.645 641.186 310.021 636.967 306.42 635.375C302.818 633.782 298.604 635.418 297.007 639.029C295.409 642.641 297.034 646.86 300.635 648.452C304.236 650.045 308.451 648.409 310.048 644.798Z" fill="white"/>
+<path d="M156.3 626.214C158.425 621.41 156.265 615.8 151.477 613.682C146.689 611.564 141.085 613.741 138.961 618.544C136.836 623.348 138.995 628.958 143.784 631.076C148.572 633.194 154.176 631.017 156.3 626.214Z" fill="white"/>
+<path d="M313.653 445.839C315.777 441.035 313.618 435.425 308.83 433.307C304.042 431.189 298.438 433.366 296.313 438.169C294.189 442.973 296.348 448.583 301.136 450.701C305.924 452.819 311.528 450.642 313.653 445.839Z" fill="white"/>
+<path d="M502.009 510.952C504.133 506.149 501.974 500.538 497.186 498.42C492.397 496.302 486.794 498.479 484.669 503.282C482.545 508.086 484.704 513.697 489.492 515.814C494.28 517.932 499.884 515.755 502.009 510.952Z" fill="white"/>
+<path d="M171.15 407.806C172.645 404.427 171.125 400.48 167.756 398.99C164.387 397.5 160.445 399.031 158.95 402.41C157.456 405.789 158.975 409.736 162.344 411.226C165.713 412.716 169.656 411.185 171.15 407.806Z" fill="white"/>
+<path d="M223.102 395.253C225.181 390.551 223.068 385.058 218.381 382.985C213.693 380.912 208.208 383.043 206.128 387.745C204.048 392.448 206.162 397.94 210.849 400.014C215.536 402.087 221.022 399.955 223.102 395.253Z" fill="white"/>
+<path d="M286.143 303.498C288.598 297.947 286.105 291.464 280.575 289.018C275.044 286.572 268.57 289.089 266.115 294.639C263.66 300.19 266.153 306.673 271.684 309.119C277.214 311.566 283.688 309.049 286.143 303.498Z" fill="white"/>
+<path d="M412.553 180.292C415.983 172.539 412.502 163.485 404.779 160.069C397.056 156.653 388.016 160.169 384.587 167.922C381.158 175.675 384.638 184.729 392.361 188.145C400.084 191.561 409.124 188.045 412.553 180.292Z" fill="white"/>
+<path d="M462.227 173.618C463.82 170.017 462.2 165.81 458.609 164.221C455.018 162.633 450.815 164.265 449.222 167.866C447.629 171.467 449.249 175.674 452.84 177.263C456.432 178.851 460.634 177.219 462.227 173.618Z" fill="white"/>
+<path d="M465.264 15.3559C466.669 12.1789 465.241 8.46799 462.074 7.06727C458.907 5.66654 455.201 7.10646 453.796 10.2834C452.39 13.4604 453.818 17.1714 456.985 18.5721C460.152 19.9728 463.859 18.5329 465.264 15.3559Z" fill="white"/>
+<path d="M604.751 76.1364C606.516 72.1462 604.724 67.4863 600.749 65.7282C596.774 63.97 592.121 65.7794 590.356 69.7695C588.591 73.7597 590.383 78.4197 594.358 80.1778C598.333 81.936 602.986 80.1266 604.751 76.1364Z" fill="white"/>
+<path d="M704.874 172.349C706.514 168.642 704.846 164.311 701.149 162.676C697.452 161.04 693.125 162.72 691.485 166.427C689.846 170.135 691.514 174.466 695.211 176.101C698.908 177.736 703.234 176.057 704.874 172.349Z" fill="white"/>
+<path d="M687.532 327.048C689.171 323.341 687.504 319.01 683.806 317.374C680.109 315.739 675.783 317.419 674.143 321.126C672.503 324.834 674.171 329.165 677.868 330.8C681.565 332.435 685.892 330.755 687.532 327.048Z" fill="white"/>
+<path d="M648.647 110.515C651.098 104.974 648.605 98.5014 643.08 96.0573C637.554 93.6133 631.088 96.1238 628.637 101.665C626.187 107.205 628.679 113.678 634.205 116.122C639.731 118.566 646.197 116.056 648.647 110.515Z" fill="white"/>
+<path d="M727.85 211.403C730.48 205.458 727.808 198.514 721.884 195.894C715.959 193.273 709.025 195.968 706.395 201.913C703.766 207.858 706.437 214.802 712.362 217.422C718.286 220.043 725.221 217.348 727.85 211.403Z" fill="white"/>
+<path d="M757.445 302.721C760.91 294.888 757.389 285.737 749.58 282.283C741.771 278.83 732.632 282.38 729.167 290.214C725.702 298.048 729.224 307.199 737.032 310.652C744.841 314.106 753.98 310.555 757.445 302.721Z" fill="white"/>
+<path d="M604.408 333.968C607.252 327.539 604.366 320.03 597.961 317.197C591.557 314.365 584.06 317.281 581.216 323.71C578.372 330.14 581.258 337.649 587.663 340.481C594.067 343.314 601.564 340.398 604.408 333.968Z" fill="white"/>
+<path d="M104.37 268.85C117.02 280.83 135.93 282.06 152.09 280.44C184.82 277.48 212.19 254.61 234.68 232.75C264.8 202.79 304.21 186.81 340.43 165.73C358.89 155.08 377.16 144.26 393.92 130.86C417.54 110.81 443.2 76.1201 427.87 44.0601C413.43 17.6701 388.32 8.05008 361.07 7.52008C375.46 5.98008 389.93 5.77008 404.01 9.06008C437.22 16.4601 453.27 43.4901 452.24 76.2501C451.93 86.4501 450.03 96.6301 446.89 106.43C443.7 116.5 438.9 125.41 436.46 135.9L437.03 136.28C445.65 129.11 449.33 118.54 452.81 108.33C461.12 82.7501 461.55 52.5401 446.25 29.3701C423.13 -4.27992 377.2 -2.72992 341.4 3.64008C289.28 12.6701 236.66 27.7501 192.39 57.5401C174.7 69.5201 157.29 84.2001 148.12 104.08C138.78 123.2 132.46 143.51 125.01 163.3C121.29 173.1 117.36 182.79 112.8 192.12C101.34 215.86 81.25 245.13 104.38 268.84L104.37 268.85ZM119.16 195.22C133.16 166.74 140.61 135.62 154.32 107.12C167.62 79.3801 196.42 61.5301 223.03 47.2701C245.12 36.2201 268.42 27.7001 292.26 21.1301C287.89 22.7901 283.67 24.5201 279.67 26.3001C260.12 35.4401 240.4 45.1601 224.96 60.6201C213.88 72.2101 210.26 88.9101 199.67 100.72C176.24 127.35 147.71 160.32 141.98 196.4C137.42 224.03 155.29 244.8 183.61 237.84C204.53 231.37 222.29 218.48 239.76 205.82C243.86 202.59 248.03 199.85 252.48 197.11C274.81 183.48 297.89 170.75 321.5 159.6C331.25 154.98 340.59 149.68 349.54 143.72C371.83 128.68 393.52 109.53 402.86 83.4701C413.9 50.7901 387.71 28.4901 357.52 24.6601C309.25 18.6601 256.87 41.6501 223.53 76.8701C230.42 63.7901 242.69 55.8101 255.33 48.0901C296.68 23.6601 373.41 -4.63992 412.35 35.6401C436.84 60.4901 420.19 92.6701 400.1 114.4C382.11 133.13 358.84 145.84 336.63 159.05C300.16 180.26 259.86 196.98 229.57 227.31C207.55 248.5 182.88 270.03 151.29 273.17C132.56 275.34 108.53 272.2 102.17 251.75C96.44 232.78 111.58 212.36 119.16 195.2V195.22ZM220.63 92.0601C223.98 88.2701 227.36 83.9401 231 80.4001C241.86 69.4401 254.39 60.0901 267.81 52.4801C294.32 37.7301 326.17 28.7401 356.33 32.7501C375 35.1601 396.01 46.3601 397.08 66.8401C397.26 87.0701 383.13 104.15 369.21 117.67C354.15 131.67 336.45 143.09 317.89 151.92C298.61 160.9 279.99 171.05 261.62 181.61C252.43 187.03 243.01 192.35 234.55 198.92C222.09 208.18 209.1 216.97 195.25 223.91C183 230.45 166.82 234.72 156.35 223.8C152.56 219.88 150.53 214.04 150.14 208.42C148.21 176.53 176.32 140.53 198.49 114.86L199 115.35C206.3 107.67 213.53 100.02 220.64 92.0601H220.63Z" fill="white"/>
+<path d="M218.11 301.55C247.19 294.62 267.6 269.39 285.04 246.78C295.37 233.17 308.54 222.42 323.29 213.34C306.26 217.95 290.65 228.62 279.2 242.13C261.05 263.88 243.61 287.87 218.11 301.54V301.55Z" fill="white"/>
+<path d="M22.19 326.43C36.58 326.31 48.08 317.57 61.16 313.1C73.42 308.86 86.37 306.41 99.33 305.88C131.77 304.39 163.99 317.44 191.51 334.35C218.38 352.83 241.64 377.78 256.31 407.04C262.07 418.86 266.76 430.94 271.95 443.59C272.05 415.94 256.94 390.79 240.65 369.45C229.48 355.41 216.6 342.53 202.1 331.9C215.51 338.78 227.81 347.79 239.87 356.92C250.62 365.01 260.11 374.33 271.95 381.06C264.34 369.53 253.48 361.38 243.13 352.79C228.63 341.25 213.42 329.95 196.44 322.09C183.58 316.98 170.55 312.42 157.44 308.06C152.05 306.01 146.57 304.19 141.01 302.68C138.81 301.97 136.61 301.26 134.41 300.54C108.54 292.62 82.55 285.16 55.4 282.51C41.29 281.78 26.39 281.35 14.01 290.09C5.59004 295.76 2.46004 307.66 6.39004 316.95C8.62004 323.44 15.73 326.69 22.2 326.42L22.19 326.43ZM18.63 296.23C28.49 289.12 42.78 289.38 54.79 290.04C69.25 291.37 83.59 294.27 97.79 297.82C84.4 298.53 71.17 301.13 58.5 305.56C46.53 309.47 34.86 318.36 22.14 318.59C18.63 318.56 16.04 317.88 14.35 315.58C10.75 309.18 12.26 300.5 18.62 296.22L18.63 296.23Z" fill="white"/>
+<path d="M214.45 171.5C219.41 175.45 225.7 176.95 232.4 176.95C245.18 176.95 259.41 171.49 268.63 167.21C285.98 159.14 298.73 153.74 308.04 149.79C316.87 146.05 323.26 143.35 328.54 140.52C342.24 133.19 373.97 112.82 372.59 81.9899C372.02 69.0399 364.38 57.5799 351.65 50.5599C332.29 39.8799 306.02 41.3399 283.08 54.3799C279.53 56.2299 216.65 89.6599 207.17 134.36C203.39 152.16 205.85 164.65 214.46 171.51L214.45 171.5ZM214.82 135.98C223.6 94.5799 286.13 61.6099 286.76 61.2899L286.89 61.2199C299.48 54.0499 311.64 51.2899 322.31 51.2899C332.98 51.2899 341.35 53.8099 347.86 57.4099C358.15 63.0899 364.32 72.1799 364.77 82.3399C365.94 108.73 337.24 126.99 324.84 133.62C319.87 136.28 313.63 138.92 304.98 142.58C295.62 146.54 282.8 151.97 265.32 160.1C244.53 169.78 227.33 171.75 219.32 165.37C213.22 160.52 211.71 150.63 214.81 135.97L214.82 135.98Z" fill="white"/>
+<path d="M250.67 145.76C255.73 148.77 262.11 150.25 269.15 150.25C278.81 150.25 289.71 147.47 300.16 142.04C334.61 124.14 348.67 105.12 343.14 83.9101C341.26 76.7201 336.54 71.2601 329.47 68.1101C314.06 61.2401 289.41 66.2201 273 74.6901C270.97 75.6801 237.52 92.5201 238.05 121.99C238.3 135.57 245.05 142.41 250.68 145.76H250.67ZM276.47 81.7101L276.56 81.6701C286.48 76.5401 300.17 72.6801 311.99 72.6801C317.31 72.6801 322.25 73.4601 326.29 75.2601C331.25 77.4701 334.29 80.9501 335.58 85.8901C340.05 103.04 327.29 119.13 296.57 135.1C281.08 143.15 264.25 144.73 254.69 139.04C248.99 135.65 246.03 129.87 245.89 121.86C245.44 97.1401 276.18 81.8701 276.49 81.7201L276.47 81.7101Z" fill="white"/>
+<path d="M560.16 182.02C547.65 196.7 554.91 223.49 576.34 241.75C588.57 252.18 602.82 257.6 615.13 257.6C624.37 257.6 632.51 254.54 637.88 248.24C644.14 240.89 645.74 230.49 642.39 218.94C639.21 207.97 631.86 197.17 621.7 188.51C600.27 170.25 572.66 167.34 560.16 182.02ZM634.87 221.12C637.46 230.05 636.41 237.88 631.92 243.16C622.22 254.55 599.56 251.25 581.41 235.79C563.27 220.33 556.41 198.49 566.12 187.1C570.02 182.53 576 180.32 582.94 180.32C593.29 180.32 605.76 185.22 616.62 194.47C625.63 202.14 632.11 211.61 634.87 221.12Z" fill="white"/>
+<path d="M239.76 726.36C247.82 726.36 255.22 723.74 260.65 718.31C273.9 705.06 270.44 680.04 252.93 662.54C235.43 645.04 210.41 641.57 197.16 654.82C190.58 661.4 187.86 670.95 189.51 681.7C191.09 692 196.55 702.27 204.87 710.59C215.2 720.92 228.15 726.36 239.75 726.36H239.76ZM202.7 660.35C206.66 656.39 212.1 654.49 218.12 654.49C227.62 654.49 238.56 659.22 247.41 668.06C261.86 682.51 265.33 702.57 255.13 712.77C244.93 722.96 224.88 719.5 210.43 705.05C203.27 697.89 198.6 689.18 197.27 680.5C196.01 672.28 197.94 665.12 202.71 660.34L202.7 660.35Z" fill="white"/>
+<path d="M670.97 561.95C673.13 562.47 675.32 562.73 677.5 562.73C696.17 562.73 714.9 544.25 721.21 518.16C724.56 504.3 723.99 490.31 719.6 478.78C715.01 466.73 706.82 458.73 696.54 456.24C686.25 453.76 675.32 457.13 665.73 465.74C656.55 473.99 649.65 486.17 646.29 500.03C639.24 529.17 650.3 556.95 670.96 561.95H670.97ZM653.91 501.87C656.9 489.53 662.95 478.77 670.97 471.56C678.58 464.72 687.02 461.98 694.71 463.84C702.41 465.7 708.65 471.99 712.29 481.55C716.13 491.62 716.59 503.96 713.61 516.31C707.57 541.26 689.28 558.32 672.81 554.34C656.35 550.36 647.87 526.82 653.91 501.87Z" fill="white"/>
+<path d="M78.4899 350.83C60.4999 352.02 44.8999 360.77 33.3699 376.12C23.9799 388.62 18.2899 404.14 16.9199 421.01C16.2399 429.3 16.3399 437.06 17.1999 444.07C19.4499 462.38 30.3399 491.19 37.5499 510.26C38.4599 512.67 39.2999 514.88 40.0299 516.85C43.0499 524.96 59.4799 566.28 86.3199 583.38C96.2799 589.73 106.42 593 115.8 593C119.62 593 123.32 592.46 126.82 591.36C136.74 588.25 144.38 580.83 148.93 569.91C159.54 544.45 161.11 494.86 159.58 467.74C156.8 418.44 147.73 385.66 132.63 370.29C122.39 359.87 101.08 349.31 78.5099 350.84L78.4899 350.83ZM141.7 566.89C138.07 575.61 132.11 581.48 124.47 583.88C114.75 586.93 102.39 584.34 90.5199 576.77C65.7899 561.01 50.2299 521.8 47.3599 514.1C46.6199 512.12 45.7799 509.9 44.8699 507.48C38.2199 489.9 27.1099 460.48 24.9699 443.1C24.1699 436.62 24.0899 429.39 24.7199 421.63C25.9699 406.24 31.1299 392.12 39.6299 380.81C49.8999 367.15 63.1399 359.68 79.0099 358.63C98.1999 357.34 117.71 366.28 127.03 375.76C140.76 389.73 149.08 420.82 151.75 468.16C153.24 494.56 151.79 542.64 141.69 566.88L141.7 566.89Z" fill="white"/>
+<path d="M76.2599 377.44C65.5699 379.16 56.3199 384.67 50.2199 392.96C43.3299 402.31 39.7399 413.92 39.5299 427.46C39.0099 461.48 50.3699 498.87 61.8599 518.22C70.6799 533.06 88.3899 556.92 111.16 556.92C112.59 556.92 114.05 556.83 115.52 556.63C137.13 553.73 146.25 520.97 147.48 493.8C148.59 469.32 143.53 422.27 125.21 400.19C109.92 381.76 94.3799 374.53 76.2599 377.45V377.44ZM139.66 493.43C138.51 518.65 130.14 546.76 114.48 548.86C93.3499 551.68 75.3399 525.58 68.5899 514.22C57.6599 495.82 46.8599 460.15 47.3599 427.58C47.5399 415.7 50.6199 405.61 56.5199 397.6C61.3299 391.07 68.9799 386.54 77.5099 385.17C92.8199 382.7 105.67 388.88 119.2 405.18C136.74 426.32 140.56 473.77 139.67 493.44L139.66 493.43Z" fill="white"/>
+<path d="M80.8499 402.69C71.3899 404.86 63.9599 412.63 59.9299 424.58C56.1199 435.86 55.7699 449.69 58.9499 463.52C65.1399 490.47 82.4299 509.3 99.8499 509.3C101.64 509.3 103.43 509.1 105.21 508.69C124.32 504.3 133.94 477.58 127.11 447.86C123.93 434.02 117.58 421.73 109.23 413.25C100.39 404.27 90.3099 400.52 80.8499 402.7V402.69ZM103.46 501.06C89.0999 504.35 72.2299 486.36 66.5799 461.77C63.7199 449.33 63.9899 437.01 67.3499 427.08C70.4799 417.81 75.8999 411.86 82.6099 410.32C83.7599 410.06 84.9399 409.92 86.1299 409.92C91.8699 409.92 97.9699 412.96 103.65 418.73C111 426.2 116.62 437.16 119.48 449.6C125.13 474.19 117.79 497.76 103.45 501.05L103.46 501.06Z" fill="white"/>
+<path d="M240.24 501.51C230.95 516.37 241.67 539.28 264.66 553.66C275.91 560.7 287.71 564.2 297.92 564.2C308.13 564.2 317.49 560.39 322.24 552.8C326.86 545.41 326.65 535.78 321.65 525.69C316.95 516.22 308.49 507.33 297.82 500.66C274.83 486.28 249.54 486.66 240.25 501.52L240.24 501.51ZM246.88 505.66C250.07 500.56 256.56 498.04 264.48 498.04C273.28 498.04 283.86 501.15 293.67 507.28C303.13 513.2 310.57 520.97 314.64 529.15C318.39 536.72 318.73 543.64 315.61 548.64C308.88 559.41 287.45 558.67 268.82 547.02C250.2 535.37 240.15 516.43 246.88 505.66Z" fill="white"/>
+<path d="M39.5199 557.64C34.4299 536.94 27.1899 517.1 20.9899 496.92C14.7399 476.61 9.29992 456 8.11992 434.76C5.25992 403.32 12.6599 371.26 38.0399 350.72C71.1799 323.65 120.96 333.04 151.96 359.05C159.91 365.52 167.25 373.07 172.67 381.74C183.33 399.4 188.07 420.81 191.07 441.2C193.34 462.9 193.04 484.58 200.4 505.61C203.75 516.23 209.19 526.46 215.97 535.26C244.27 572.6 306.79 624.49 356.47 606.05C370.29 601.2 383.86 590.4 386.08 574.96C389.64 540.58 361.19 518.82 334.76 503.19C316.43 491.76 297.55 481.37 279.93 469.58C271.22 463.75 262.96 456.89 254.15 450.48C244.86 443.95 235.86 437.21 224.15 434.82C217.94 433.55 210.78 435.51 205.83 439.84C203.48 441.98 201.71 444.49 200.37 447.25C200.15 444.83 199.92 442.42 199.65 440.02C195.45 413.07 188.89 384.39 169.42 363.94C126.36 317.12 45.4399 308.63 11.8499 370.57C-9.10008 409.23 1.61992 459.28 14.0899 499.05C20.0999 518.35 26.0699 536.62 35.2199 554.58H35.1799C35.1799 554.58 35.7499 555.66 36.3999 556.89C36.6399 557.34 36.8499 557.8 37.0999 558.25L37.4299 558.8C37.7899 559.46 38.0999 560.02 38.2599 560.29C38.8499 561.28 41.0199 563.99 41.0899 563.55C41.1499 563.11 39.5399 557.67 39.5399 557.67L39.5199 557.64ZM286.66 486.95C320.33 501.14 345.28 533.82 347.66 550.08C348.6 556.5 346.39 562.47 341.42 566.89C332.28 575.04 315.59 576.66 295.64 571.33C255.91 560.72 228.61 527.6 224.93 508.77C221.37 490.57 231.4 484.28 231.97 483.93L232.33 483.7C243.69 475.45 261.97 476.55 286.65 486.95H286.66ZM205.43 457.71C206.53 450.36 209.85 444.94 216.64 442.95C231.28 439.71 254.84 461.86 270.1 472.97C252.19 468.36 238.27 469.79 227.87 477.25C225.82 478.51 212.8 487.52 217.24 510.26C222.04 534.83 253.88 568.27 293.62 578.88C302.76 581.32 310.56 582.29 317.19 582.29C332.92 582.29 342.01 576.84 346.62 572.73C353.51 566.59 356.71 557.92 355.39 548.94C353.95 539.14 346.86 526.44 336.23 514.25C351.55 524.03 367.23 535.44 374.16 552.34C377.38 560.92 379.41 571.5 375.4 580.14C362.94 602.55 331.19 605.01 309.11 596.72C271.52 581.96 238.67 554.08 216.45 520.43C213.35 514.91 210.62 508.9 208.71 502.86C207.11 498.32 205.9 493.69 204.95 489.02C205.17 489.01 205.29 489 205.29 489C204.82 478.65 203.88 467.8 205.44 457.71H205.43Z" fill="white"/>
+<path d="M486.51 24.2699C506.7 18.0899 530.91 37.7699 542.85 52.6999C557.61 70.8799 569.92 92.0299 588.12 107.3C597.1 115.19 606.7 122.63 617.65 128.01C639.15 138.12 662.68 146.53 686.7 143.94C667.1 138.04 638.33 132.09 620.15 123.05C604.94 115.14 592.3 102.47 580.97 89.6299C565.34 72.0099 553.99 50.4099 535.79 34.9099C522.34 22.9599 489.8 6.50994 476.9 26.4699C472.11 34.5399 471.02 44.4099 473.53 53.3399C476.11 43.1999 476.64 29.3899 486.52 24.2699H486.51Z" fill="white"/>
+<path d="M486.96 197.64C496.51 210.37 520.01 226.89 523.94 229.6C532.62 241.5 541.3 251.16 547.49 258.03L549.13 259.85C563.46 275.82 602.78 307.38 628.73 307.94C629.21 307.94 629.75 307.96 630.36 307.96C640.04 307.96 665.47 306.22 681.22 289.2C690.54 279.14 694.45 265.77 692.84 249.48C689.73 218 671.43 188.82 638.45 162.74C627.85 154.35 616.83 147.95 615.27 147.05C612.65 145.2 576.24 119.24 562.66 100.71C560.53 97.7999 558.3 94.57 555.94 91.15C541.72 70.55 523.96 44.9399 499.85 48.2099C470.59 52.1899 464.46 108.21 466.16 133.16C467.86 158.07 475.83 182.77 486.98 197.63L486.96 197.64ZM656.88 192.53L657.73 191.59C673.85 210.03 683.01 229.67 685.04 250.26C686.42 264.23 683.2 275.54 675.47 283.89C663.93 296.35 643.83 300.48 628.9 300.12C608.27 299.67 571.33 272.88 554.95 254.63L553.3 252.8C537.35 235.07 504.16 198.19 500.11 153.04C495.59 102.56 501.3 92.2399 508.15 88.5999C509.88 87.68 511.59 87.3099 513.23 87.3099C518.7 87.3099 523.35 91.43 524.92 93C525.46 93.54 528.05 96.57 530.79 99.7799C537.74 107.91 549.37 121.52 556.37 128.43C567.63 139.55 583.99 154.08 610.76 167.77C618.23 171.59 624.65 174.79 630.18 177.54C644.19 184.51 652.64 188.73 656.89 192.54L656.88 192.53ZM500.89 55.9799C501.91 55.8399 502.91 55.7699 503.9 55.7699C521.98 55.7699 537.16 77.76 549.48 95.61C551.88 99.08 554.14 102.36 556.33 105.35C571.12 125.51 609.29 152.43 610.9 153.57L611.22 153.77C611.34 153.84 622.87 160.4 633.58 168.88C635.32 170.25 637.01 171.63 638.65 173.02C637.07 172.23 635.4 171.4 633.65 170.52C628.14 167.78 621.74 164.59 614.31 160.79C588.5 147.59 572.72 133.58 561.86 122.85C555.1 116.17 543.6 102.72 536.73 94.69C533 90.32 531.17 88.19 530.45 87.47C524.27 81.29 514.21 76.52 504.48 81.69C491.35 88.66 488.17 107.51 492.31 153.74C494.2 174.79 501.93 193.98 511.4 210.43C504.53 204.87 497.31 198.42 493.21 192.95C483.08 179.44 475.52 155.77 473.94 132.64C472.28 108.21 478.64 58.9999 500.87 55.9799H500.89Z" fill="white"/>
+<path d="M573.92 151.2C559.92 139.6 540.24 130.96 526.94 141.52C525.7 142.48 517.58 149.58 518.98 170.38C520.16 187.88 528.26 231.99 577.98 263.61C595.65 274.85 610.26 278.45 621.73 278.45C628.78 278.45 634.65 277.09 639.3 275.31C653.82 269.75 661.65 258.3 664.13 249.45C669.65 229.73 657.61 204.4 634.17 186.4C622.34 177.32 609.14 170.69 597.49 164.84C587.76 159.95 579.36 155.73 573.91 151.21L573.92 151.2ZM656.6 247.33C654.63 254.36 648.32 263.47 636.51 267.99C625.95 272.03 607.97 273.4 582.19 257C535.48 227.29 527.89 186.16 526.79 169.85C525.68 153.3 531.47 147.93 531.75 147.69L531.78 147.67C541.41 139.99 557.81 148.02 568.92 157.23C575.05 162.32 583.83 166.72 593.98 171.82C605.32 177.52 618.17 183.97 629.41 192.6C650.01 208.41 661.19 230.92 656.6 247.33Z" fill="white"/>
+<path d="M777.51 366.2C773.62 355.31 768.11 345.05 760.25 336.58C765.49 352.77 773.09 367.4 775.13 384.08C775.66 390.98 776.72 401.54 770.47 405.26C765.29 407.79 760.47 399.13 757.58 395.26C751.63 385.81 744.34 376.53 737.35 367.76C730.65 359.08 723.2 350.45 718.13 340.87C702.67 310.32 716.39 275.83 726.57 245.64C709.88 268.96 700.03 298.84 705.14 327.58C707.31 339.23 713.63 350.05 720.74 359.19C730.94 372.79 741.99 385.2 751.09 399.6C754.91 404.85 757.92 410.29 764.83 412.94C772.63 415.87 780.58 408.38 781.74 401.39C784.61 389.65 781.3 377.28 777.48 366.2H777.51Z" fill="white"/>
+<path d="M762.46 462.94C758.18 442.74 746.17 425.26 731.3 411.37C718.01 397.79 703.47 382.54 690.71 368.64C681.94 359.09 673.22 348.61 661.36 340.94C651.27 333.99 636.98 331.97 626.51 339.49C618.75 346.7 618.84 358.75 617.74 368.05C615.68 399.32 619.42 430.48 618.78 461.68C617.34 486.3 608.96 518.76 603.96 543.19C616.37 516.13 625.9 486.93 626.8 456.96C626.81 446.12 626.46 435.25 626.09 424.4C627.4 419.26 634.92 392.59 650.28 388.06C666.65 383.23 675.38 393.3 686.42 406.05L687.46 407.25C690.63 410.9 693.97 413.97 697.28 416.68C684.87 413.9 672.02 415.28 661.52 422.78C638.4 441.97 628.26 485.18 622.04 513.61C617.51 533.02 613.7 553.03 616.65 573.18C619.88 599.87 640.3 628.46 669.61 627.69C683.69 627.61 697.43 620.52 706.05 609.57C719.01 593.41 723.88 574.07 732.56 556.13C738 544.09 745.76 533.96 752.51 522.48C755.13 517.86 757.34 512.96 759.13 507.9C757.01 518.27 752.27 528.63 747.84 537.89C740.65 553.48 734.41 569.46 727.75 585.27C718.62 605.44 708.37 635.73 683.53 639.12C675.73 640.29 667.37 639.24 659.69 635.08C671.69 649.69 696.99 648.36 709.42 634.49C722.19 621.42 727.32 604.11 733.95 587.91C740.4 571.99 747.28 556.25 753.2 540.11C758.29 527.52 763.16 512.79 761.82 498.72C764.61 486.98 765.02 474.69 762.45 462.95L762.46 462.94ZM639.98 498.22C641.4 486.92 644.69 471.11 646.9 459.79C646.9 459.79 647.78 455.16 648.68 450.43C655.65 436.46 665.37 422.74 682.03 421.98C694.67 421.19 707.53 425.66 717.85 433.26C718.13 433.62 718.42 433.98 718.66 434.35L718.98 434.14C723.23 437.43 727.04 441.24 730.15 445.46C737.6 455.57 738.94 468.81 739.45 481.04C739.68 493.71 737.16 506.36 732.34 518.13C729.97 524.19 726.65 529.87 724.07 535.84C716.21 552.91 709.13 572.07 693.75 583.62C678.36 594.97 656.96 589.51 647.89 572.92C635.27 550.45 636.21 523.11 639.98 498.22ZM746.56 519.09C740.09 530.27 732 541.3 726.65 553.31C718.33 570.68 713.13 590.69 701.22 605.56C685 626.47 654.14 626.87 637.38 606.43C615.7 581.14 620.6 545.04 628.08 514.94C630.33 504.16 632.92 493.46 636.1 482.95C630.56 513.94 626.21 547.67 642.13 576.35C649.05 588.89 663.1 597.56 677.68 596.44C692.28 596.08 704.42 585.63 712.12 574.22C721.71 560.46 727.1 544.7 734.5 529.9C746.91 505.81 750.29 476.41 740.79 450.7C737.4 443.05 731.75 436.02 724.79 430.27L725.18 430.01C721.95 425.13 716.83 421.41 710.89 417.12C705.27 413.05 698.91 408.44 693.38 402.07L692.35 400.88C681.01 387.79 669.29 374.26 648.08 380.51C637.55 383.61 630.24 393.75 625.49 403.41C625.38 398.27 625.31 393.13 625.34 388C625.58 375.64 625.44 361.95 629.13 350.39C630.21 347.88 630.48 346.51 633.12 345.28C653.25 335.56 672.06 361.16 684.71 374.13C697.66 388.08 712.25 403.27 725.72 416.84C739.6 429.63 751.2 445.89 755.26 464.5C759.44 482.89 755.61 502.66 746.55 519.06L746.56 519.09Z" fill="white"/>
+<path d="M295.43 698.65C295.3 682.5 293.67 665.61 285.18 651.33C281.65 645.79 276.89 641.26 272.49 636.45C268.48 632.39 264.45 628.25 260.07 624.53C268.61 627.35 277.25 629.41 286.02 631.42C277.44 627.38 268.45 624.18 259.78 620.52C244.15 613.51 228.47 606.06 212.7 599.32C212.64 599.3 212.55 599.28 212.46 599.24C212.49 599.32 212.51 599.4 212.53 599.49L212.41 599.42C212.38 599.33 212.36 599.28 212.34 599.2C212 599.08 211.58 598.92 211.36 598.89C206.89 599.4 210.58 606.13 209.73 603.43C212.33 605.02 219.34 608.39 222.14 609.85C227.89 612.74 242.03 619.63 247.45 622.59C255.32 627.13 261.86 633.95 268.28 640.49C272.32 644.93 277.05 649.46 280.2 654.42C283.28 659.43 285.3 665.22 286.71 671.15C289.72 683.08 289.37 695.96 289.71 708.27C290.01 720.91 290.28 733.55 290.36 746.16C290.11 756.77 291.78 771.96 279.48 775.53C257.55 779.52 230.05 763.11 211.5 751.97C195.56 742.02 179.94 731.34 165.59 719.23C147 702.91 130.35 682.9 113.71 664.49C110.07 660.29 104.53 654.32 100.72 650.42C87.7001 636.91 72.8501 625.06 62.0601 609.84C60.9901 608.4 60.2301 605.54 60.8301 604.26C60.8901 604.17 60.9001 604.15 61.1101 604.04C62.5601 603.55 64.2401 603.86 66.0301 604.21C101.91 614.96 129.52 643.55 149.83 674.12C157.37 684.45 161.85 696.53 169.76 706.64C183 722.86 211.5 749.25 233 749.93C252.99 751.31 275.02 740.98 281.54 720.99C292.4 686.88 270.46 654.4 240.35 639.52C234.74 636.48 228.13 634.54 222.22 632.54C205.25 626.87 188.82 616.53 181.02 600.08C173.77 584.11 168.89 564.93 172.63 547.54C173.71 543.66 175.12 540.25 178.45 538.28C187.48 532.73 193.25 547.42 196.99 553.73C203.78 568.52 215.04 581.14 229.21 589.07C221.58 579.12 213.07 569.9 206.87 559.19C203.86 553.67 201.61 547.61 198.36 542.16C195.73 537.72 192.35 532.62 187.01 530.46C176.73 526.56 167.14 536.21 165.21 545.53C160.63 565.35 165.92 585.44 174.01 603.54C180.57 617.41 192.58 627.49 206.14 634.21C184.76 636.96 171.62 647.47 168.54 664.86C165.61 681.43 174.28 699.45 180.88 710.25C178.67 707.86 176.55 705.41 174.54 702.89C167 693.13 162.46 681.01 154.99 670.7C140.67 649.42 124.04 629.28 102.56 614.73C93.7201 609.25 51.9701 582.85 54.2001 607.71C54.4601 609.55 55.3901 611.72 56.4001 613.25C60.0501 619.01 64.4901 623.52 69.0301 628.34C80.0801 639.84 91.8701 650.16 102.55 661.76C117.1 677.83 132.22 695.46 147.46 710.85C167.39 732.9 264.89 804.99 290.53 775.5C297.01 767.11 296.36 755.68 296.38 746.12C296.27 730.39 295.79 714.37 295.42 698.65H295.43ZM176.25 666.23C180.28 643.49 205.09 640.25 225.18 641.52V641.43C240.76 646.67 255.18 655.52 265.44 668.42C276.73 682.27 281.4 701.92 275.93 719.05C270.37 736.67 250.99 745.16 233.37 744.03C221.05 743.44 210.89 735.72 201.22 728.66C197.13 725.5 193.15 722.15 189.34 718.64L193.72 715.15C193.51 714.88 172.39 688.02 176.25 666.22V666.23Z" fill="white"/>
+<path d="M212.34 599.2C212.34 599.2 212.42 599.23 212.46 599.24C212.28 598.68 212.13 598.52 212.34 599.2Z" fill="white"/>
+<path d="M401.52 250.86C399.43 253.22 387.53 268.27 392.89 298.76C398.11 328.43 417.94 351.63 427.47 362.78C428.24 363.68 428.92 364.48 429.52 365.2C434.8 371.51 447.26 386.16 457.18 397.65C461.94 410.32 462.95 427.49 463.09 437.84C455.04 430.39 447.28 422.63 441.17 415.74C435.37 409.2 429.1 402.4 423.03 395.82C412.71 384.62 402.96 374.05 397.11 366.5C386.13 352.34 358.65 307.07 363.28 268.15C367.78 230.4 388.71 216.34 441.1 207.61C438.91 207.39 381.1 194.97 347.93 230.23C315.46 264.74 343.06 316.21 348.91 326.15C358.09 341.79 396.49 378.66 399.52 381.56C404.73 387.5 410.9 394.2 417.29 401.12C423.33 407.67 429.58 414.45 435.33 420.93C451.74 439.42 478.6 463.16 493.99 472.75C502.72 478.19 518.35 483.02 534.09 483.02C547 483.02 560 479.77 569.31 470.94C591.06 450.33 589.31 419.64 584.72 392.33C579.52 361.37 560.16 317.09 543.73 289.37C528.79 264.15 503.92 230.29 460.63 227.33C420.76 224.6 403.65 247.72 401.53 250.85L401.52 250.86ZM355.65 322.18C350.3 313.08 325.08 266.12 353.64 235.57C361.17 227.51 370.52 222.07 380.06 218.43C366.25 228.95 358.13 245.16 355.51 267.22C352.3 294.21 363.35 323.8 374.65 345.29C366.43 336.46 358.9 327.73 355.65 322.19V322.18ZM460.09 235.14C499.7 237.85 522.95 269.66 536.99 293.36C553.06 320.47 571.96 363.61 577 393.63C583.1 429.93 579.31 450.68 563.92 465.26C546.41 481.84 511.78 474.63 498.12 466.11C491.01 461.68 481.05 453.81 470.89 444.88C471.04 439.3 471.11 424.94 468.63 410.72C468.79 410.9 469 411.13 469.15 411.29C492.49 436.79 514.92 447.49 534.03 442.24C547.8 438.45 563.26 424.74 558.75 380.92C557.56 369.37 548.49 320.35 533.05 294.35C517.75 268.59 485.37 245.59 447.51 252.24C435.6 254.34 426.88 260.3 421.58 269.97C411.59 288.22 417.3 313.09 421.72 323.69C426.58 335.36 439.84 353.98 460.07 377.53L460.6 378.15C460.89 378.49 489.79 411.73 516.68 403.96C528.78 400.46 542.66 388.82 540.04 353.2C540.01 352.75 536.44 307.8 512.24 288.56C488.46 269.66 465.19 265.76 448.39 277.84C428.09 292.44 435.03 321.19 441.53 334.35C448.66 348.78 467.95 371.89 495.08 367.11C504.72 365.4 511.45 358.89 514.03 348.78C517.53 335.04 512.58 316.01 503.63 308.85L498.74 314.96C504.66 319.7 509.38 335.34 506.44 346.84C504.61 354 500.33 358.22 493.71 359.39C471.1 363.4 454.28 342.48 448.54 330.87C443.05 319.76 436.91 295.71 452.95 284.18C471.77 270.63 495.12 284.94 507.36 294.67C525.24 308.89 531.37 342.14 532.23 353.76C534.02 378.15 528.06 392.51 514.51 396.42C492.74 402.71 466.79 373.33 466.54 373.04L466 372.41C446.58 349.8 433.42 331.42 428.93 320.66C424.38 309.74 420.49 288.22 428.44 273.71C432.53 266.23 439.4 261.6 448.86 259.93C483.02 253.9 512.38 274.88 526.31 298.32C540.88 322.85 549.85 370.97 550.96 381.7C554.09 412.07 547.51 430.39 531.95 434.67C516.08 439.04 495.83 428.84 474.92 405.98C472.72 403.58 468.69 398.96 463.97 393.5C463.89 393.29 463.81 393.08 463.72 392.87L463.5 392.96C453.66 381.56 441.02 366.7 435.53 360.14C434.92 359.41 434.21 358.58 433.43 357.67C424.35 347.05 405.46 324.94 400.61 297.38C395.61 268.95 406.97 256.47 407.43 255.98L407.92 255.37C408.52 254.44 423.09 232.61 460.1 235.13L460.09 235.14Z" fill="white"/>
+<path d="M615.15 623.37C591.05 604.41 557.54 598.95 528.6 608.85C499.77 618.09 474.44 634.68 449.88 651.01C437.45 659.17 425.26 667.73 413.54 676.96C399.05 688.57 384.27 701.1 373.82 716.87C363.56 733.22 359.14 756.2 371.74 772.67C381.49 785.76 398.84 789.12 414.05 789.88C436.65 790.85 459.66 787.95 480.78 779.81C505.31 770.66 528.94 759.76 551.98 747.43C578.38 732.79 619.75 714.75 629.13 683.47C633.19 668.22 629.64 651.53 621.14 638.51C618.84 634.98 616.18 631.7 613.27 628.66C651.54 659.62 642.11 709.16 602.01 733.95C576.63 748.7 548.15 757.41 520.44 766.88C479.04 780.95 436.45 796.54 392.44 797C378.05 797 363.23 795.81 350.67 790.08C332.86 782.33 328.45 764.49 332.7 746.85C335.68 737.06 340.68 728.21 346.31 719.53C358.23 701.18 372.81 684.37 387.27 667.81C388.05 666.93 388.82 666.01 389.58 665.11C391.41 663.73 393.21 662.31 394.98 660.85C403.16 654.01 410.57 645.88 416.86 637.19L423.44 628.93C430.04 620.68 442.89 603.77 449.06 595.19C462.23 579.08 479.32 566.3 495.14 552.5C475.47 563.11 456.06 575.32 441.51 592.75C434.96 601.4 424.12 615.59 417.56 624.43C414.08 629.22 410.72 634.19 407.27 639.12C427.15 603.26 438.66 557.09 414.72 521.11C427.95 564.27 418.59 608.06 394.27 645.32C386.47 657.75 375.96 668.02 366.61 679.34C357.03 690.74 347.64 702.39 339.41 715.05C331.15 727.74 323.02 742.47 323.21 758.11C322.43 792.13 352.19 803.2 381.19 804.29C422.78 806.09 463.08 793.98 501.56 780.21C522.49 772.78 543.67 766.04 564.41 757.91C585.16 749.55 607.19 741.18 622.76 724.37C652.58 693.82 649.16 648.95 615.15 623.37ZM623.6 661.11C625.84 674.99 622.03 688.9 611.98 699.16C597.09 715.1 577.63 725.64 558.32 735.83C545.37 742.78 532.34 749.84 518.95 756.03C499.07 765.18 478.85 774.5 457.64 779.71C436.41 783.64 403.03 787.29 384.19 775.55C363.59 762.05 368.94 732.92 382.06 715.8C391.96 702.83 404.4 691.98 417.27 681.69C440.43 663.68 465.24 647.14 490.44 632.26C509.34 621.61 529.63 612.09 551.35 609.64C565.85 608.53 580.75 611.08 594.13 616.97C608.59 628.35 620.45 642.88 623.59 661.11H623.6Z" fill="white"/>
+<path d="M527.75 626.56C499.84 630.91 471.03 649.4 467.61 651.64C464.94 653.3 415.67 684.29 403.16 714.74C396.91 729.95 397.31 743.13 404.32 752.87C409.46 760.01 420.3 768.08 443.04 768.08C445.28 768.08 447.63 768 450.1 767.84C492.3 765.03 549.15 737.09 573.78 713.77C595.27 693.43 601.09 673.12 591.56 651.7C583.79 634.22 553.98 622.47 527.75 626.56ZM568.4 708.09C544.79 730.44 488.96 757.41 449.58 760.03C430.83 761.29 417.01 757.11 410.66 748.3C405.31 740.87 405.22 730.29 410.39 717.72C422.02 689.43 471.28 658.58 471.78 658.27L471.87 658.22C474.93 656.2 502.55 638.42 528.96 634.3C532.14 633.8 535.33 633.57 538.5 633.57C559.64 633.57 579.53 643.89 584.41 654.88C589.52 666.38 593.42 684.4 568.4 708.09Z" fill="white"/>
+<path d="M544.31 651.8C528.81 645.78 503.88 649.07 483.67 659.82C481.47 660.9 448.96 677.33 444.8 706.99C443.42 716.8 446.53 724.93 453.79 730.5C460.44 735.61 470.45 738.17 481.65 738.17C492.24 738.17 503.91 735.87 514.8 731.26C547.28 717.5 567.41 688.55 559.7 666.72C557.3 659.94 551.98 654.78 544.31 651.8ZM511.75 724.06C492.1 732.39 469.23 732.49 458.56 724.3C453.6 720.49 451.58 715.04 452.55 708.09C456.18 682.21 486.85 666.99 487.16 666.84L487.29 666.77C499.7 660.16 513.9 656.58 525.99 656.58C531.78 656.58 537.09 657.4 541.48 659.11C547.04 661.27 550.69 664.71 552.33 669.34C558.59 687.03 540.01 712.09 511.76 724.06H511.75Z" fill="white"/>
+<path d="M42.91 252.28C44.98 253.19 47.17 253.63 49.39 253.63C58.04 253.63 67.19 247.04 71.81 236.6C77.61 223.47 74.1 209.15 63.97 204.67C58.88 202.43 53.01 202.94 47.45 206.11C42.21 209.1 37.82 214.16 35.08 220.35C29.28 233.47 32.79 247.8 42.92 252.28H42.91ZM41.21 223.06C43.37 218.17 46.77 214.22 50.77 211.94C53.01 210.66 55.28 210.01 57.4 210.01C58.76 210.01 60.05 210.27 61.26 210.81C68 213.79 69.99 224.15 65.68 233.89C61.37 243.63 52.38 249.14 45.63 246.15C38.88 243.17 36.9 232.81 41.21 223.07V223.06Z" fill="white"/>
+<path d="M567.51 528.74C554.42 522.95 539.05 528.92 533.25 542.05C527.45 555.17 533.37 570.56 546.45 576.35C549.8 577.83 553.35 578.58 556.91 578.58C560.09 578.58 563.27 577.99 566.32 576.8C572.79 574.29 577.9 569.4 580.71 563.04C583.52 556.68 583.7 549.62 581.21 543.14C578.72 536.66 573.85 531.54 567.51 528.74ZM574.58 560.33C572.49 565.05 568.7 568.68 563.9 570.55C559.1 572.41 553.87 572.3 549.17 570.22C539.47 565.93 535.08 554.51 539.39 544.76C542.58 537.54 549.67 533.24 557.07 533.24C559.66 533.24 562.29 533.77 564.8 534.88C569.5 536.96 573.1 540.75 574.95 545.55C576.8 550.36 576.67 555.61 574.58 560.33Z" fill="white"/>
+<path d="M77.4701 187.62C79.5301 188.96 81.9001 189.63 84.4601 189.63C87.0201 189.63 89.7701 188.96 92.5901 187.61C97.6701 185.19 102.47 180.77 106.1 175.18C109.73 169.59 111.82 163.41 111.97 157.78C112.14 151.55 109.96 146.64 105.84 143.96C101.72 141.28 96.3501 141.28 90.7201 143.96C85.6401 146.38 80.8401 150.8 77.2101 156.39C69.2601 168.63 69.3701 182.34 77.4701 187.6V187.62ZM82.8401 160.06C85.8101 155.49 89.6401 151.93 93.6201 150.03C94.8801 149.43 96.8601 148.68 98.8501 148.68C100 148.68 101.16 148.93 102.19 149.6C105.01 151.43 105.33 155.41 105.27 157.61C105.15 162.02 103.45 166.97 100.48 171.53C97.5101 176.1 93.6801 179.66 89.7001 181.56C87.7101 182.51 83.9501 183.83 81.1301 181.99C76.4301 178.94 77.2301 168.69 82.8401 160.06Z" fill="white"/>
+</g>
+<defs>
+<clipPath id="clip0_128_1431">
+<rect width="782.85" height="804.46" fill="white"/>
+</clipPath>
+</defs>
+</svgle cx="190" cy="130" r="2" fill="white" opacity=".4"/>
+  </svg-->
+  <div class="hero-content">
+    <p class="hero-eyebrow">BEAUTY CLINIC • AMSTERDAM</p>
+    <h1 class="hero-title">Where <em>science</em><br>meets<br>nature</h1>
+    <p class="hero-sub">Advanced skin treatments rooted in science, guided by nature.</p>
+    <div class="hero-ctas">
+      <button class="btn-primary" onclick="openModal()">BOOK APPOINTMENT</button>
+      <button class="btn-outline" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">EXPLORE SERVICES</button>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span>LASER HAIR REMOVAL &nbsp;·&nbsp; MICRONEEDLING DERMAPEN 4 &nbsp;·&nbsp; HYDROPEELING FACIAL &nbsp;·&nbsp; RF VACUUM LIFTING &nbsp;·&nbsp; BIOREPEELCL3 &nbsp;·&nbsp; FACE SCULPTING &nbsp;·&nbsp; PRX-T33 &nbsp;·&nbsp; NON-INJECTABLE MESOTHERAPY &nbsp;·&nbsp;</span>
+    <span>LASER HAIR REMOVAL &nbsp;·&nbsp; MICRONEEDLING DERMAPEN 4 &nbsp;·&nbsp; HYDROPEELING FACIAL &nbsp;·&nbsp; RF VACUUM LIFTING &nbsp;·&nbsp; BIOREPEELCL3 &nbsp;·&nbsp; FACE SCULPTING &nbsp;·&nbsp; PRX-T33 &nbsp;·&nbsp; NON-INJECTABLE MESOTHERAPY &nbsp;·&nbsp;</span>
+  </div>
+</div>
+
+<section id="services">
+  <span class="eyebrow reveal">WHAT WE OFFER</span>
+  <h2 class="section-title reveal">Tailored <em>treatments</em><br>for every concern</h2>
+  <div class="services-grid reveal">
+    <div class="svc-card" onclick="this.classList.toggle('active')">
+      <div class="svc-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 12C15 13.6569 13.6569 15 12 15M15 12C15 10.3431 13.6569 9 12 9M15 12H16.5M12 15C10.3431 15 9 13.6569 9 12M12 15V16.5M9 12C9 10.3431 10.3431 9 12 9M9 12H7.5M12 9V7.5M12 16.5C12 17.39 11.7361 18.26 11.2416 19.0001C10.7471 19.7401 10.0443 20.3169 9.22208 20.6575C8.39981 20.9981 7.49501 21.0872 6.6221 20.9135C5.74918 20.7399 4.94736 20.3113 4.31802 19.682C3.68868 19.0526 3.2601 18.2508 3.08647 17.3779C2.91283 16.505 3.00195 15.6002 3.34254 14.7779C3.68314 13.9557 4.25991 13.2529 4.99994 12.7584C5.73996 12.2639 6.60999 12 7.5 12M12 16.5C12 17.39 12.2639 18.26 12.7584 19.0001C13.2529 19.7401 13.9557 20.3169 14.7779 20.6575C15.6002 20.9981 16.505 21.0872 17.3779 20.9135C18.2508 20.7399 19.0526 20.3113 19.682 19.682C20.3113 19.0526 20.7399 18.2508 20.9135 17.3779C21.0872 16.505 20.9981 15.6002 20.6575 14.7779C20.3169 13.9557 19.7401 13.2529 19.0001 12.7584C18.26 12.2639 17.39 12 16.5 12M7.5 12C6.60999 12 5.73996 11.7361 4.99994 11.2416C4.25991 10.7471 3.68314 10.0443 3.34254 9.22208C3.00195 8.39981 2.91283 7.49501 3.08647 6.6221C3.2601 5.74918 3.68868 4.94736 4.31802 4.31802C4.94736 3.68868 5.74918 3.2601 6.6221 3.08647C7.49501 2.91283 8.39981 3.00195 9.22208 3.34254C10.0443 3.68314 10.7471 4.25991 11.2416 4.99994C11.7361 5.73996 12 6.60999 12 7.5M12 7.5C12 6.60999 12.2639 5.73996 12.7584 4.99994C13.2529 4.25991 13.9557 3.68314 14.7779 3.34254C15.6002 3.00195 16.505 2.91283 17.3779 3.08647C18.2508 3.2601 19.0526 3.68868 19.682 4.31802C20.3113 4.94736 20.7399 5.74918 20.9135 6.6221C21.0872 7.49501 20.9981 8.39981 20.6575 9.22208C20.3169 10.0443 19.7401 10.7471 19.0001 11.2416C18.26 11.7361 17.39 12 16.5 12M8 8L9.88 9.88M14.12 9.88L16 8M8 16L9.88 14.12M14.12 14.12L16 16" stroke="#2C5F2E" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <p class="svc-name">Facials</p>
+      <p class="svc-desc">HydroPeeling & bespoke skin rituals</p>
+      <p class="svc-link">Explore →</p>
+    </div>
+    <div class="svc-card" onclick="this.classList.toggle('active')">
+      <div class="svc-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 3L7.99997 9L12 22M12 22L16 9L13.5 3M12 22C12.3172 22 12.6293 21.9245 12.9116 21.7799C13.1939 21.6352 13.4377 21.4255 13.623 21.168L21.613 10.182C21.8665 9.83605 22.0021 9.41776 21.9998 8.98885C21.9974 8.55995 21.8573 8.14316 21.6 7.8L18.6 3.8C18.4137 3.55161 18.1721 3.35 17.8944 3.21115C17.6167 3.07229 17.3105 3 17 3H6.99997C6.68888 3.00004 6.3821 3.07264 6.104 3.21204C5.8259 3.35144 5.58415 3.55379 5.39797 3.803L2.39997 7.8C2.14253 8.14306 2.00219 8.55979 1.99967 8.98869C1.99715 9.41759 2.13258 9.83594 2.38597 10.182L10.376 21.168C10.5612 21.4255 10.805 21.6352 11.0873 21.7799C11.3696 21.9245 11.6828 22 12 22ZM1.99997 9H22" stroke="#2C5F2E" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <p class="svc-name">Laser</p>
+      <p class="svc-desc">MeDioStar #1 diode laser</p>
+      <p class="svc-link">Explore →</p>
+    </div>
+    <div class="svc-card" onclick="this.classList.toggle('active')">
+      <div class="svc-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 21C2 18 3.85 15.64 7.08 15C9.5 14.52 12 13 13 12M11 20C9.24406 20.0053 7.55025 19.3505 6.25452 18.1654C4.95878 16.9803 4.15577 15.3515 4.00474 13.6021C3.8537 11.8527 4.36569 10.1104 5.43915 8.72074C6.51261 7.33112 8.06913 6.3957 9.8 6.1C15.5 5 17 4.48 19 2C20 4 21 6.18 21 10C21 15.5 16.22 20 11 20Z" stroke="#2C5F2E" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <p class="svc-name">Body Wellness</p>
+      <p class="svc-desc">Microcurrent & carboxytherapy</p>
+      <p class="svc-link">Explore →</p>
+    </div>
+    <div class="svc-card" onclick="this.classList.toggle('active')">
+      <div class="svc-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 2V6M14 2H7C6.46957 2 5.96086 2.21071 5.58579 2.58579C5.21071 2.96086 5 3.46957 5 4M9.607 21H6C5.46957 21 4.96086 20.7893 4.58579 20.4142C4.21071 20.0391 4 19.5304 4 19V12C4 11.4696 4.21071 10.9609 4.58579 10.5858C4.96086 10.2107 5.46957 10 6 10H13V7C13 6.73478 12.8946 6.48043 12.7071 6.29289C12.5196 6.10536 12.2652 6 12 6H9C8.73478 6 8.48043 6.10536 8.29289 6.29289C8.10536 6.48043 8 6.73478 8 7V10M19.29 14.76C18.1231 13.802 17.3158 12.4764 17 11C16.6895 12.4785 15.8812 13.8057 14.71 14.76C13.56 15.68 13 16.8 13 17.95C13 20.17 14.8 22 17 22C19.2 22 21 20.17 21 17.95C21 16.79 20.43 15.69 19.29 14.76Z" stroke="#2C5F2E" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <p class="svc-name">Cosmetics</p>
+      <p class="svc-desc">HydroPeptide, Calecim & more</p>
+      <p class="svc-link">Explore →</p>
+    </div>
+  </div>
+</section>
+
+<section id="concerns">
+  <span class="eyebrow reveal">SKIN SOLUTIONS</span>
+  <h2 class="section-title reveal">Your concern.<br><em>Our expertise.</em></h2>
+  <img class="skin-concern-img reveal" src="data:image/png;base64,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" alt="Skin treatment">
+  <p class="concerns-desc reveal">We treat the root — not just the surface. Every protocol is tailored to your skin.</p>
+  <div class="concerns-grid reveal">
+    <div class="concern-tag"><div class="dot"></div><span>Scars & Texture</span></div>
+    <div class="concern-tag"><div class="dot"></div><span>Face Sculpting</span></div>
+    <div class="concern-tag"><div class="dot"></div><span>Pigmentation</span></div>
+    <div class="concern-tag"><div class="dot"></div><span>Skin Quality</span></div>
+    <div class="concern-tag"><div class="dot"></div><span>Dehydrated Skin</span></div>
+    <div class="concern-tag"><div class="dot"></div><span>Scalp Health</span></div>
+    <div class="concern-tag"><div class="dot"></div><span>Skin Barrier</span></div>
+    <div class="concern-tag"><div class="dot"></div><span>Routine Check-up</span></div>
+  </div>
+</section>
+
+<section id="laser">
+  <span class="eyebrow reveal">LASER HAIR REMOVAL</span>
+  <h2 class="section-title reveal">Permanent results.<br><em>Zero compromise.</em></h2>
+  <p class="laser-sub reveal">MeDioStar Monolith — German-engineered, #1 worldwide. Spring: 30% off.</p>
+  <div class="device-card reveal">
+    <p class="device-name">MeDioStar Monolith</p>
+    <p class="device-origin">ENGINEERED IN GERMANY</p>
+    <div class="specs">
+      <div class="spec"><span class="spec-val">#1</span><span class="spec-label">World</span></div>
+      <div class="spec"><span class="spec-val">All</span><span class="spec-label">Skins</span></div>
+      <div class="spec"><span class="spec-val">-30%</span><span class="spec-label">Spring</span></div>
+      <div class="spec"><span class="spec-val">5★</span><span class="spec-label">Rated</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="photos" style="padding:40px 20px">
+  <div class="photos-grid reveal">
+    <div class="photo-left">
+      <img src="data:image/png;base64,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" alt="Beauty treatment">
+    </div>
+    <div class="photo-right">
+      <div class="photo-top">
+        <img src="data:image/png;base64,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" alt="Skin care">
+      </div>
+      <div class="photo-bottom"><p>Where beauty meets health</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <span class="eyebrow reveal">ABOUT NEOXELL</span>
+  <h2 class="section-title reveal">Beauty that<br>goes <em>deeper</em></h2>
+  <p class="about-body reveal">Founded in Amsterdam on the belief that real beauty comes from healthy, balanced skin.</p>
+  <div class="values-grid reveal">
+    <div class="value-card"><p class="value-name">Science-backed</p><p class="value-desc">Clinically proven technology</p></div>
+    <div class="value-card"><p class="value-name">Personalized</p><p class="value-desc">Tailored to your unique skin</p></div>
+    <div class="value-card"><p class="value-name">Nature-rooted</p><p class="value-desc">Respects skin and environment</p></div>
+    <div class="value-card"><p class="value-name">Welcoming</p><p class="value-desc">Dutch, Ukrainian & English</p></div>
+  </div>
+</section>
+
+<section id="treatments">
+  <span class="eyebrow reveal">TREATMENTS</span>
+  <h2 class="section-title reveal">Advanced protocols</h2>
+  <p class="treatments-sub reveal">Each treatment combines the best of clinical science with a tailored approach to your skin's needs.</p>
+  <div class="treatment-list reveal">
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">01</span><span class="t-name">Microneedling with Dermapen 4™</span></div><span class="t-tag">COLLAGEN</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">02</span><span class="t-name">RF Vacuum Eyes</span></div><span class="t-tag">LIFTING</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">03</span><span class="t-name">HydroPeeling Facial</span></div><span class="t-tag">HYDRATION</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">04</span><span class="t-name">PRX-T33</span></div><span class="t-tag">RENEWAL</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">05</span><span class="t-name">Non-injectable Mesotherapy</span></div><span class="t-tag">NOURISHMENT</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">06</span><span class="t-name">BioRePeelCl3</span></div><span class="t-tag">EXFOLIATION</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">07</span><span class="t-name">Jalupro Glow Peel</span></div><span class="t-tag">GLOW</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">08</span><span class="t-name">Microcurrent Active Massage</span></div><span class="t-tag">SCULPTING</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">09</span><span class="t-name">Deep Cleansing</span></div><span class="t-tag">PURIFY</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">10</span><span class="t-name">Microneedling Hair</span></div><span class="t-tag">SCALP</span></div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="reviews-header reveal">
+    <div>
+      <span class="eyebrow" style="display:block;margin-bottom:24px">CLIENT STORIES</span>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:32px;line-height:1;color:var(--dark-green)">Real results.<br>Real people.</div>
+    </div>
+    <div>
+      <div class="rating-num">5.0</div>
+      <div class="rating-stars">★ ★ ★ ★ ★</div>
+    </div>
+  </div>
+  <div class="reveal">
+    <div class="reviews-track" id="reviews-track">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"After years of dealing with pigmentation, three sessions changed everything. The specialist truly listened and designed a protocol around my skin."</p>
+        <p class="review-name">Anna K.</p>
+        <p class="review-source">via Treatwell</p>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"The laser hair removal results are incredible — and the device is so comfortable. Already booked my next session."</p>
+        <p class="review-name">Lena V.</p>
+        <p class="review-source">via Google</p>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Finally found a clinic in Amsterdam that feels personal. The HydroPeeling facial left my skin glowing for weeks."</p>
+        <p class="review-name">Sophie M.</p>
+        <p class="review-source">via Google</p>
+      </div>
+    </div>
+    <div class="carousel-dots">
+      <div class="carousel-dot active" onclick="scrollToCard(0)"></div>
+      <div class="carousel-dot" onclick="scrollToCard(1)"></div>
+      <div class="carousel-dot" onclick="scrollToCard(2)"></div>
+    </div>
+  </div>
+</section>
+
+<div id="partners">
+  <span class="partners-label">Our partners</span>
+  <div class="partners-logos">
+    <span class="partner-logo">Treatwell</span>
+    <span class="partner-logo">MeDioStar</span>
+    <span class="partner-logo">HydroPeptide</span>
+  </div>
+</div>
+
+<section id="cta">
+  <span class="eyebrow">READY TO BEGIN?</span>
+  <h2 class="cta-title">Start your skin<br><em>transformation</em></h2>
+  <button class="btn-cta" onclick="openModal()">SCHEDULE APPOINTMENT</button>
+</section>
+
+<footer>
+  <span class="footer-logo">NeoXell</span>
+  <div class="footer-links">
+    <a href="#hero">Home</a><a href="#about">About</a><a href="#services">Services</a>
+    <a href="#">Schedule</a><a href="#">Prices</a><a href="#">Cosmetics</a><a href="#">Gift Cards</a>
+  </div>
+  <div class="footer-lang"><span>NL</span><span>EN</span><span>UA</span></div>
+  <p class="footer-meta">KVK 97558796 &nbsp;•&nbsp; VAT NL00239823982749287342942</p>
+  <div class="footer-legal"><a href="#">Privacy</a><a href="#">Cookies</a><a href="#">Terms</a></div>
+  <p class="footer-meta" style="margin-top:8px">© 2025 NeoXell Beauty Clinic — Amsterdam</p>
+</footer>
+
+<div class="modal-backdrop" id="modal" onclick="handleBackdropClick(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-icon">🌿</div>
+    <h3 class="modal-title">Online booking<br>coming soon</h3>
+    <p class="modal-sub">Our scheduling system is being set up. In the meantime, book directly via Treatwell or contact us.</p>
+    <button class="modal-treatwell" onclick="closeModal()">BOOK VIA TREATWELL →</button>
+    <button class="modal-close" onclick="closeModal()">Maybe later</button>
+  </div>
+</div>
+
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  function toggleMenu() {
+    const btn = document.getElementById('burger-btn');
+    const overlay = document.getElementById('menu-overlay');
+    btn.classList.toggle('open');
+    overlay.classList.toggle('open');
+    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+  }
+  function closeMenu() {
+    document.getElementById('burger-btn').classList.remove('open');
+    document.getElementById('menu-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+    var sub = document.getElementById('services-sub');
+    if (sub) { sub.classList.remove('open'); sub.previousElementSibling.classList.remove('services-open'); }
+  }
+  function toggleServices() {
+    var sub = document.getElementById('services-sub');
+    var item = sub.previousElementSibling;
+    sub.classList.toggle('open');
+    item.classList.toggle('services-open');
+  }
+
+  function openModal() {
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function handleBackdropClick(e) {
+    if (e.target === document.getElementById('modal')) closeModal();
+  }
+
+  const track = document.getElementById('reviews-track');
+  const dots = document.querySelectorAll('.carousel-dot');
+  function scrollToCard(idx) {
+    const cards = track.querySelectorAll('.review-card');
+    cards[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+  track.addEventListener('scroll', () => {
+    const cardWidth = track.querySelector('.review-card').offsetWidth + 16;
+    const idx = Math.round(track.scrollLeft / cardWidth);
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
