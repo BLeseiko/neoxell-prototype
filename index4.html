@@ -27,14 +27,13 @@
     --rating-bg: #82a374;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
   body {
     font-family: 'Karla', sans-serif;
     background: var(--cream);
     color: var(--text-dark);
     max-width: 430px;
     margin: 0 auto;
-    overflow-x: hidden;
   }
 
   /* NAV */
@@ -1379,5 +1378,39 @@
     }
   })();
 </script>
+
+<!-- Concept switcher -->
+<style>
+  .concept-nav {
+    position: fixed; bottom: 0; left: 0;
+    width: 100vw;
+    z-index: 300;
+    display: flex; align-items: stretch;
+    background: rgba(28,58,28,.92); backdrop-filter: blur(12px);
+    box-shadow: 0 -1px 0 rgba(255,255,255,.08);
+    padding-bottom: env(safe-area-inset-bottom);
+    transform: translateZ(0);
+  }
+  .concept-nav a {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    font-family: sans-serif; font-size: 11px;
+    font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+    color: rgba(255,255,255,.45); text-decoration: none;
+    padding: 14px 0;
+    border-right: 1px solid rgba(255,255,255,.07);
+    transition: color .2s, background .2s;
+  }
+  .concept-nav a:last-child { border-right: none; }
+  .concept-nav a:hover { color: rgba(255,255,255,.8); background: rgba(255,255,255,.05); }
+  .concept-nav a.current { color: #fff; background: rgba(255,255,255,.1); }
+</style>
+<div class="concept-nav">
+  <a href="index.html">A</a>
+  <a href="index2.html">B</a>
+  <a href="index3.html">C</a>
+  <a href="index4.html" class="current">D</a>
+  <a href="index5.html">E</a>
+</div>
+
 </body>
 </html>
