@@ -27,13 +27,12 @@
   .title-dark  { color: var(--text-dark); font-weight: 400; }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
   body {
     font-family: 'DM Sans', sans-serif;
     background: var(--cream);
     color: var(--text-dark);
-    max-width: 393px;
-    margin: 0 auto;
+    width: 100%;
     overflow-x: hidden;
   }
 
@@ -541,7 +540,7 @@
 
   /* ─── REVIEWS ─────────────────────────────────────── */
   #reviews {
-    background: #e8ede9; padding: 40px 20px;
+    background: #e8ede9; padding: 40px 20px; overflow-x: hidden;
     display: flex; flex-direction: column; gap: 32px;
   }
   .reviews-eyebrow {
