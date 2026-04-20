@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>NeoXell — Beauty Clinic Amsterdam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #2b6241;
+    --green-dark: #1c3a1c;
+    --cream: #fafaf7;
+    --cream2: #f5f3ee;
+    --text-dark: #0a0a0a;
+    --text-mid: #6b6b6b;
+    --text-light: rgba(255,255,255,0.82);
+    --border-green: rgba(43,98,65,0.2);
+    --border-white: rgba(255,255,255,0.5);
+    --card-radius: 28px;
+    --pill-radius: 100px;
+  }
+
+  /* ─── TITLE COLOUR CLASSES ─────────────────────── */
+  .title-light { color: #fff; font-weight: 400; }
+  .title-dark  { color: var(--text-dark); font-weight: 400; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    max-width: 393px;
+    margin: 0 auto;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─────────────────────────────────────────── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--cream);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; height: 72px;
+  }
+  .logo-img { height: 36px; display: block; }
+  .nav-right { display: flex; gap: 16px; align-items: center; }
+  .btn-book-nav {
+    background: var(--green); color: #fff;
+    border: none; border-radius: var(--pill-radius);
+    padding: 0 20px; height: 36px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    font-weight: 600; letter-spacing: 1.4px;
+    cursor: pointer; transition: background .2s ease;
+  }
+  .btn-book-nav:hover { background: #235235; }
+  .btn-menu {
+    background: #fff; border: 1px solid rgba(26,42,31,0.1);
+    border-radius: 1000px;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .burger-svg { display: block; }
+
+  /* ─── MENU OVERLAY ───────────────────────────────── */
+  .menu-overlay {
+    position: fixed; inset: 0; z-index: 99;
+    background: var(--green-dark);
+    display: flex; flex-direction: column;
+    transform: translateX(100%);
+    transition: transform .4s cubic-bezier(.77,0,.18,1);
+    overflow: hidden;
+  }
+  .menu-overlay.open { transform: translateX(0); }
+  .menu-overlay-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--cream); height: 72px; padding: 0 20px; flex-shrink: 0;
+  }
+  .menu-overlay-nav-right { display: flex; align-items: center; gap: 12px; }
+  .menu-overlay-close {
+    background: none; border: none; cursor: pointer;
+    padding: 6px; display: flex; align-items: center; color: var(--green-dark);
+  }
+  .menu-items-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+  .menu-item {
+    display: flex; align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(230,240,229,.25);
+    cursor: pointer; text-decoration: none;
+    opacity: 0; transform: translateX(30px);
+    transition: opacity .3s, transform .3s;
+  }
+  .menu-overlay.open .menu-item { opacity: 1; transform: translateX(0); }
+  .menu-item-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; color: rgba(255,255,255,.5);
+    letter-spacing: .08em; margin-right: 16px;
+    flex-shrink: 0; align-self: flex-start; padding-top: 6px;
+  }
+  .menu-item-label {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px; color: #fff; flex: 1; line-height: 1.1;
+  }
+  .menu-item-chevron { margin-left: auto; flex-shrink: 0; color: rgba(255,255,255,.55); transition: transform .3s; }
+  .menu-item.services-open .menu-item-chevron { transform: rotate(180deg); }
+  .menu-sub-items { display: none; flex-direction: column; }
+  .menu-sub-items.open { display: flex; border-bottom: 1px solid rgba(230,240,229,.25); }
+  .menu-sub-item {
+    padding: 10px 24px 10px 52px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px; color: rgba(255,255,255,.75);
+    text-decoration: none;
+    opacity: 0; transform: translateX(16px);
+    transition: opacity .25s, transform .25s;
+  }
+  .menu-sub-items.open .menu-sub-item { opacity: 1; transform: translateX(0); }
+  .menu-sub-items.open .menu-sub-item:nth-child(1) { transition-delay: .05s; }
+  .menu-sub-items.open .menu-sub-item:nth-child(2) { transition-delay: .1s; }
+  .menu-sub-items.open .menu-sub-item:nth-child(3) { transition-delay: .15s; }
+  .menu-sub-items.open .menu-sub-item:nth-child(4) { transition-delay: .2s; }
+  .menu-footer { padding: 36px 20px; display: flex; flex-direction: column; gap: 16px; flex-shrink: 0; }
+  .menu-lang { display: flex; gap: 20px; }
+  .menu-lang span {
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    color: #fff; cursor: pointer; opacity: .65; transition: opacity .2s;
+  }
+  .menu-lang span.active { text-decoration: underline; opacity: 1; }
+  .menu-social { display: flex; gap: 20px; }
+  .menu-social a {
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 300;
+    color: #fff; text-decoration: none; opacity: .65; transition: opacity .2s;
+  }
+  .menu-social a:hover { opacity: 1; }
+
+  /* ─── HERO ────────────────────────────────────────── */
+  #hero {
+    padding: 0 16px;
+    position: relative;
+  }
+  .hero-card {
+    background: var(--green);
+    border-radius: var(--card-radius);
+    min-height: 531px;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 36px 16px;
+  }
+  .hero-video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; z-index: 0;
+    pointer-events: none;
+  }
+  .hero-video-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(71.67deg, rgb(43,98,65) 12.98%, rgba(43,98,65,0) 81.72%);
+    z-index: 1; pointer-events: none;
+  }
+  .hero-botanical {
+    position: absolute; top: -118px; left: -40px;
+    width: 521px; height: 688px;
+    opacity: 1; pointer-events: none; z-index: 2;
+    object-fit: cover;
+  }
+  .hero-divider {
+    position: absolute; top: 0; left: 50%; width: 1px; height: 100%;
+    background: rgba(255,255,255,0.08); z-index: 3;
+  }
+  .hero-content {
+    position: relative; z-index: 4;
+    display: flex; flex-direction: column; gap: 32px;
+  }
+  .hero-text { display: flex; flex-direction: column; gap: 24px; }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; color: #fff;
+    letter-spacing: 1.5px; font-weight: 400;
+  }
+  .hero-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 66px; line-height: 0.92;
+    letter-spacing: -2.4px;
+  }
+  .hero-title em { font-style: italic; }
+  .hero-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; line-height: 1.5; color: var(--text-light);
+    max-width: 267px;
+  }
+  .hero-ctas { display: flex; gap: 16px; align-items: center; }
+  .btn-hero-primary {
+    flex: 1; height: 52px; background: #fff; color: var(--green);
+    border: none; border-radius: var(--pill-radius);
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    font-weight: 600; letter-spacing: 1.4px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    cursor: pointer; transition: background .2s ease;
+  }
+  .btn-hero-primary:hover { background: #eaf2ec; }
+  .btn-hero-secondary {
+    height: 52px; border-radius: var(--pill-radius);
+    background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.45);
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 16px; flex-shrink: 0; cursor: pointer; overflow: hidden;
+    transition: background .2s ease, border-color .2s ease;
+  }
+  .btn-hero-secondary:hover { background: rgba(255,255,255,.32); border-color: rgba(255,255,255,.7); }
+
+  /* ─── SERVICES ────────────────────────────────────── */
+  #services {
+    padding: 40px 16px;
+  }
+  .section-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--green);
+    letter-spacing: 2px; font-weight: 400;
+    margin-bottom: 24px;
+  }
+  .section-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 42px; line-height: 0.95;
+    letter-spacing: -1.4px; margin-bottom: 32px;
+  }
+  .services-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .svc-card {
+    border-radius: 20px; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 16px 0; min-height: 198px;
+    transition: background .25s ease, border-color .25s ease;
+    cursor: pointer;
+  }
+  .svc-card.active {
+    background: var(--green);
+  }
+  .svc-card.active:hover {
+    background: #235235;
+  }
+  .svc-card.inactive {
+    background: #fff; border: 1px solid var(--border-green);
+  }
+  .svc-card.inactive:hover {
+    background: #f3f8f5; border-color: var(--green);
+  }
+  .svc-card-top {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    padding: 0 20px; margin-bottom: auto;
+  }
+  .svc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 1.6px;
+  }
+  .svc-card.active .svc-num { color: rgba(255,255,255,.6); }
+  .svc-card.inactive .svc-num { color: var(--text-mid); }
+  .svc-icon { width: 20px; height: 20px; }
+  .svc-card-body { display: flex; flex-direction: column; gap: 12px; }
+  .svc-info { display: flex; flex-direction: column; gap: 8px; padding: 0 20px; }
+  .svc-name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px; letter-spacing: -0.8px; font-weight: 400;
+  }
+  .svc-card.active .svc-name { color: #fff; }
+  .svc-card.inactive .svc-name { color: var(--text-dark); }
+  .svc-desc { font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.5; }
+  .svc-card.active .svc-desc { color: var(--text-light); }
+  .svc-card.inactive .svc-desc { color: var(--text-mid); line-height: 1.4; }
+  .svc-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px 0; 
+  }
+  .svc-card.active .svc-footer { border-top: 1px solid rgba(255,255,255,.2); }
+  .svc-card.inactive .svc-footer { border-top: 1px solid var(--border-green); }
+  .svc-price {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase;
+  }
+  .svc-card.active .svc-price { color: #efeae0; }
+  .svc-card.inactive .svc-price { color: var(--green); }
+  .svc-arrow { width: 22px; height: 16px; opacity: .9; }
+
+  /* ─── FREE INTAKE CARD ───────────────────────────── */
+  #intake {
+    padding: 0 16px 0;
+  }
+  .intake-card {
+    background: var(--green);
+    border-radius: var(--card-radius);
+    overflow: hidden; position: relative;
+    padding: 24px 16px;
+    display: flex; flex-direction: column; gap: 24px; min-height: 549px; justify-content: flex-end;
+  }
+  .intake-botanical {
+    position: absolute; top: -118px; left: -40px;
+    width: 521px; height: 688px;
+    pointer-events: none; z-index: 0; object-fit: cover;
+  }
+  .intake-content { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 24px; }
+  .intake-text { display: flex; flex-direction: column; gap: 24px; }
+  .intake-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; color: #fff; letter-spacing: 1.5px;
+  }
+  .intake-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 42px; line-height: 0.95;
+    letter-spacing: -1.4px; max-width: 292px;
+  }
+  .intake-title em { font-style: italic; }
+  .intake-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; line-height: 1.5; color: var(--text-light);
+    max-width: 267px;
+  }
+  .pricing-table { display: flex; flex-direction: column; width: 100%; }
+  .pricing-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px;
+    border-bottom: 0.4px solid var(--border-white);
+  }
+  .pricing-row:first-child { border-top: 0.4px solid var(--border-white); }
+  .pricing-left { display: flex; gap: 12px; align-items: center; flex: 1; }
+  .pricing-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; color: rgba(255,255,255,.5);
+  }
+  .pricing-name { font-family: 'DM Sans', sans-serif; font-size: 14px; color: #fff; }
+  .pricing-duration {
+    font-family: 'DM Sans', sans-serif; font-size: 11px;
+    color: rgba(255,255,255,.55); white-space: nowrap;
+  }
+  .pricing-price {
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px; color: #efeae0;
+    letter-spacing: -0.4px; text-align: right; min-width: 50px;
+  }
+  .intake-ctas { display: flex; flex-direction: column; gap: 12px; }
+  .btn-intake-primary {
+    height: 52px; background: #fff; color: var(--green);
+    border: none; border-radius: var(--pill-radius);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+    letter-spacing: 1.4px; cursor: pointer; width: 100%;
+    transition: background .2s ease;
+  }
+  .btn-intake-primary:hover { background: #eaf2ec; }
+  .intake-address {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; color: rgba(255,255,255,.55);
+    letter-spacing: 1.6px; text-align: center; line-height: 1.8;
+  }
+
+  /* ─── BEFORE vs AFTER ─────────────────────────────── */
+  #results {
+    padding: 40px 16px;
+    display: flex; flex-direction: column; gap: 32px;
+  }
+  .results-header { display: flex; flex-direction: column;  }
+  .results-title { font-family: 'Instrument Serif', serif; font-size: 42px; line-height: 0.95; letter-spacing: -1.4px; }
+  .results-title em { font-style: italic; }
+  .before-after {
+    position: relative; border-radius: var(--card-radius); overflow: hidden;
+    height: 361px; background: var(--green);
+  }
+  .ba-img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+  .ba-half { position: absolute; top: 0; width: 50%; height: 100%; overflow: hidden; }
+  .ba-half.left { left: 0; }
+  .ba-half.right { right: 0; }
+  .ba-half img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ba-label {
+    position: absolute; top: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 1.5px;
+    padding: 6px 16px; border: 0.5px solid rgba(255,255,255,.2);
+  }
+  .ba-label.before { left: 18px; background: rgba(255,255,255,.5); color: #000; }
+  .ba-label.after { right: 18px; background: rgba(28,58,28,.7); color: #fff; }
+  .ba-divider {
+    position: absolute; top: 0; left: 50%; width: 1px; height: 100%;
+    background: rgba(255,255,255,.6);
+  }
+  .ba-vs {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px; height: 48px; border-radius: 99px;
+    background: #faf8f3; box-shadow: 0 4px 18px rgba(0,0,0,.18);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .ba-vs span {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px; color: #326e4b; letter-spacing: -1.4px;
+    line-height: 1; margin-top: 4px;
+  }
+  .results-caption { display: flex; flex-direction: column; gap: 8px; }
+  .results-caption-title { font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; color: var(--text-dark); }
+  .results-caption-sub { font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text-mid); line-height: 1.4; }
+  .results-dots { display: flex; gap: 6px; justify-content: center; }
+  .results-dot { width: 8px; height: 8px; border-radius: 4px; background: rgba(43,98,65,.2); }
+  .results-dot.active { background: var(--green); width: 20px; }
+
+  /* ─── APPROACH / BEAUTY DEEPER ───────────────────── */
+  #approach {
+    padding: 0 16px;
+  }
+  .approach-card {
+    background: var(--green);
+    border-radius: var(--card-radius);
+    overflow: hidden; position: relative;
+    padding: 24px 16px;
+    display: flex; flex-direction: column; gap: 24px; min-height: 811px; justify-content: flex-end;
+  }
+  .approach-photo {
+    position: absolute; top: 0; left: 0; right: 0; height: 361px; z-index: 0;
+  }
+  .approach-photo img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .approach-photo-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(64.06deg, rgb(43,98,65) 12.98%, rgba(43,98,65,0) 81.72%);
+  }
+  .approach-botanical {
+    position: absolute; bottom: -157px; left: -40px; width: 551px; height: 727px;
+    pointer-events: none; z-index: 0; object-fit: cover;
+  }
+  .approach-content { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 24px; }
+  .approach-text { display: flex; flex-direction: column; gap: 24px; }
+  .approach-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; color: #fff; letter-spacing: 1.5px;
+  }
+  .approach-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 42px; line-height: 0.95;
+    letter-spacing: -1.4px; max-width: 292px;
+  }
+  .approach-title em { font-style: italic; }
+  .approach-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; line-height: 1.5; color: var(--text-light); max-width: 267px;
+  }
+  .approach-list { display: flex; flex-direction: column; width: 100%; }
+  .approach-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px;
+    border-bottom: 0.4px solid var(--border-white);
+  }
+
+  .approach-item-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; color: rgba(255,255,255,.5); flex-shrink: 0; margin-top: 10px;
+  }
+  .approach-item-body { flex: 1; }
+  .approach-item-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px; color: #fff; letter-spacing: -0.8px; line-height: 1;
+  }
+  .approach-item-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; color: rgba(255,255,255,.55); margin-top: 2px;
+  }
+  .approach-ctas { display: flex; flex-direction: column; gap: 12px; }
+  .btn-approach-primary {
+    height: 52px; background: #fff; color: var(--green);
+    border: none; border-radius: var(--pill-radius);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+    letter-spacing: 1.4px; cursor: pointer; width: 100%;
+    transition: background .2s ease;
+  }
+  .btn-approach-primary:hover { background: #eaf2ec; }
+  .approach-address {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; color: rgba(255,255,255,.55);
+    letter-spacing: 1.6px; text-align: center; line-height: 1.8;
+  }
+
+  /* ─── FAQ ─────────────────────────────────────────── */
+  #faq { padding: 40px 16px; display: flex; flex-direction: column; gap: 32px; }
+  .faq-header { display: flex; flex-direction: column;  }
+  .faq-title { font-family: 'Instrument Serif', serif; font-size: 42px; line-height: 0.95; letter-spacing: -1.4px; }
+  .faq-title em { font-style: italic; }
+  .faq-list { display: flex; flex-direction: column; }
+  .faq-item {
+    border-bottom: 0.4px solid var(--border-green);
+    cursor: pointer;
+  }
+  .faq-item:first-child { border-top: 0.4px solid var(--border-green); }
+  .faq-question {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    padding: 12px; gap: 8px;
+  }
+  .faq-q-text {
+    display: flex; flex-direction: column; gap: 4px; flex: 1;
+  }
+  .faq-q-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 21px; color: var(--text-dark); letter-spacing: -0.2px; line-height: 1.2;
+  }
+  .faq-q-answer {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; color: var(--text-mid); line-height: 1.5;
+    max-height: 0; overflow: hidden; transition: max-height .3s ease, margin .3s;
+  }
+  .faq-item.open .faq-q-answer { max-height: 200px; margin-top: 4px; }
+  .faq-plus {
+    width: 24px; height: 24px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .3s;
+  }
+  .faq-item.open .faq-plus { transform: rotate(45deg); }
+  .faq-plus svg { width: 20px; height: 20px; }
+
+  /* ─── INSTAGRAM ───────────────────────────────────── */
+  #instagram { padding: 26px 0; display: flex; flex-direction: column; gap: 16px; }
+  .instagram-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--green); letter-spacing: 2px; padding: 0 20px;
+  }
+  .instagram-grid {
+    display: flex; gap: 8px; overflow-x: auto; padding-left: 20px;
+    scrollbar-width: none;
+  }
+  .instagram-grid::-webkit-scrollbar { display: none; }
+  .instagram-img {
+    flex-shrink: 0; width: 150px; height: 200px;
+    object-fit: cover; border-radius: 12px;
+  }
+  .instagram-cta {
+    display: flex; gap: 8px; align-items: center; padding: 0 20px;
+  }
+  .instagram-cta-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 500; color: var(--green);
+    letter-spacing: 1.4px; text-transform: uppercase;
+  }
+
+  /* ─── REVIEWS ─────────────────────────────────────── */
+  #reviews {
+    background: #e8ede9; padding: 40px 20px;
+    display: flex; flex-direction: column; gap: 32px;
+  }
+  .reviews-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--green); letter-spacing: 2px;
+  }
+  .reviews-track {
+    display: flex; gap: 20px; overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .reviews-track::-webkit-scrollbar { display: none; }
+  .review-card {
+    background: transparent; border-radius: var(--card-radius);
+    padding: 24px 12px; flex-shrink: 0; width: 100%;
+    display: flex; flex-direction: column; gap: 14px; position: relative;
+  }
+  .review-stars {
+    font-size: 20px; color: #dea114;
+    letter-spacing: -3.8px; text-align: left;
+  }
+  .review-quote-wrap {
+    border-bottom: 1px solid var(--border-green);
+    padding-bottom: 16px;
+  }
+  .review-text {
+    font-family: 'Instrument Serif', serif;
+    font-size: 18px; line-height: 27px; color: #2a2a26;
+  }
+  .review-footer { display: flex; align-items: center; justify-content: space-between; }
+  .review-name { font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text-mid); }
+  .review-source { display: flex; align-items: center; gap: 4px; }
+  .review-via { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 300; color: #7a7a72; }
+  .review-logo { height: 14px; width: 76px;}
+  .review-deco {
+    position: absolute; top: 0; right: 16px;
+    font-family: 'Instrument Serif', serif;
+    font-size: 110px; color: var(--green); opacity: .18; line-height: 1;
+    pointer-events: none;
+  }
+
+  /* ─── PARTNERS ────────────────────────────────────── */
+  #partners {
+    padding: 26px 20px;
+    display: flex; gap: 24px; align-items: center;
+    background: var(--cream);
+  }
+  .partners-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--green);
+    letter-spacing: 2px; white-space: nowrap; text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .partners-logos { display: flex; gap: 24px; align-items: center; flex: 1; }
+  .partner-logo { object-fit: contain; }
+
+  /* ─── CTA CARD ────────────────────────────────────── */
+  #cta { padding: 0 16px 0; }
+  .cta-card {
+    background: var(--green);
+    border-radius: var(--card-radius);
+    overflow: hidden; position: relative;
+    padding: 36px 24px; min-height: 383px;
+    display: flex; flex-direction: column; gap: 24px; justify-content: flex-end;
+  }
+  .cta-botanical {
+    position: absolute; top: -118px; left: -40px;
+    width: 521px; pointer-events: none; z-index: 0; object-fit: cover;
+  }
+  .cta-content { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 16px; }
+  .cta-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; color: #fff; letter-spacing: 1.5px;
+  }
+  .cta-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(42px, 15vw, 60px);
+    line-height: 0.92; letter-spacing: -2.4px;
+  }
+  .cta-title em { font-style: italic; }
+  .cta-ctas { display: flex; flex-direction: column; gap: 16px; }
+  .btn-cta-primary {
+    height: 52px; background: #fff; color: var(--green);
+    border: none; border-radius: var(--pill-radius);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+    letter-spacing: 1.4px; cursor: pointer; width: 100%;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background .2s ease;
+  }
+  .btn-cta-primary:hover { background: #eaf2ec; }
+  .btn-cta-secondary {
+    height: 52px; background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: var(--pill-radius);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+    letter-spacing: 1.4px; color: #fff; cursor: pointer; width: 100%;
+    transition: background .2s ease, border-color .2s ease;
+  }
+  .btn-cta-secondary:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.5); }
+  .cta-address {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; color: rgba(255,255,255,.55);
+    letter-spacing: 1.6px; text-align: center; line-height: 1.8;
+  }
+
+  /* ─── FOOTER ──────────────────────────────────────── */
+  footer {
+    padding: 36px 20px;
+    display: flex; flex-direction: column; gap: 0;
+    background: var(--cream);
+  }
+  .footer-logo-wrap {
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(130,163,116,.2);
+    margin-bottom: 0;
+  }
+  .footer-logo { height: 36px; display: block; }
+  .footer-links {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    padding: 12px 0; font-weight: 300;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--green-dark);
+  }
+  .footer-links span { cursor: pointer; }
+  .footer-lang {
+    display: flex; gap: 10px;
+    padding: 12px 0;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+  }
+  .footer-lang span { cursor: pointer; color: #5e5e5e; }
+  .footer-lang span.active { color: var(--green); text-decoration: underline; }
+  .footer-kvk {
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 300;
+    color: #5e5e5e; padding: 6px 0;
+  }
+  .footer-legal {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    padding: 6px 0;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 300; color: var(--green-dark);
+  }
+  .footer-legal span { cursor: pointer; }
+  .footer-copy {
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 300;
+    color: #5e5e5e; padding: 6px 0;
+  }
+
+  /* ─── BOOKING MODAL ───────────────────────────────── */
+  /* ─── SERVICE MODAL ───────────────────────────────── */
+  .modal-backdrop {
+    position: fixed; inset: 0; z-index: 200;
+    width: 100vw;
+    backdrop-filter: blur(4.5px);
+    background: rgba(28,58,28,.35);
+    display: flex; align-items: flex-end;
+    opacity: 0; pointer-events: none;
+    transition: opacity .3s;
+  }
+  .modal-backdrop.open { opacity: 1; pointer-events: all; }
+  .modal-sheet {
+    background: var(--cream); width: 100%;
+    border-radius: 28px 28px 0 0;
+    padding: 24px 24px 40px;
+    transform: translateY(100%);
+    transition: transform .4s cubic-bezier(.77,0,.18,1);
+    overflow-y: auto; max-height: 92vh;
+    display: flex; flex-direction: column; gap: 24px;
+    position: relative;
+  }
+  .modal-backdrop.open .modal-sheet { transform: translateY(0); }
+
+  /* header row */
+  .modal-header { display: flex; align-items: center; gap: 8px; }
+  .modal-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; color: var(--green); letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .modal-close-btn {
+    position: absolute; top: 24px; right: 24px;
+    width: 32px; height: 32px;
+    background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0;
+  }
+
+  /* title */
+  .modal-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 42px; line-height: 0.95;
+    letter-spacing: -1.4px; color: var(--green);
+    font-weight: 400;
+  }
+
+  /* body text */
+  .modal-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px; line-height: 1.5; color: var(--text-mid);
+  }
+
+  /* stats row */
+  .modal-stats {
+    background: #e8ede9; border-radius: 16px;
+    display: flex; overflow: hidden;
+  }
+  .modal-stat {
+    flex: 1; padding: 12px;
+    border-right: 1px solid rgba(43,98,65,.1);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .modal-stat:last-child { border-right: none; }
+  .modal-stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: rgba(10,10,10,.5); letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .modal-stat-value {
+    font-family: 'Instrument Serif', serif;
+    font-size: 26px; letter-spacing: -0.8px; color: var(--green);
+  }
+
+  /* treatments table */
+  .modal-treatments-header {
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; color: var(--green); letter-spacing: 1.5px;
+    text-transform: uppercase; margin-bottom: 0;
+  }
+  .modal-treatments { display: flex; flex-direction: column; }
+  .modal-treatment-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px;
+    border-top: 0.4px solid rgba(10,10,10,.2);
+  }
+  .modal-treatment-row:last-child { border-bottom: 0.4px solid rgba(10,10,10,.2); }
+  .modal-treatment-left {
+    display: flex; gap: 12px; align-items: center; flex: 1;
+  }
+  .modal-treatment-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; color: rgba(10,10,10,.5);
+  }
+  .modal-treatment-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; color: var(--text-dark);
+  }
+  .modal-treatment-duration {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; color: rgba(10,10,10,.55); white-space: nowrap;
+  }
+  .modal-treatment-price {
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px; color: var(--green);
+    letter-spacing: -0.4px; text-align: right; min-width: 50px;
+  }
+
+  /* CTA area */
+  .modal-cta-area { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .modal-book-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; height: 52px;
+    background: var(--green); color: #fff; border: none;
+    border-radius: var(--pill-radius);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+    letter-spacing: 1.4px; cursor: pointer;
+    transition: background .2s ease;
+  }
+  .modal-book-btn:hover { background: #235235; }
+  .modal-address {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; color: rgba(10,10,10,.55);
+    letter-spacing: 1.6px; text-align: center; line-height: 1.8;
+  }
+
+  /* ─── SPACING BETWEEN SECTIONS ────────────────────── */
+  .spacer { height: 40px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="#hero">
+    <img src="Logo1.svg" alt="NeoXell" class="logo-img">
+  </a>
+  <div class="nav-right">
+    <button class="btn-book-nav" onclick="openModal()">Book</button>
+    <button class="btn-menu" id="burger-btn" aria-label="Menu" onclick="toggleMenu()">
+      <svg class="burger-svg" width="15" height="12" viewBox="0 0 15 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0.5 0.5L14.5 0.5M0.5 5.73809H9.6875M0.5 11.5H14.5" stroke="#2B6241" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- MENU OVERLAY -->
+<div class="menu-overlay" id="menu-overlay">
+  <div class="menu-overlay-nav">
+    <a href="#hero" onclick="closeMenu()">
+      <img src="Logo1.svg" alt="NeoXell" class="logo-img">
+    </a>
+    <div class="menu-overlay-nav-right">
+      <button class="menu-overlay-close" onclick="closeMenu()" aria-label="Close menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="menu-items-list">
+    <a href="#hero" class="menu-item" onclick="closeMenu()" style="transition-delay:.05s">
+      <span class="menu-item-num">01</span>
+      <span class="menu-item-label">Home</span>
+    </a>
+    <div class="menu-item" onclick="toggleServices()" style="transition-delay:.1s">
+      <span class="menu-item-num">02</span>
+      <span class="menu-item-label">Services</span>
+      <svg class="menu-item-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="menu-sub-items" id="services-sub">
+      <a href="#services" class="menu-sub-item" onclick="closeMenu()">Facials</a>
+      <a href="#services" class="menu-sub-item" onclick="closeMenu()">Laser</a>
+      <a href="#services" class="menu-sub-item" onclick="closeMenu()">Body Wellness</a>
+      <a href="#services" class="menu-sub-item" onclick="closeMenu()">Cosmetics</a>
+    </div>
+    <a href="#intake" class="menu-item" onclick="closeMenu()" style="transition-delay:.15s">
+      <span class="menu-item-num">03</span>
+      <span class="menu-item-label">Free Intake</span>
+    </a>
+    <a href="#results" class="menu-item" onclick="closeMenu()" style="transition-delay:.2s">
+      <span class="menu-item-num">04</span>
+      <span class="menu-item-label">Results</span>
+    </a>
+    <a href="#faq" class="menu-item" onclick="closeMenu()" style="transition-delay:.25s">
+      <span class="menu-item-num">05</span>
+      <span class="menu-item-label">FAQ</span>
+    </a>
+    <a href="#instagram" class="menu-item" onclick="closeMenu()" style="transition-delay:.3s">
+      <span class="menu-item-num">06</span>
+      <span class="menu-item-label">Instagram</span>
+    </a>
+    <a href="#cta" class="menu-item" onclick="closeMenu()" style="transition-delay:.35s">
+      <span class="menu-item-num">07</span>
+      <span class="menu-item-label">Book Now</span>
+    </a>
+  </div>
+  <div class="menu-footer">
+    <div class="menu-lang">
+      <span class="active">NL</span>
+      <span>EN</span>
+      <span>UA</span>
+    </div>
+    <div class="menu-social">
+      <a href="#">Instagram</a>
+      <a href="#">TikTok</a>
+      <a href="#">WhatsApp</a>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-card">
+    <video class="hero-video" autoplay muted loop playsinline preload="none"
+      poster="">
+      <source src="YTDown.com_YouTube_Spa-Facial-Treatment-Cinematic-Video_Media_rMO_mCbNgQo_001_1080p.mp4" type="video/mp4">
+    </video>
+    <div class="hero-video-overlay"></div>
+    <img class="hero-botanical"
+      src="https://www.figma.com/api/mcp/asset/c2dfc6de-b6d0-4a77-8d34-1aae4ad238ad"
+      alt="">
+    <div class="hero-divider"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <p class="hero-eyebrow">BEAUTY CLINIC • AMSTERDAM</p>
+        <h1 class="hero-title title-light">Where<br><em>science</em><br>meets nature.</h1>
+        <p class="hero-sub">Advanced skin treatments rooted in science, guided by nature.</p>
+      </div>
+      <div class="hero-ctas">
+        <button class="btn-hero-primary" onclick="openModal()">
+          Book a free session
+          <svg width="22" height="16" viewBox="0 0 22 16" fill="none"><path d="M1 8H21M14 1l7 7-7 7" stroke="#2b6241" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="btn-hero-secondary" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">
+          <img src="https://www.figma.com/api/mcp/asset/d433a609-3bba-48f5-b9c8-917234bf51a2" width="24" height="24" alt="">
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--div class="spacer"></div-->
+
+<!-- SERVICES -->
+<section id="services">
+  <p class="section-eyebrow">WHAT WE OFFER</p>
+  <h2 class="section-title title-dark">Tailored treatments<br>for every concern</h2>
+  <div class="services-grid">
+
+    <!-- Facials — active -->
+    <div class="svc-card active" onclick="selectService(this)"
+      data-name="Facials"
+      data-desc="Transform your skin with our bespoke facial rituals. HydroPeeling, enzyme peels and personalised treatments designed to restore radiance, balance and lasting clarity."
+      data-duration="60-90min" data-price="€145" data-course="4 sessions"
+      data-treatments='[{"num":"01","name":"HydroPeeling Signature","duration":"60 min","price":"€145"},{"num":"02","name":"Enzyme Peel Ritual","duration":"45 min","price":"€95"},{"num":"03","name":"Bespoke Skin Ritual","duration":"90 min","price":"€185"}]'>
+      <div class="svc-card-top">
+        <span class="svc-num">01</span>
+        <img class="svc-icon"
+          src="https://www.figma.com/api/mcp/asset/531cd3d3-1558-4994-972f-486ad2b05d20"
+          alt="">
+      </div>
+      <div class="svc-card-body">
+        <div class="svc-info">
+          <p class="svc-name">Facials</p>
+          <p class="svc-desc">HydroPeeling &amp; bespoke skin rituals</p>
+        </div>
+        <div class="svc-footer">
+          <span class="svc-price">From €145</span>
+          <img class="svc-arrow"
+            src="https://www.figma.com/api/mcp/asset/4737d76e-cc5b-41da-a17d-7b2aded3d579"
+            alt="">
+        </div>
+      </div>
+    </div>
+
+    <!-- Laser — inactive -->
+    <div class="svc-card inactive" onclick="selectService(this)"
+      data-name="Laser"
+      data-desc="Imagine having silky-smooth skin without the hassle of shaving, painful waxing, or annoying ingrown hairs. At NeoXell, we turn that dream into reality with permanent laser hair removal using the Mediostar Monolith Asclepion Laser."
+      data-duration="60-90min" data-price="€85" data-course="4 sessions"
+      data-treatments='[{"num":"01","name":"Facial hair removal","duration":"45 min","price":"€39"},{"num":"02","name":"Upper body and arms","duration":"60 min","price":"€33"},{"num":"03","name":"Legs and bikini","duration":"60 min","price":"€70"}]'>
+      <div class="svc-card-top">
+        <span class="svc-num">02</span>
+        <img class="svc-icon"
+          src="https://www.figma.com/api/mcp/asset/2f426ace-960f-436a-b359-0abe5619c01f"
+          alt="">
+      </div>
+      <div class="svc-card-body">
+        <div class="svc-info">
+          <p class="svc-name">Laser</p>
+          <p class="svc-desc">MeDioStar #1 diode laser</p>
+        </div>
+        <div class="svc-footer">
+          <span class="svc-price">From €85</span>
+          <img class="svc-arrow"
+            src="https://www.figma.com/api/mcp/asset/8dcb9ad8-bc9f-48eb-9488-a4d50506a543"
+            alt="">
+        </div>
+      </div>
+    </div>
+
+    <!-- Body Wellness — inactive -->
+    <div class="svc-card inactive" onclick="selectService(this)"
+      data-name="Body Wellness"
+      data-desc="Revitalise your body from the inside out. Our microcurrent and carboxytherapy treatments tone, firm and energise, delivering visible results with zero downtime."
+      data-duration="45-60min" data-price="€125" data-course="6 sessions"
+      data-treatments='[{"num":"01","name":"Microcurrent Lift","duration":"45 min","price":"€125"},{"num":"02","name":"Carboxytherapy","duration":"60 min","price":"€150"},{"num":"03","name":"Combo Body Treatment","duration":"90 min","price":"€195"}]'>
+      <div class="svc-card-top">
+        <span class="svc-num">03</span>
+        <img class="svc-icon"
+          src="https://www.figma.com/api/mcp/asset/f37616d2-3a8c-47be-b25a-76acb08702c6"
+          alt="">
+      </div>
+      <div class="svc-card-body">
+        <div class="svc-info">
+          <p class="svc-name">Body Wellness</p>
+          <p class="svc-desc">Microcurrent &amp; carboxytherapy</p>
+        </div>
+        <div class="svc-footer">
+          <span class="svc-price">From €125</span>
+          <img class="svc-arrow"
+            src="https://www.figma.com/api/mcp/asset/8dcb9ad8-bc9f-48eb-9488-a4d50506a543"
+            alt="">
+        </div>
+      </div>
+    </div>
+
+    <!-- Cosmetics — active -->
+    <div class="svc-card active" onclick="selectService(this)"
+      data-name="Cosmetics"
+      data-desc="Curated professional skincare from the world's most advanced brands — HydroPeptide, Calecim and more — expertly selected and applied for your unique skin profile."
+      data-duration="30-60min" data-price="€145" data-course="On request"
+      data-treatments='[{"num":"01","name":"HydroPeptide Infusion","duration":"60 min","price":"€145"},{"num":"02","name":"Calecim Stem Cell Boost","duration":"45 min","price":"€165"},{"num":"03","name":"Bespoke Skin Protocol","duration":"60 min","price":"€175"}]'>
+      <div class="svc-card-top">
+        <span class="svc-num">04</span>
+        <img class="svc-icon"
+          src="https://www.figma.com/api/mcp/asset/31ad1e2f-7f35-4a3f-800b-c9a42882f794"
+          alt="">
+      </div>
+      <div class="svc-card-body">
+        <div class="svc-info">
+          <p class="svc-name">Cosmetics</p>
+          <p class="svc-desc">HydroPeptide · Calecim · more</p>
+        </div>
+        <div class="svc-footer">
+          <span class="svc-price">From €145</span>
+          <img class="svc-arrow"
+            src="https://www.figma.com/api/mcp/asset/4737d76e-cc5b-41da-a17d-7b2aded3d579"
+            alt="">
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!--div class="spacer"></div-->
+
+<!-- FREE INTAKE -->
+<section id="intake">
+  <div class="intake-card">
+    <img class="intake-botanical"
+      src="https://www.figma.com/api/mcp/asset/c2dfc6de-b6d0-4a77-8d34-1aae4ad238ad"
+      alt="">
+    <div class="intake-content">
+      <div class="intake-text">
+        <p class="intake-eyebrow">FREE INTAKE</p>
+        <h2 class="intake-title title-light">Your first visit<br>is <em>on us.</em></h2>
+        <p class="intake-sub">A 45-minute first visit – skin mapping, VISIA diagnostic, and a written protocol. No upsells. You leave with a plan.</p>
+      </div>
+      <div class="pricing-table">
+        <div class="pricing-row">
+          <div class="pricing-left">
+            <span class="pricing-num">01</span>
+            <span class="pricing-name">First consultation</span>
+          </div>
+          <span class="pricing-duration">45 min</span>
+          <span class="pricing-price">€0</span>
+        </div>
+        <div class="pricing-row">
+          <div class="pricing-left">
+            <span class="pricing-num">02</span>
+            <span class="pricing-name">Follow-up visit</span>
+          </div>
+          <span class="pricing-duration">60 min</span>
+          <span class="pricing-price">€40</span>
+        </div>
+        <div class="pricing-row">
+          <div class="pricing-left">
+            <span class="pricing-num">03</span>
+            <span class="pricing-name">Treatment course</span>
+          </div>
+          <span class="pricing-duration">60 min</span>
+          <span class="pricing-price">€240</span>
+        </div>
+      </div>
+      <div class="intake-ctas">
+        <button class="btn-intake-primary" onclick="openModal()">Book a free session →</button>
+        <p class="intake-address">· Tweede Hugo de Grootstraat 14H ·<br>1052 LC Amsterdam</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--div class="spacer"></div-->
+
+<!-- BEFORE vs AFTER -->
+<section id="results">
+  <div class="results-header">
+    <p class="section-eyebrow">OUR RESULTS</p>
+    <h2 class="results-title title-dark">Before vs<br><em>After.</em></h2>
+  </div>
+  <div>
+    <div class="before-after">
+      <div class="ba-half left">
+        <img src="image 37.png" alt="Before">
+      </div>
+      <div class="ba-half right">
+        <img src="image 38.png" alt="After">
+      </div>
+      <span class="ba-label before">BEFORE</span>
+      <span class="ba-label after">AFTER</span>
+      <div class="ba-divider"></div>
+      <div class="ba-vs"><span>vs</span></div>
+    </div>
+    <div class="results-caption" style="margin-top: 24px;">
+      <p class="results-caption-title">Laser · 6 sessions</p>
+      <p class="results-caption-sub">Client, 29 — full lower legs · 94% reduction</p>
+    </div>
+  </div>
+  <div class="results-dots">
+    <div class="results-dot active"></div>
+    <div class="results-dot"></div>
+    <div class="results-dot"></div>
+  </div>
+</section>
+
+<!--div class="spacer"></div-->
+
+<!-- APPROACH -->
+<section id="approach">
+  <div class="approach-card">
+    <div class="approach-photo">
+      <img src="image.jpg" alt="">
+      <div class="approach-photo-overlay"></div>
+    </div>
+    <img class="approach-botanical"
+      src="https://www.figma.com/api/mcp/asset/83ba6e49-3742-4c43-a8a0-7fb8e7f04a7d"
+      alt="">
+    <div class="approach-content">
+      <div class="approach-text">
+        <p class="approach-eyebrow">OUR APPROACH</p>
+        <h2 class="approach-title title-light">Beauty that<br>goes <em>deeper</em></h2>
+        <p class="approach-sub">Founded in Amsterdam on the belief that real beauty comes from healthy, balanced skin.</p>
+      </div>
+      <div class="approach-list">
+        <div class="approach-item">
+          <span class="approach-item-num">01</span>
+          <div class="approach-item-body">
+            <p class="approach-item-title">Science-backed</p>
+            <p class="approach-item-sub">Clinically proven technology</p>
+          </div>
+        </div>
+        <div class="approach-item">
+          <span class="approach-item-num">02</span>
+          <div class="approach-item-body">
+            <p class="approach-item-title">Personalized</p>
+            <p class="approach-item-sub">Tailored to your unique skin</p>
+          </div>
+        </div>
+        <div class="approach-item">
+          <span class="approach-item-num">03</span>
+          <div class="approach-item-body">
+            <p class="approach-item-title">Nature-rooted</p>
+            <p class="approach-item-sub">Respects skin and environment</p>
+          </div>
+        </div>
+        <div class="approach-item">
+          <span class="approach-item-num">04</span>
+          <div class="approach-item-body">
+            <p class="approach-item-title">Expat-friendly</p>
+            <p class="approach-item-sub">Dutch, Ukrainian &amp; English</p>
+          </div>
+        </div>
+      </div>
+      <div class="approach-ctas">
+        <button class="btn-approach-primary" onclick="openModal()">Book a free session →</button>
+        <p class="approach-address">· Tweede Hugo de Grootstraat 14H ·<br>1052 LC Amsterdam</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--div class="spacer"></div-->
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="faq-header">
+    <p class="section-eyebrow">QUESTIONS</p>
+    <h2 class="faq-title title-dark">Before you<br><em>Ask.</em></h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item open" onclick="toggleFaq(this)">
+      <div class="faq-question">
+        <div class="faq-q-text">
+          <p class="faq-q-title">What happens in the free intake?</p>
+          <p class="faq-q-answer">A 45-min 1:1 – skin diagnosis, goals, and a no-commitment plan. Beverages included.</p>
+        </div>
+        <div class="faq-plus">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">
+        <div class="faq-q-text">
+          <p class="faq-q-title">Is laser safe on my skin tone?</p>
+          <p class="faq-q-answer">Yes. Our MeDioStar diode laser is safe for all skin tones. We assess your skin during the free intake before any treatment.</p>
+        </div>
+        <div class="faq-plus">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">
+        <div class="faq-q-text">
+          <p class="faq-q-title">Do you offer gift cards?</p>
+          <p class="faq-q-answer">Yes! Gift cards are available in any amount and can be used for any of our treatments or products.</p>
+        </div>
+        <div class="faq-plus">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">
+        <div class="faq-q-text">
+          <p class="faq-q-title">Where are you located?</p>
+          <p class="faq-q-answer">Tweede Hugo de Grootstraat 14H, 1052 LC Amsterdam. Easy to reach by tram and bike.</p>
+        </div>
+        <div class="faq-plus">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section id="instagram">
+  <p class="instagram-eyebrow">INSTAGRAM · @neoxell</p>
+  <div class="instagram-grid">
+    <img class="instagram-img"
+      src="https://www.figma.com/api/mcp/asset/b1c928d3-dfde-4580-8f2e-af300c4410c9"
+      alt="NeoXell Instagram">
+    <img class="instagram-img"
+      src="https://www.figma.com/api/mcp/asset/d2b4210e-9459-4c04-9de7-3e6bbb048b72"
+      alt="NeoXell Instagram">
+    <img class="instagram-img"
+      src="https://www.figma.com/api/mcp/asset/f00409fc-0879-4197-b4ba-3358b74060d9"
+      alt="NeoXell Instagram">
+  </div>
+  <div class="instagram-cta">
+    <span class="instagram-cta-text">See more on Instagram</span>
+    <svg width="22" height="16" viewBox="0 0 22 16" fill="none"><path d="M1 8H21M14 1l7 7-7 7" stroke="#2b6241" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <p class="reviews-eyebrow">CLIENT STORIES</p>
+  <div class="reviews-track">
+    <div class="review-card">
+      <div class="review-deco">"</div>
+      <p class="review-stars">★★★★★</p>
+      <div class="review-quote-wrap">
+        <p class="review-text">After years of dealing with pigmentation, three sessions changed everything. The specialist truly listened and designed a protocol around my skin.</p>
+      </div>
+      <div class="review-footer">
+        <span class="review-name">Anna K.</span>
+        <div class="review-source">
+          <span class="review-via">via</span>
+          <img class="review-logo"
+            src="https://www.figma.com/api/mcp/asset/1b9fca34-732e-4d37-be4c-95a7d84b2fd8"
+            alt="Google">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<div id="partners">
+  <span class="partners-label">Our partners</span>
+  <div class="partners-logos">
+    <img class="partner-logo"
+      src="https://www.figma.com/api/mcp/asset/e1b6b691-e359-4eec-8c50-09578269d70a"
+      alt="Dermapen" style="width:160px; height:24px;">
+    <img class="partner-logo"
+      src="https://www.figma.com/api/mcp/asset/b3c0c9ed-9bc0-4b8e-9e15-8f649e906321"
+      alt="Prague" style="width:85px; height:36px;">
+    <img class="partner-logo"
+      src="https://www.figma.com/api/mcp/asset/ca82a2ff-38ce-437e-b118-386f81eaab5b"
+      alt="HydroPeptide" style="width:78px; height:36px;">
+  </div>
+</div>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-card">
+    <img class="cta-botanical"
+      src="https://www.figma.com/api/mcp/asset/31e8fae1-a4e3-4cc4-a0bc-8d6ba54ea39b"
+      alt="">
+    <div class="cta-content">
+      <p class="cta-eyebrow">READY TO BEGIN?</p>
+      <h2 class="cta-title title-light">Start your skin <em>transformation</em></h2>
+      <div class="cta-ctas">
+        <button class="btn-cta-primary" onclick="openModal()">
+          Book a free session
+          <svg width="22" height="16" viewBox="0 0 22 16" fill="none"><path d="M1 8H21M14 1l7 7-7 7" stroke="#2b6241" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="btn-cta-secondary" onclick="openModal()">Schedule appointment</button>
+        <p class="cta-address">· Tweede Hugo de Grootstraat 14H ·<br>1052 LC Amsterdam</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--div class="spacer"></div-->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo-wrap">
+    <img src="Logo1.svg" alt="NeoXell" class="footer-logo">
+  </div>
+  <div class="footer-links">
+    <span>Home</span>
+    <span>About</span>
+    <span>Services</span>
+    <span>Schedule</span>
+    <span>Prices</span>
+    <span>Cosmetics</span>
+    <span>Gift Cards</span>
+  </div>
+  <div class="footer-lang">
+    <span class="active">NL</span>
+    <span>EN</span>
+    <span>UA</span>
+  </div>
+  <p class="footer-kvk">KVK 97558796 &nbsp;•&nbsp; VAT NL00239823982749287342942</p>
+  <div class="footer-legal">
+    <span>Privacy</span>
+    <span>Cookies</span>
+    <span>Terms</span>
+  </div>
+  <p class="footer-copy">2025 NeoXell Beauty Clinic - Amsterdam</p>
+</footer>
+
+<!-- BOOKING MODAL -->
+<div class="modal-backdrop" id="modal-backdrop" onclick="closeModalOutside(event)">
+  <div class="modal-sheet" id="modal-sheet">
+
+    <!-- Close X -->
+    <button class="modal-close-btn" onclick="closeModal()" aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M1 1L15 15M15 1L1 15" stroke="#2b6241" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <!-- Eyebrow -->
+    <div class="modal-header">
+      <img src="https://www.figma.com/api/mcp/asset/6e292ad5-4534-4113-85e0-8be00b69c6db" width="20" height="20" alt="">
+      <span class="modal-eyebrow">WHAT WE OFFER</span>
+    </div>
+
+    <!-- Service name -->
+    <div class="modal-title" id="modal-svc-name">Facials</div>
+
+    <!-- Description -->
+    <p class="modal-sub" id="modal-svc-desc"></p>
+
+    <!-- Stats -->
+    <div class="modal-stats">
+      <div class="modal-stat">
+        <span class="modal-stat-label">DURATION</span>
+        <span class="modal-stat-value" id="modal-stat-duration"></span>
+      </div>
+      <div class="modal-stat">
+        <span class="modal-stat-label">PRICE, FROM</span>
+        <span class="modal-stat-value" id="modal-stat-price"></span>
+      </div>
+      <div class="modal-stat">
+        <span class="modal-stat-label">AVG COURSE</span>
+        <span class="modal-stat-value" id="modal-stat-course"></span>
+      </div>
+    </div>
+
+    <!-- Treatments -->
+    <div>
+      <div class="modal-treatments-header">
+        <span>TREATMENTS</span>
+        <span>PRICES, FROM</span>
+      </div>
+      <div class="modal-treatments" id="modal-treatments"></div>
+    </div>
+
+    <!-- CTA -->
+    <div class="modal-cta-area">
+      <button class="modal-book-btn" onclick="window.open('https://treatwell.nl','_blank')">
+        Book a free session
+        <svg width="22" height="16" viewBox="0 0 22 16" fill="none"><path d="M1 8H21M14 1l7 7-7 7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <p class="modal-address">· Tweede Hugo de Grootstraat 14H ·<br>1052 LC Amsterdam</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ── Menu ──────────────────────────────────────────
+  function toggleMenu() {
+    const isOpen = document.getElementById('menu-overlay').classList.toggle('open');
+    document.getElementById('burger-btn').classList.toggle('open');
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+  function closeMenu() {
+    document.getElementById('menu-overlay').classList.remove('open');
+    document.getElementById('burger-btn').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function toggleServices() {
+    const sub = document.getElementById('services-sub');
+    const item = sub.previousElementSibling;
+    sub.classList.toggle('open');
+    item.classList.toggle('services-open');
+  }
+
+  // ── Service card select ─────────────────────────
+  function selectService(card) {
+    card.closest('.services-grid').querySelectorAll('.svc-card').forEach(c => {
+      c.classList.toggle('active', c === card);
+      c.classList.toggle('inactive', c !== card);
+    });
+
+    const d = card.dataset;
+    document.getElementById('modal-svc-name').textContent = d.name || '';
+    document.getElementById('modal-svc-desc').textContent = d.desc || '';
+    document.getElementById('modal-stat-duration').textContent = d.duration || '';
+    document.getElementById('modal-stat-price').textContent = d.price || '';
+    document.getElementById('modal-stat-course').textContent = d.course || '';
+
+    const tbody = document.getElementById('modal-treatments');
+    tbody.innerHTML = '';
+    try {
+      JSON.parse(d.treatments || '[]').forEach(t => {
+        const row = document.createElement('div');
+        row.className = 'modal-treatment-row';
+        row.innerHTML = `<div class="modal-treatment-left">
+            <span class="modal-treatment-num">${t.num}</span>
+            <span class="modal-treatment-name">${t.name}</span>
+          </div>
+          <span class="modal-treatment-duration">${t.duration}</span>
+          <span class="modal-treatment-price">${t.price}</span>`;
+        tbody.appendChild(row);
+      });
+    } catch(e) {}
+
+    openModal();
+  }
+
+  // ── Modal ─────────────────────────────────────────
+  function openModal() {
+    document.getElementById('modal-backdrop').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modal-backdrop').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('modal-backdrop')) closeModal();
+  }
+
+  // ── FAQ ───────────────────────────────────────────
+  function toggleFaq(item) {
+    item.classList.toggle('open');
+  }
+
+  // ── Nav scroll ────────────────────────────────────
+  window.addEventListener('scroll', () => {
+    document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 20);
+  });
+</script>
+</body>
+</html>
