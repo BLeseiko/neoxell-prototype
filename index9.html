@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neoxell — Beauty Clinic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: #F6F3EE; color: #111A11; -webkit-font-smoothing: antialiased; }
+
+/* ── TOKENS ── */
+:root {
+  --green: #2C5F2E;
+  --green-deep: #1E4520;
+  --green-mid: #3D7A40;
+  --green-sage: #7BA87D;
+  --green-frost: #EAF1EA;
+  --ivory: #F6F3EE;
+  --ivory-dark: #EEF0E8;
+  --ink: #111A11;
+  --ink-soft: rgba(17,26,17,0.6);
+  --ink-faint: rgba(17,26,17,0.1);
+  --rule: rgba(17,26,17,0.09);
+}
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 56px; height: 72px;
+  background: rgba(246,243,238,0.92); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--rule);
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green); text-decoration: none; }
+.nav-tagline { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-soft); margin-top: 2px; }
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; color: var(--ink); transition: color 0.2s; }
+.nav-links a:hover { color: var(--green); }
+.nav-cta { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; padding: 10px 22px; border: 1px solid var(--green); color: var(--green); background: transparent; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.25s; }
+.nav-cta:hover { background: var(--green); color: var(--ivory); }
+.nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.nav-hamburger span { display: block; width: 22px; height: 1px; background: var(--ink); transition: all 0.3s; }
+.mobile-menu { display: none; position: fixed; top: 72px; left: 0; right: 0; background: var(--ivory); border-bottom: 1px solid var(--rule); z-index: 99; padding: 32px 24px; flex-direction: column; gap: 0; }
+.mobile-menu.open { display: flex; }
+.mobile-menu a { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; color: var(--ink); padding: 16px 0; border-bottom: 1px solid var(--rule); transition: color 0.2s; }
+.mobile-menu a:hover { color: var(--green); }
+.mobile-menu .m-cta { margin-top: 24px; background: var(--green); color: var(--ivory); text-align: center; padding: 14px; letter-spacing: 0.18em; font-size: 11px; border: none; }
+
+/* ── HERO ── */
+.hero {
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: 100vh; padding-top: 72px;
+}
+.hero-text { display: flex; flex-direction: column; justify-content: center; padding: 80px 72px 80px 56px; }
+.hero-eyebrow { font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; color: var(--green); margin-bottom: 28px; font-weight: 400; }
+.hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(52px, 5vw, 78px); font-weight: 300; line-height: 1.06; margin-bottom: 28px; }
+.hero-title em { font-style: italic; color: var(--green); }
+.hero-body { font-size: 14px; line-height: 1.85; font-weight: 300; color: var(--ink-soft); max-width: 380px; margin-bottom: 44px; }
+.hero-actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+.btn-primary { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; padding: 14px 32px; background: var(--green); color: var(--ivory); border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 400; transition: background 0.25s; }
+.btn-primary:hover { background: var(--green-deep); }
+.btn-ghost { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; padding: 13px 24px; background: transparent; border: 1px solid rgba(17,26,17,0.3); color: var(--ink); cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.25s; }
+.btn-ghost:hover { border-color: var(--green); color: var(--green); }
+.hero-stats { display: flex; gap: 48px; margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--rule); }
+.stat-num { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 300; display: block; }
+.stat-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-soft); margin-top: 4px; display: block; }
+.hero-image {
+  position: relative; overflow: hidden;
+}
+.hero-image video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+}
+
+/* ── SHARED SECTION TOKENS ── */
+.section-eyebrow { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--green); margin-bottom: 16px; }
+.section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 3.2vw, 50px); font-weight: 300; line-height: 1.1; margin-bottom: 20px; }
+.section-title em { font-style: italic; }
+.section-body { font-size: 13px; line-height: 1.85; color: var(--ink-soft); font-weight: 300; max-width: 420px; margin-bottom: 36px; }
+.img-ph-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(17,26,17,0.25); text-align: center; }
+
+/* ── SERVICES ACCORDION ── */
+.services-hub { border-top: 1px solid var(--rule); }
+.acc-item { border-bottom: 1px solid var(--rule); }
+
+/* Header row */
+.acc-header {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  padding: 28px 56px;
+  cursor: pointer;
+  transition: background 0.2s;
+  user-select: none;
+  gap: 0;
+}
+.acc-header:hover { background: var(--green-frost); }
+.acc-item.open > .acc-header { background: var(--green-frost); }
+.acc-num { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--ink-soft); padding-top: 4px; }
+.acc-title-wrap { }
+.acc-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(24px, 2.6vw, 34px); font-weight: 300; display: block; line-height: 1.1; }
+.acc-tagline { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); margin-top: 5px; display: block; }
+.acc-item.open .acc-name { color: var(--green); }
+.acc-icon {
+  width: 32px; height: 32px; border: 1px solid var(--rule); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 300; color: var(--ink-soft); flex-shrink: 0;
+  transition: all 0.3s; line-height: 1;
+}
+.acc-item.open .acc-icon { border-color: var(--green); color: var(--green); transform: rotate(45deg); }
+
+/* Body — CSS grid height animation */
+.acc-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.48s cubic-bezier(0.4,0,0.2,1); }
+.acc-item.open .acc-body { grid-template-rows: 1fr; }
+.acc-body-inner { overflow: hidden; }
+
+/* Panel layout */
+.acc-panel { padding: 0 56px 64px; }
+
+/* Top band: description left, why-us right */
+.acc-top { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; padding: 52px 0 48px; border-bottom: 1px solid var(--rule); }
+.acc-desc { font-size: 13px; line-height: 1.9; color: var(--ink-soft); font-weight: 300; max-width: 400px; margin-bottom: 28px; }
+.acc-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--green-frost); border: 1px solid rgba(44,95,46,0.2); padding: 7px 14px; margin-bottom: 28px; }
+.acc-badge span { font-size: 10px; letter-spacing: 0.12em; color: var(--green); }
+.acc-checks { display: flex; flex-direction: column; gap: 12px; }
+.acc-check { display: flex; gap: 10px; font-size: 12px; color: var(--ink-soft); line-height: 1.5; align-items: flex-start; }
+.acc-check::before { content: '✓'; color: var(--green); font-size: 11px; margin-top: 1px; flex-shrink: 0; }
+.acc-why-title { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--green); margin-bottom: 20px; }
+.acc-why { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.acc-why-card { background: var(--ivory-dark); padding: 22px 20px; }
+.acc-why-num { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--green); display: block; margin-bottom: 5px; }
+.acc-why-label { font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
+
+/* Laser panel — dark top band */
+.acc-item.laser-item .acc-panel { padding-left: 0; padding-right: 0; padding-bottom: 0; }
+.acc-item.laser-item .acc-top { background: var(--green-deep); padding-left: 56px; padding-right: 56px; border-bottom-color: rgba(246,243,238,0.08); }
+.acc-item.laser-item .acc-top .section-eyebrow { color: var(--green-sage); }
+.acc-item.laser-item .acc-top .section-title { color: var(--ivory); }
+.acc-item.laser-item .acc-top .section-title em { color: var(--green-sage); }
+.acc-item.laser-item .acc-desc { color: rgba(246,243,238,0.7); }
+.acc-item.laser-item .acc-badge { background: rgba(246,243,238,0.08); border-color: rgba(246,243,238,0.15); }
+.acc-item.laser-item .acc-badge span { color: rgba(246,243,238,0.8); }
+.acc-item.laser-item .acc-check { color: rgba(246,243,238,0.7); }
+.acc-item.laser-item .acc-check::before { color: var(--green-sage); }
+.acc-item.laser-item .acc-why-title { color: var(--green-sage); }
+.acc-item.laser-item .acc-why-card { background: rgba(246,243,238,0.06); border: 1px solid rgba(246,243,238,0.1); }
+.acc-item.laser-item .acc-why-num { color: var(--ivory); }
+.acc-item.laser-item .acc-why-label { color: rgba(246,243,238,0.5); }
+.acc-item.laser-item .acc-bottom { padding-left: 56px; padding-right: 56px; }
+
+/* Bottom band: procedures left, before/after + story right */
+.acc-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; padding: 48px 0 64px; }
+.acc-proc-title { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--green); margin-bottom: 20px; }
+.acc-proc-item { display: flex; align-items: center; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--rule); font-size: 12px; color: var(--ink); transition: color 0.2s; cursor: pointer; }
+.acc-proc-item:first-child { border-top: 1px solid var(--rule); }
+.acc-proc-item:hover { color: var(--green); }
+.acc-proc-num { font-family: 'Cormorant Garamond', serif; font-size: 12px; color: var(--ink-soft); min-width: 22px; }
+.acc-proc-name { flex: 1; }
+.acc-proc-badge { font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; background: var(--green-frost); color: var(--green); border: 1px solid rgba(44,95,46,0.18); white-space: nowrap; }
+.acc-ba-title { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--green); margin-bottom: 20px; }
+.acc-ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 2px; }
+.acc-ba-img { aspect-ratio: 3/4; background: #D0DCCE; position: relative; overflow: hidden; }
+.acc-ba-img .img-ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background-image: repeating-linear-gradient(-45deg, transparent, transparent 14px, rgba(0,0,0,0.03) 14px, rgba(0,0,0,0.03) 15px); }
+.acc-ba-labels { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 32px; }
+.acc-ba-label { background: var(--ivory-dark); padding: 12px 16px; }
+.acc-ba-tag { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 4px; }
+.acc-ba-val { font-family: 'Cormorant Garamond', serif; font-size: 15px; }
+.acc-story-quote { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 300; line-height: 1.65; font-style: italic; color: var(--ink); margin-bottom: 14px; border-left: 2px solid var(--green); padding-left: 18px; }
+.acc-story-name { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; padding-left: 20px; }
+.acc-story-role { font-size: 11px; color: var(--ink-soft); margin-top: 3px; padding-left: 20px; }
+
+/* ── ABOUT ── */
+.about { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--rule); }
+.about-images { position: relative; min-height: 560px; background: #C0D4C1; }
+.about-images .img-ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background-image: repeating-linear-gradient(-45deg, transparent, transparent 14px, rgba(0,0,0,0.03) 14px, rgba(0,0,0,0.03) 15px); }
+.about-content { padding: 80px 72px 80px 56px; display: flex; flex-direction: column; justify-content: center; }
+.about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 36px; }
+.about-stat { background: var(--ivory-dark); padding: 24px; }
+.about-stat-num { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--green); margin-bottom: 6px; }
+.about-stat-label { font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
+
+/* ── TEAM ── */
+.team { background: var(--green-deep); color: var(--ivory); padding: 80px 56px; }
+.team-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+.team .section-eyebrow { color: var(--green-sage); }
+.team .section-title { color: var(--ivory); }
+.team .section-title em { color: var(--green-sage); }
+.team-body { font-size: 13px; line-height: 1.85; color: rgba(246,243,238,0.7); font-weight: 300; margin-bottom: 28px; }
+.team-img { position: relative; aspect-ratio: 4/5; background: rgba(246,243,238,0.06); }
+.team-img .img-ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background-image: repeating-linear-gradient(-45deg, transparent, transparent 14px, rgba(246,243,238,0.04) 14px, rgba(246,243,238,0.04) 15px); }
+.team-name { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--ivory); margin-top: 24px; }
+.team-role { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green-sage); margin-top: 6px; }
+.team-bio { font-size: 13px; line-height: 1.8; color: rgba(246,243,238,0.65); margin-top: 16px; font-weight: 300; }
+.team-checks { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
+.team-check { display: flex; gap: 12px; font-size: 12px; color: rgba(246,243,238,0.7); align-items: flex-start; }
+.team-check::before { content: '—'; color: var(--green-sage); flex-shrink: 0; }
+
+/* ── TESTIMONIALS ── */
+.testimonials { padding: 80px 56px; border-top: 1px solid var(--rule); }
+.testi-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 56px; }
+.testi-rating { text-align: right; }
+.testi-score { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300; }
+.testi-stars { display: flex; gap: 4px; justify-content: flex-end; margin-top: 4px; }
+.testi-star { color: var(--green); font-size: 13px; }
+.testi-source { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); margin-top: 6px; }
+.testi-card { border: 1px solid var(--rule); padding: 40px; position: relative; }
+.testi-card-stars { display: flex; gap: 4px; margin-bottom: 20px; }
+.testi-quote { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 300; line-height: 1.6; font-style: italic; margin-bottom: 28px; }
+.testi-author-name { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; }
+.testi-author-role { font-size: 11px; color: var(--ink-soft); margin-top: 4px; }
+.testi-nav { display: flex; gap: 8px; margin-top: 40px; justify-content: center; }
+.testi-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rule); cursor: pointer; transition: background 0.2s; border: none; padding: 0; }
+.testi-dot.active { background: var(--green); }
+
+/* ── BOOKING CTA ── */
+.booking { padding: 80px 56px; background: var(--ivory-dark); border-top: 1px solid var(--rule); }
+.booking-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.booking-steps { margin-top: 36px; display: flex; flex-direction: column; gap: 0; }
+.booking-step { display: grid; grid-template-columns: 40px 1fr; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--rule); }
+.booking-step:first-child { border-top: 1px solid var(--rule); }
+.booking-step-num { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--green); font-weight: 300; }
+.booking-step-title { font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+.booking-step-desc { font-size: 12px; line-height: 1.7; color: var(--ink-soft); font-weight: 300; }
+.booking-form { background: var(--ivory); border: 1px solid var(--rule); padding: 40px; }
+.booking-form-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; margin-bottom: 28px; }
+.form-field { margin-bottom: 16px; }
+.form-field label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); display: block; margin-bottom: 8px; }
+.form-field input, .form-field select, .form-field textarea { width: 100%; padding: 12px 14px; border: 1px solid var(--rule); background: transparent; font-family: 'Inter', sans-serif; font-size: 13px; color: var(--ink); outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
+.form-field input:focus, .form-field select:focus { border-color: var(--green); }
+.form-field textarea { min-height: 80px; resize: none; }
+.form-submit { width: 100%; padding: 14px; background: var(--green); color: var(--ivory); border: none; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; margin-top: 8px; transition: background 0.2s; }
+.form-submit:hover { background: var(--green-deep); }
+
+/* ── MORE REASONS ── */
+.reasons { padding: 80px 56px; border-top: 1px solid var(--rule); }
+.reasons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 56px; }
+.reason-card { background: var(--ivory-dark); padding: 48px 40px; position: relative; overflow: hidden; }
+.reason-img { width: 100%; aspect-ratio: 16/9; background: #C8D8C9; margin-bottom: 28px; position: relative; }
+.reason-img .img-ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background-image: repeating-linear-gradient(-45deg, transparent, transparent 14px, rgba(0,0,0,0.03) 14px, rgba(0,0,0,0.03) 15px); }
+.reason-name { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; margin-bottom: 12px; }
+.reason-desc { font-size: 12px; line-height: 1.7; color: var(--ink-soft); font-weight: 300; margin-bottom: 24px; }
+.reason-link { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: gap 0.2s; }
+.reason-link:hover { gap: 14px; }
+
+/* ── FINAL CTA ── */
+.final-cta { background: var(--green); color: var(--ivory); padding: 100px 56px; text-align: center; }
+.final-cta .section-eyebrow { color: rgba(246,243,238,0.55); }
+.final-cta .section-title { color: var(--ivory); font-size: clamp(40px, 4vw, 64px); margin-bottom: 16px; }
+.final-cta .section-title em { color: rgba(246,243,238,0.75); }
+.final-cta p { font-size: 13px; color: rgba(246,243,238,0.65); margin-bottom: 40px; font-weight: 300; }
+.final-cta .btn-primary { background: var(--ivory); color: var(--green); }
+.final-cta .btn-primary:hover { background: var(--green-frost); }
+
+/* ── FOOTER ── */
+.footer { background: #111A11; color: var(--ivory); padding: 72px 56px 40px; }
+.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 56px; border-bottom: 1px solid rgba(246,243,238,0.1); }
+.footer-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ivory); margin-bottom: 8px; }
+.footer-tagline { font-size: 12px; line-height: 1.7; color: rgba(246,243,238,0.45); font-weight: 300; max-width: 240px; margin-top: 12px; }
+.footer-col h4 { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 20px; color: rgba(246,243,238,0.5); }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { font-size: 12px; color: rgba(246,243,238,0.6); text-decoration: none; font-weight: 300; transition: color 0.2s; }
+.footer-links a:hover { color: var(--ivory); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; }
+.footer-copy { font-size: 11px; color: rgba(246,243,238,0.35); }
+
+/* ── MOBILE VIDEO HERO ── */
+.hero-video-wrap {
+  display: none;
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  background: #0D1A0E;
+}
+.hero-video-bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+}
+/* Light overlay */
+.hero-video-scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(246,243,238,0.82) 0%,
+    rgba(246,243,238,0.42) 55%,
+    rgba(246,243,238,0.12) 100%
+  );
+}
+
+.hero-video-overlay {
+  position: absolute; inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 24px 64px;
+  z-index: 2;
+}
+
+.hero-video-overlay .hero-eyebrow { color: var(--green); margin-bottom: 16px; }
+.hero-video-overlay .hero-title { color: #111A11; font-size: clamp(40px, 10vw, 64px); margin-bottom: 20px; text-shadow: none; }
+.hero-video-overlay .hero-title em { color: var(--green); }
+.hero-video-overlay .hero-body { color: rgba(17,26,17,0.72); font-size: 14px; margin-bottom: 28px; max-width: 340px; }
+.hero-video-overlay .hero-actions { gap: 12px; flex-wrap: wrap; }
+.hero-video-overlay .btn-primary { background: var(--green); color: #F6F3EE; box-shadow: 0 4px 24px rgba(44,95,46,0.3); }
+.hero-video-overlay .btn-ghost { border-color: rgba(17,26,17,0.35); color: #111A11; background: rgba(246,243,238,0.55); }
+.hero-video-overlay .hero-stats { border-top-color: rgba(17,26,17,0.15); margin-top: 32px; padding-top: 24px; gap: 32px; }
+.hero-video-overlay .stat-num { color: #111A11; }
+.hero-video-overlay .stat-label { color: rgba(17,26,17,0.55); }
+
+/* Transparent nav over video hero on mobile */
+.nav-transparent {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  border-bottom-color: transparent !important;
+  box-shadow: none !important;
+}
+.nav-transparent .nav-logo { color: var(--green) !important; }
+.nav-transparent .nav-tagline { color: var(--ink-soft) !important; }
+.nav-transparent .nav-hamburger span { background: var(--ink) !important; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .nav { padding: 0 32px; }
+  .nav-links { gap: 24px; }
+  .hero-text { padding: 60px 40px 60px 32px; }
+  .booking, .reasons, .final-cta, .footer { padding-left: 32px; padding-right: 32px; }
+  .team { padding: 60px 32px; }
+  .testimonials { padding: 60px 32px; }
+  .about-content { padding: 80px 40px 80px 32px; }
+  .acc-header { padding: 24px 32px; }
+  .acc-panel { padding: 0 32px 56px; }
+  .acc-top { gap: 48px; }
+  .acc-bottom { gap: 40px; }
+  .acc-item.laser-item .acc-top { padding-left: 32px; padding-right: 32px; }
+  .acc-item.laser-item .acc-bottom { padding-left: 32px; padding-right: 32px; }
+}
+
+@media (max-width: 768px) {
+  .nav { padding: 0 20px; height: 60px; }
+  .nav-links { display: none; }
+  .nav-cta { display: none; }
+  .nav-hamburger { display: flex; }
+  .mobile-menu { top: 60px; }
+
+  /* Hide desktop hero, show video hero */
+  .hero { display: none; }
+  .hero-video-wrap { display: block; }
+
+  /* Accordion mobile */
+  .acc-header { padding: 20px; grid-template-columns: 40px 1fr auto; }
+  .acc-panel { padding: 0 20px 48px; }
+  .acc-top { grid-template-columns: 1fr; gap: 36px; padding: 36px 0 32px; }
+  .acc-why { grid-template-columns: 1fr 1fr; }
+  .acc-bottom { grid-template-columns: 1fr; gap: 36px; padding: 36px 0 48px; }
+  .acc-item.laser-item .acc-top { padding-left: 20px; padding-right: 20px; }
+  .acc-item.laser-item .acc-bottom { padding-left: 20px; padding-right: 20px; }
+
+  .about { grid-template-columns: 1fr; }
+  .about-images { min-height: 260px; }
+  .about-content { padding: 48px 20px; }
+  .about-stats { grid-template-columns: 1fr 1fr; }
+
+  .team { padding: 56px 20px; }
+  .team-inner { grid-template-columns: 1fr; gap: 40px; }
+
+  .testimonials { padding: 56px 20px; }
+  .testi-header { flex-direction: column; align-items: flex-start; gap: 24px; }
+  .testi-rating { text-align: left; }
+  .testi-stars { justify-content: flex-start; }
+
+  .booking { padding: 56px 20px; }
+  .booking-inner { grid-template-columns: 1fr; gap: 40px; }
+
+  .reasons { padding: 56px 20px; }
+  .reasons-grid { grid-template-columns: 1fr; }
+
+  .final-cta { padding: 72px 20px; }
+
+  .footer { padding: 56px 20px 32px; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .services-4 { grid-template-columns: 1fr; }
+  .laser-stats { grid-template-columns: 1fr; }
+  .about-stats { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; }
+  .hero-actions { flex-direction: column; align-items: flex-start; }
+  .hero-video-overlay { padding: 0 20px 48px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div>
+    <a href="#" class="nav-logo">Neoxell</a>
+    <div class="nav-tagline">Beauty Clinic</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#services">Treatments</a></li>
+    <li><a href="#laser">Technology</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#booking">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book Consultation</button>
+  <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" onclick="closeMenu()">Treatments</a>
+  <a href="#laser" onclick="closeMenu()">Technology</a>
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#results" onclick="closeMenu()">Results</a>
+  <a href="#booking" onclick="closeMenu()">Contact</a>
+  <a href="#booking" class="m-cta" onclick="closeMenu()">Book Consultation</a>
+</div>
+
+<!-- MOBILE VIDEO HERO -->
+<div class="hero-video-wrap" id="heroVideoWrap">
+  <video class="hero-video-bg" autoplay muted loop playsinline>
+    <source src="istockphoto-2217277037-640_adpp_is.mp4" type="video/mp4">
+  </video>
+  <div class="hero-video-scrim"></div>
+<div class="hero-video-overlay">
+    <p class="hero-eyebrow">Advanced Aesthetic Medicine</p>
+    <h1 class="hero-title">Where <em>science</em><br>meets<br>nature</h1>
+    <p class="hero-body">Medical-grade precision meets genuine human care — delivering results that last.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book Consultation</button>
+      <button class="btn-ghost" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">View Treatments</button>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <span class="stat-num">8+</span>
+        <span class="stat-label">Years Experience</span>
+      </div>
+      <div>
+        <span class="stat-num">4,200+</span>
+        <span class="stat-label">Satisfied Clients</span>
+      </div>
+      <div>
+        <span class="stat-num">98%</span>
+        <span class="stat-label">Satisfaction Rate</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DESKTOP HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow">Advanced Aesthetic Medicine</p>
+    <h1 class="hero-title">Where <em>science</em><br>meets<br>nature</h1>
+    <p class="hero-body">We blend medical-grade precision with a deep respect for your skin's natural intelligence — delivering results that last, in a space where you feel entirely at ease.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book Consultation</button>
+      <button class="btn-ghost" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">View Treatments</button>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <span class="stat-num">8+</span>
+        <span class="stat-label">Years Experience</span>
+      </div>
+      <div>
+        <span class="stat-num">4,200+</span>
+        <span class="stat-label">Satisfied Clients</span>
+      </div>
+      <div>
+        <span class="stat-num">98%</span>
+        <span class="stat-label">Satisfaction Rate</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-image">
+    <video autoplay muted loop playsinline>
+      <source src="istockphoto-2217277037-640_adpp_is.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+<!-- SERVICES ACCORDION -->
+<section class="services-hub" id="services">
+
+  <!-- 01 SKIN SOLUTIONS (collapsed) -->
+  <div class="acc-item" id="acc-skin">
+    <div class="acc-header" onclick="toggleAcc('acc-skin')">
+      <span class="acc-num">01</span>
+      <div class="acc-title-wrap">
+        <span class="acc-name">Skin Solutions</span>
+        <span class="acc-tagline">Facials · Rejuvenation · Pigmentation · Hydration</span>
+      </div>
+      <span class="acc-icon">+</span>
+    </div>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <div class="acc-panel">
+          <div class="acc-top">
+            <div>
+              <p class="section-eyebrow">Skin Solutions</p>
+              <h2 class="section-title">Visible radiance,<br><em>lasting clarity</em></h2>
+              <p class="acc-desc">Medical-grade facial protocols targeting pigmentation, ageing, hydration, and pore refinement — each adapted to your exact skin profile and lifestyle.</p>
+              <div class="acc-checks">
+                <div class="acc-check">Personalised to your skin type and concern</div>
+                <div class="acc-check">Zero-downtime options available</div>
+                <div class="acc-check">Clinically formulated serums and actives</div>
+                <div class="acc-check">Dermatologist-reviewed protocols</div>
+              </div>
+            </div>
+            <div>
+              <p class="acc-why-title">Why Neoxell</p>
+              <div class="acc-why">
+                <div class="acc-why-card">
+                  <span class="acc-why-num">6+</span>
+                  <span class="acc-why-label">dedicated facial protocols</span>
+                </div>
+                <div class="acc-why-card">
+                  <span class="acc-why-num">0</span>
+                  <span class="acc-why-label">downtime on most treatments</span>
+                </div>
+                <div class="acc-why-card">
+                  <span class="acc-why-num">100%</span>
+                  <span class="acc-why-label">personalised skin analysis</span>
+                </div>
+                <div class="acc-why-card">
+                  <span class="acc-why-num">8+</span>
+                  <span class="acc-why-label">years of clinical expertise</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="acc-bottom">
+            <div>
+              <p class="acc-proc-title">Procedures</p>
+              <div class="acc-proc-item"><span class="acc-proc-num">01</span><span class="acc-proc-name">Carbon Peel</span><span class="acc-proc-badge">Popular</span></div>
+              <div class="acc-proc-item"><span class="acc-proc-num">02</span><span class="acc-proc-name">Hydro-Aesthetics</span><span class="acc-proc-badge">Hydration</span></div>
+              <div class="acc-proc-item"><span class="acc-proc-num">03</span><span class="acc-proc-name">Pore Cleansing</span><span class="acc-proc-badge">Facial</span></div>
+              <div class="acc-proc-item"><span class="acc-proc-num">04</span><span class="acc-proc-name">Photon Rejuvenation (LED)</span><span class="acc-proc-badge">Available</span></div>
+              <div class="acc-proc-item"><span class="acc-proc-num">05</span><span class="acc-proc-name">Mesotherapy Plus</span><span class="acc-proc-badge">New</span></div>
+              <div class="acc-proc-item"><span class="acc-proc-num">06</span><span class="acc-proc-name">Skin Resurfacing</span><span class="acc-proc-badge">Advanced</span></div>
+              <button class="btn-primary" style="margin-top:28px" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book Consultation</button>
+            </div>
+            <div>
+              <p class="acc-ba-title">Client Results</p>
+              <div class="acc-ba-grid">
+                <div class="acc-ba-img"><div class="img-ph"><span class="img-ph-label">Before</span></div></div>
+                <div class="acc-ba-img"><div class="img-ph"><span class="img-ph-label">After</span></div></div>
+              </div>
+              <div class="acc-ba-labels">
+                <div class="acc-ba-label"><div class="acc-ba-tag">Before</div><div class="acc-ba-val">Session 1</div></div>
+                <div class="acc-ba-label"><div class="acc-ba-tag">After</div><div class="acc-ba-val">Session 4</div></div>
+              </div>
+              <blockquote class="acc-story-quote">"Finally — a clinic that combines cutting-edge science with genuine luxury. The results speak for themselves. I won't go anywhere else."</blockquote>
+              <div class="acc-story-name">Sofia K.</div>
+              <div class="acc-story-role">Skin Rejuvenation Client</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 LASER (open by default) -->
+  <div class="acc-item open laser-item" id="acc-laser">
+    <div class="acc-header" onclick="toggleAcc('acc-laser')">
+      <span class="acc-num">02</span>
+      <div class="acc-title-wrap">
+        <span class="acc-name">Laser</span>
+        <span class="acc-tagline">Epilation · Resurfacing · Permanent Results</span>
+      </div>
+      <span class="acc-icon">+</span>
+    </div>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <div class="acc-panel">
+          <div class="acc-top">
+            <div>
+              <p class="section-eyebrow">Laser Epilation</p>
+              <h2 class="section-title">Permanent results.<br><em>Zero compromise.</em></h2>
+              <p class="acc-desc">Our diode laser system delivers targeted energy to hair follicles across all skin types and tones — with virtually no downtime and lasting results from as few as 3 sessions.</p>
+              <div class="acc-badge">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(246,243,238,0.5)" stroke-width="0.8"/><path d="M4 7l2 2 4-4" stroke="rgba(246,243,238,0.7)" stroke-width="0.8" stroke-linecap="round"/></svg>
+                <span>MeDioStar Maestro Technology</span>
+              </div>
+              <div class="acc-checks">
+                <div class="acc-check">Safe for all skin types and tones, including darker complexions</div>
+                <div class="acc-check">Clinically proven — up to 90% permanent hair reduction</div>
+                <div class="acc-check">Minimal discomfort with integrated cooling technology</div>
+                <div class="acc-check">Personalised session plans based on hair cycle and density</div>
+              </div>
+            </div>
+            <div>
+              <p class="acc-why-title">Why Neoxell</p>
+              <div class="acc-why">
+                <div class="acc-why-card">
+                  <span class="acc-why-num">98%</span>
+                  <span class="acc-why-label">of clients report significant reduction after 3–4 sessions</span>
+                </div>
+                <div class="acc-why-card">
+                  <span class="acc-why-num">3–6</span>
+                  <span class="acc-why-label">sessions for permanent results</span>
+                </div>
+                <div class="acc-why-card">
+                  <span class="acc-why-num">✓</span>
+                  <span class="acc-why-label">All skin types, FDA-cleared equipment</span>
+                </div>
+                <div class="acc-why-card">
+                  <span class="acc-why-num">45%</span>
+                  <span class="acc-why-label">reduction visible after just the first session</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="acc-bottom">
+            <div>
+              <p class="acc-proc-title">Procedures</p>
+              <div class="acc-proc-item"><span class="acc-proc-num">01</span><span class="acc-proc-name">Full-body Laser Epilation</span><span class="acc-proc-badge">Popular</span></div>
+              <div class="acc-proc-item"><span class="acc-proc-num">02</span><span class="acc-proc-name">Face & Neck Laser</span><span class="acc-proc-badge">Precision</span></div>
+              <div class="acc-proc-item"><span class="acc-proc-num">03</span><span class="acc-proc-name">Bikini & Intimate</span><span class="acc-proc-badge">Available</span></div>
+              <div class="acc-proc-item"><span class="acc-proc-num">04</span><span class="acc-proc-name">Skin Resurfacing Laser</span><span class="acc-proc-badge">Advanced</span></div>
+              <div class="acc-proc-item"><span class="acc-proc-num">05</span><span class="acc-proc-name">Meso-epilation (Enzyme-gel)</span><span class="acc-proc-badge">Combo</span></div>
+              <button class="btn-primary" style="margin-top:28px;background:#F6F3EE;color:var(--green-deep)" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book Consultation</button>
+            </div>
+            <div>
+              <p class="acc-ba-title">Client Results</p>
+              <div class="acc-ba-grid">
+                <div class="acc-ba-img"><div class="img-ph"><span class="img-ph-label">Before</span></div></div>
+                <div class="acc-ba-img"><div class="img-ph"><span class="img-ph-label">After</span></div></div>
+              </div>
+              <div class="acc-ba-labels">
+                <div class="acc-ba-label"><div class="acc-ba-tag">Before</div><div class="acc-ba-val">Treatment 1</div></div>
+                <div class="acc-ba-label"><div class="acc-ba-tag">After</div><div class="acc-ba-val">Treatment 4</div></div>
+              </div>
+              <blockquote class="acc-story-quote">"What started as a simple question grew into one of the best decisions I've made for myself. The results have genuinely changed how I feel."</blockquote>
+              <div class="acc-story-name">Elena M.</div>
+              <div class="acc-story-role">Laser Epilation Client</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 TREATMENTS (collapsed) -->
+  <div class="acc-item" id="acc-treatments">
+    <div class="acc-header" onclick="toggleAcc('acc-treatments')">
+      <span class="acc-num">03</span>
+      <div class="acc-title-wrap">
+        <span class="acc-name">Treatments</span>
+        <span class="acc-tagline">Body Contouring · HIFU · RF · Advanced Protocols</span>
+      </div>
+      <span class="acc-icon">+</span>
+    </div>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <div class="acc-panel">
+          <div class="acc-top">
+            <div>
+              <p class="section-eyebrow">Body & Advanced Protocols</p>
+              <h2 class="section-title">Sculpt.<br><em>Lift. Restore.</em></h2>
+              <p class="acc-desc">Non-invasive contouring and advanced aesthetic protocols — designed around clinical evidence and individually adapted to reshape, lift, and rejuvenate without surgery or downtime.</p>
+              <div class="acc-checks">
+                <div class="acc-check">Non-invasive with no recovery time</div>
+                <div class="acc-check">Medical-grade devices, certified technicians</div>
+                <div class="acc-check">Individual programmes, never a one-size approach</div>
+                <div class="acc-check">Visible results from the first session</div>
+              </div>
+            </div>
+            <div>
+              <p class="acc-why-title">Why Neoxell</p>
+              <div class="acc-why">
+                <div class="acc-why-card">
+                  <span class="acc-why-num">9+</span>
+                  <span class="acc-why-label">advanced body & face protocols</span>
+                </div>
+                <div class="acc-why-card">
+                  <span class="acc-why-num">0</span>
+                  <span class="acc-why-label">surgical procedures — fully non-invasive</span>
+                </div>
+                <div class="acc-why-card">
+                  <span class="acc-why-num">Medical</span>
+                  <span class="acc-why-label">grade devices, regularly certified</span>
+                </div>
+                <div class="acc-why-card">
+                  <span class="acc-why-num">Bespoke</span>
+                  <span class="acc-why-label">programmes for every individual</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="acc-bottom">
+            <div>
+              <p class="acc-proc-title">Procedures</p>
+              <div class="acc-proc-item"><span class="acc-proc-num">01</span><span class="acc-proc-name">RF Vacuum Body</span><span class="acc-proc-badge">Body</span></div>
+              <div class="acc-proc-item"><span class="acc-proc-num">02</span><span class="acc-proc-name">Endospheres</span><span class="acc-proc-badge">Contouring</span></div>
+              <div class="acc-proc-item"><span class="acc-proc-num">03</span><span class="acc-proc-name">HIFU</span><span class="acc-proc-badge">Anti-age</span></div>
+              <div class="acc-proc-item"><span class="acc-proc-num">04</span><span class="acc-proc-name">Non-invasive Microsuction</span><span class="acc-proc-badge">Available</span></div>
+              <div class="acc-proc-item"><span class="acc-proc-num">05</span><span class="acc-proc-name">Meso-epilation (Enzyme-gel)</span><span class="acc-proc-badge">Popular</span></div>
+              <button class="btn-primary" style="margin-top:28px" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book Consultation</button>
+            </div>
+            <div>
+              <p class="acc-ba-title">Client Results</p>
+              <div class="acc-ba-grid">
+                <div class="acc-ba-img"><div class="img-ph"><span class="img-ph-label">Before</span></div></div>
+                <div class="acc-ba-img"><div class="img-ph"><span class="img-ph-label">After</span></div></div>
+              </div>
+              <div class="acc-ba-labels">
+                <div class="acc-ba-label"><div class="acc-ba-tag">Before</div><div class="acc-ba-val">Session 1</div></div>
+                <div class="acc-ba-label"><div class="acc-ba-tag">After</div><div class="acc-ba-val">Session 6</div></div>
+              </div>
+              <blockquote class="acc-story-quote">"Three sessions in and the difference is remarkable. They are discreet, expert, and truly effective. My skin has never looked better."</blockquote>
+              <div class="acc-story-name">Natalia V.</div>
+              <div class="acc-story-role">Body Contouring Client</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-images">
+    <div class="img-ph"><span class="img-ph-label">Clinic / team photography</span></div>
+  </div>
+  <div class="about-content">
+    <p class="section-eyebrow">About Neoxell</p>
+    <h2 class="section-title">Beauty clinic<br>that <em>goes deeper</em></h2>
+    <p class="section-body">Founded on the belief that truly effective skincare requires both scientific rigour and genuine human care. Our clinic brings together leading aesthetic technology and a team of passionate specialists — because your skin deserves nothing less.</p>
+    <div class="about-stats">
+      <div class="about-stat">
+        <div class="about-stat-num">Top-Rated</div>
+        <div class="about-stat-label">Clinic on Google with 5.0 rating across 400+ reviews</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-num">Medical</div>
+        <div class="about-stat-label">Grade equipment certified and regularly serviced</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-num">Bespoke</div>
+        <div class="about-stat-label">Individual protocols, never a one-size approach</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-num">Discreet</div>
+        <div class="about-stat-label">Private consultations in a calm, considered space</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team">
+  <div class="team-inner">
+    <div>
+      <p class="section-eyebrow">Meet the Team</p>
+      <h2 class="section-title">The hands<br>behind your <em>results.</em></h2>
+      <p class="team-body">Our specialists bring years of clinical training and a genuine passion for skin health to every treatment. You are in expert hands — and you'll feel it from your very first consultation.</p>
+      <p class="team-body">Continued education, rigorous certification, and a commitment to the latest advances in aesthetic medicine means Neoxell always operates at the forefront of the field.</p>
+      <div class="team-checks">
+        <div class="team-check">Internationally certified laser technicians</div>
+        <div class="team-check">Ongoing advanced training in aesthetic medicine</div>
+        <div class="team-check">Dermatologist-reviewed treatment protocols</div>
+        <div class="team-check">Fluent in Ukrainian, Russian and English</div>
+      </div>
+    </div>
+    <div>
+      <div class="team-img">
+        <div class="img-ph" style="background-image:repeating-linear-gradient(-45deg,transparent,transparent 14px,rgba(246,243,238,0.04) 14px,rgba(246,243,238,0.04) 15px)"><span class="img-ph-label" style="color:rgba(246,243,238,0.3)">Specialist portrait</span></div>
+      </div>
+      <div class="team-name">Dara</div>
+      <div class="team-role">Lead Aesthetic Specialist</div>
+      <p class="team-bio">With over 8 years of experience in advanced aesthetic treatments, Dara brings clinical mastery and a meticulous eye for detail to every appointment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testi-header">
+    <div>
+      <p class="section-eyebrow">Client Voices</p>
+      <h2 class="section-title">Real results.<br><em>Real people.</em></h2>
+    </div>
+    <div class="testi-rating">
+      <div class="testi-score">5.0</div>
+      <div class="testi-stars">
+        <span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span>
+      </div>
+      <div class="testi-source">400+ reviews on Google</div>
+    </div>
+  </div>
+  <div class="testi-card" id="testiCard">
+    <div class="testi-card-stars">
+      <span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span>
+    </div>
+    <p class="testi-quote" id="testiQuote">"What started as a simple question grew into one of the best decisions I've made for myself. The specialists at Neoxell are extraordinarily knowledgeable, and the results have genuinely changed how I feel."</p>
+    <div>
+      <div class="testi-author-name" id="testiName">Elena M.</div>
+      <div class="testi-author-role" id="testiRole">Laser Epilation Client</div>
+    </div>
+  </div>
+  <div class="testi-nav" role="tablist" aria-label="Testimonials navigation">
+    <button class="testi-dot active" onclick="setTesti(0)" aria-label="Testimonial 1"></button>
+    <button class="testi-dot" onclick="setTesti(1)" aria-label="Testimonial 2"></button>
+    <button class="testi-dot" onclick="setTesti(2)" aria-label="Testimonial 3"></button>
+    <button class="testi-dot" onclick="setTesti(3)" aria-label="Testimonial 4"></button>
+  </div>
+</section>
+
+<!-- BOOKING CTA -->
+<section class="booking" id="booking">
+  <div class="booking-inner">
+    <div>
+      <p class="section-eyebrow">Book a Visit</p>
+      <h2 class="section-title">Start with a<br><em>conversation.</em></h2>
+      <p class="section-body">Reserve your consultation online, by phone, or simply walk in. Our team will help you find the right treatment and the right time.</p>
+      <div class="booking-steps">
+        <div class="booking-step">
+          <div class="booking-step-num">01</div>
+          <div>
+            <div class="booking-step-title">Choose your concern</div>
+            <div class="booking-step-desc">Tell us what you'd like to address — we'll suggest the most effective protocol.</div>
+          </div>
+        </div>
+        <div class="booking-step">
+          <div class="booking-step-num">02</div>
+          <div>
+            <div class="booking-step-title">Skin analysis</div>
+            <div class="booking-step-desc">A thorough consultation with your specialist to assess, plan and personalise your treatment.</div>
+          </div>
+        </div>
+        <div class="booking-step">
+          <div class="booking-step-num">03</div>
+          <div>
+            <div class="booking-step-title">A personalised programme</div>
+            <div class="booking-step-desc">We design your full treatment journey, including between-session skincare recommendations.</div>
+          </div>
+        </div>
+        <div class="booking-step">
+          <div class="booking-step-num">04</div>
+          <div>
+            <div class="booking-step-title">Long-term results</div>
+            <div class="booking-step-desc">Our commitment doesn't end after your session — we monitor progress and adapt as needed.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="booking-form">
+      <div class="booking-form-title">Book your first visit</div>
+      <form onsubmit="handleBooking(event)">
+        <div class="form-field">
+          <label for="name">Full Name</label>
+          <input id="name" type="text" placeholder="Your name" required>
+        </div>
+        <div class="form-field">
+          <label for="phone">Phone Number</label>
+          <input id="phone" type="tel" placeholder="+380 00 000 0000" required>
+        </div>
+        <div class="form-field">
+          <label for="treatment">Treatment of Interest</label>
+          <select id="treatment">
+            <option value="">Select a treatment</option>
+            <option>Laser Epilation</option>
+            <option>Skin Rejuvenation</option>
+            <option>Body Contouring</option>
+            <option>Carbon Peel</option>
+            <option>HIFU</option>
+            <option>General Consultation</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="time">Preferred Time</label>
+          <input id="time" type="text" placeholder="Weekday mornings, etc.">
+        </div>
+        <button type="submit" class="form-submit">Send Request</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- MORE REASONS -->
+<section class="reasons">
+  <div>
+    <p class="section-eyebrow">More Reasons</p>
+    <h2 class="section-title">More reasons<br>to <em>start.</em></h2>
+    <p class="section-body" style="margin-top:14px">Bring a friend or gift a loved one the experience of Neoxell.</p>
+  </div>
+  <div class="reasons-grid">
+    <div class="reason-card">
+      <div class="reason-img"><div class="img-ph"><span class="img-ph-label">Bring a friend photography</span></div></div>
+      <h3 class="reason-name">Bring a Friend</h3>
+      <p class="reason-desc">Refer a friend to Neoxell and receive a special reward as our thank you. Share the experience, share the benefits.</p>
+      <a href="#booking" class="reason-link">Find out more →</a>
+    </div>
+    <div class="reason-card">
+      <div class="reason-img"><div class="img-ph"><span class="img-ph-label">Gift card photography</span></div></div>
+      <h3 class="reason-name">Gift Card</h3>
+      <p class="reason-desc">Give the gift of radiance. Our gift cards can be used across our full range of treatments and are beautifully packaged.</p>
+      <a href="#booking" class="reason-link">Shop now →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <p class="section-eyebrow">Your Journey Begins</p>
+  <h2 class="section-title">Start your skin<br><em>transformation</em></h2>
+  <p>Book your consultation today and take the first step towards skin that feels as good as it looks.</p>
+  <button class="btn-primary" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book a Consultation</button>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">Neoxell</div>
+      <p class="footer-tagline">Advanced aesthetic treatments for the discerning modern client. Where science and elegance converge.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Treatments</h4>
+      <ul class="footer-links">
+        <li><a href="#laser">Laser Epilation</a></li>
+        <li><a href="#protocols">Skin Rejuvenation</a></li>
+        <li><a href="#protocols">Body Contouring</a></li>
+        <li><a href="#protocols">Carbon Peeling</a></li>
+        <li><a href="#protocols">HIFU</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Clinic</h4>
+      <ul class="footer-links">
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#laser">Our Technology</a></li>
+        <li><a href="#results">Results Gallery</a></li>
+        <li><a href="#booking">Pricing</a></li>
+        <li><a href="#booking">Gift Cards</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul class="footer-links">
+        <li><a href="tel:+380440000000">+380 44 000 0000</a></li>
+        <li><a href="mailto:hello@neoxell.com">hello@neoxell.com</a></li>
+        <li><a href="#">Kyiv, Ukraine</a></li>
+        <li><a href="#booking">Book Online</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2026 Neoxell. All rights reserved.</p>
+    <p class="footer-copy">Privacy Policy · Terms of Service</p>
+  </div>
+</footer>
+
+<script>
+function toggleAcc(id) {
+  const item = document.getElementById(id);
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.acc-item').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.toggle('open');
+}
+
+function closeMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+
+// Transparent nav over mobile video hero
+function updateNavStyle() {
+  const nav = document.getElementById('nav');
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile && window.scrollY < window.innerHeight * 0.5) {
+    nav.classList.add('nav-transparent');
+  } else {
+    nav.classList.remove('nav-transparent');
+  }
+}
+
+window.addEventListener('scroll', () => {
+  updateNavStyle();
+  const nav = document.getElementById('nav');
+  if (!nav.classList.contains('nav-transparent')) {
+    nav.style.boxShadow = window.scrollY > 20 ? '0 1px 20px rgba(17,26,17,0.06)' : 'none';
+  } else {
+    nav.style.boxShadow = 'none';
+  }
+});
+window.addEventListener('resize', updateNavStyle);
+updateNavStyle();
+
+// Testimonials auto-rotate
+const testis = [
+  { q: '"What started as a simple question grew into one of the best decisions I\'ve made for myself. The specialists at Neoxell are extraordinarily knowledgeable, and the results have genuinely changed how I feel."', n: 'Elena M.', r: 'Laser Epilation Client' },
+  { q: '"Finally — a clinic that combines cutting-edge science with genuine luxury. The atmosphere is calm, the team is expert, and the results speak for themselves. I won\'t go anywhere else."', n: 'Sofia K.', r: 'Skin Rejuvenation Client' },
+  { q: '"Three sessions in and the difference is remarkable. They are discreet, expert, and truly effective. My skin has never looked better and I feel completely comfortable at every appointment."', n: 'Natalia V.', r: 'Carbon Peel Client' },
+  { q: '"The consultation alone was worth the visit. Dara took the time to understand exactly what I needed and designed a plan that was realistic and effective. Results exceeded every expectation."', n: 'Alexandra P.', r: 'HIFU Client' },
+];
+let currentTesti = 0;
+let testiTimer;
+
+function setTesti(i) {
+  currentTesti = i;
+  document.getElementById('testiQuote').textContent = testis[i].q;
+  document.getElementById('testiName').textContent = testis[i].n;
+  document.getElementById('testiRole').textContent = testis[i].r;
+  document.querySelectorAll('.testi-dot').forEach((d, j) => d.classList.toggle('active', j === i));
+  clearInterval(testiTimer);
+  testiTimer = setInterval(() => setTesti((currentTesti + 1) % testis.length), 5000);
+}
+
+testiTimer = setInterval(() => setTesti((currentTesti + 1) % testis.length), 5000);
+
+// Booking form
+function handleBooking(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = 'Request Sent ✓';
+  btn.style.background = 'var(--green-mid)';
+  setTimeout(() => {
+    btn.textContent = 'Send Request';
+    btn.style.background = '';
+    e.target.reset();
+  }, 3000);
+}
+</script>
+</body>
+</html>
