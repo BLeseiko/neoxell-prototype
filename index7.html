@@ -251,27 +251,31 @@
   }
   .hero-title em { font-style: italic; color: #b39462; }
   .hero-sub { font-size: var(--type-body); font-weight: 300; line-height: 1.6; color: #fff; }
-  .hero-stats-strip { display: flex; align-items: center; gap: 0; margin-top: 28px; }
-  .hero-stat { display: flex; flex-direction: column; gap: 2px; flex: 1; }
-  .hero-stat-num { font-family: 'Playfair Display', serif; font-size: clamp(1.25rem, 1vw + 0.9rem, 1.625rem); font-weight: 700; color: #fff; line-height: 1.1; }
-  .hero-stat-label { font-size: var(--type-body-sm); color: rgba(255,255,255,0.65); line-height: 1.3; }
-  .hero-stat-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.25); margin: 0 16px; flex-shrink: 0; }
-  .hero-ctas { display: flex; flex-direction: column; gap: 4px; }
+  .hero-stats-strip { display: flex; align-items: flex-start; gap: 0; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); }
+  .hero-stat { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .hero-stat-num-row { display: flex; align-items: baseline; gap: 4px; }
+  .hero-stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; color: #fff; line-height: 1; }
+  .hero-stat-star { font-size: 1.125rem; color: var(--gold); line-height: 1; }
+  .hero-stat-label { font-size: 0.625rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.55); line-height: 1.5; }
+  .hero-stat-divider { width: 1px; align-self: stretch; background: rgba(255,255,255,0.2); margin: 0 16px; flex-shrink: 0; }
+  .hero-ctas { display: flex; flex-direction: column; gap: 8px; }
   .btn-primary {
-    background: #a67c52; color: #fff;
-    border: none; border-radius: 2px; height: 48px; width: 100%;
+    background: var(--dark-green); color: #fff;
+    border: none; border-radius: 2px; height: 48px; width: auto;
     font-family: 'Karla', sans-serif; font-size: var(--type-eyebrow); letter-spacing: 1.8px; font-weight: 700;
-    cursor: pointer; transition: opacity .2s;
+    cursor: pointer; transition: opacity .2s; padding: 0 32px;
   }
   .btn-primary:hover { opacity: .88; }
   .btn-outline {
     background: transparent; color: #fff;
-    border: none; border-radius: 2px;
-    height: 48px; width: 100%;
+    border: 1px solid rgba(255,255,255,0.45); border-radius: 2px;
+    height: 48px; width: auto;
     font-family: 'Karla', sans-serif; font-size: var(--type-eyebrow); letter-spacing: 1.8px; font-weight: 700;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
+    cursor: pointer; padding: 0 28px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    transition: border-color .2s;
   }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.7); }
 
   @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
@@ -854,127 +858,26 @@
   }
 
   /* MORE REASONS */
-  #more-reasons {
-    background: #fdfcf9;
-    padding: 40px 20px;
-    display: flex; flex-direction: column; gap: 32px;
-  }
-  .reasons-header {
-    display: flex; flex-direction: column; gap: 24px;
-  }
-  .reasons-eyebrow {
-    font-family: 'Karla', sans-serif;
-    font-size: var(--type-eyebrow); letter-spacing: 1.8px;
-    color: #6b3d20; font-weight: 600; text-transform: uppercase;
-  }
-  .reasons-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: var(--type-heading-section); line-height: var(--lh-heading-section);
-    color: #152518; font-weight: 400; margin: 0;
-  }
-  .reasons-title-em { color: #6b3d20; }
-  .reasons-desc {
-    font-family: 'Karla', sans-serif;
-    font-size: var(--type-body); line-height: var(--lh-body-lg); color: #7a7068; margin: 0;
-  }
-  .reasons-scroll {
-    display: flex; gap: 12px;
-    overflow-x: auto; scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding: 0 0 4px;
-    scrollbar-width: none;
-  }
-  .reasons-scroll::-webkit-scrollbar { display: none; }
-  .reasons-offer-card {
-    flex-shrink: 0; width: 260px;
-    display: flex; flex-direction: column;
-    scroll-snap-align: start;
-    overflow: hidden;
-  }
-  .reasons-offer-img {
-    width: 100%; height: 190px; object-fit: cover; display: block;
-  }
-  .reasons-offer-body {
-    background: #FAF7F0;
-    padding: 24px 16px;
-    display: flex; flex-direction: column; gap: 24px;
-    flex: 1;
-  }
-  .reasons-offer-text {
-    display: flex; flex-direction: column; gap: 8px;
-  }
-  .reasons-offer-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: var(--type-heading-card); font-weight: 400;
-    color: #1c3a1c; line-height: normal;
-  }
-  .reasons-offer-sub {
-    font-family: 'Karla', sans-serif;
-    font-size: var(--type-body); font-weight: 400;
-    line-height: var(--lh-body); color: #7a7068;
-  }
-  .reasons-offer-cta {
-    font-family: 'Karla', sans-serif;
-    font-size: var(--type-eyebrow); font-weight: 700; color: #a67c52;
-    letter-spacing: 1.2px;
-    text-decoration: none;
-    background: none; border: none; padding: 0;
-    cursor: pointer; text-align: left;
-  }
-  .reasons-offer-cta:hover { opacity: .75; }
-
-  /* CTA */
-  #cta {
-    background: #1c3a1c;
-    display: flex; flex-direction: column; align-items: center;
-    justify-content: flex-end; text-align: center;
-    padding: 40px 32px; gap: 32px;
-  }
-  #cta .eyebrow { color: #a67c52; margin-bottom: 0; }
-  .cta-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: var(--type-display-cta); line-height: var(--lh-display-cta);
-    color: #fdfcf9; font-weight: 400;
-    letter-spacing: -1.14px; margin: 0;
-  }
-  .cta-title em { font-style: italic; color: #a67c52; }
-  .cta-actions {
-    display: flex; flex-direction: column; gap: 12px;
-    width: 100%; align-items: center;
-  }
-  .cta-buttons {
-    display: flex; flex-direction: row; gap: 4px; align-items: center; flex-wrap: wrap;
-  }
-  .btn-cta {
-    background: #a67c52; color: #fff;
-    border: none; border-radius: 2px;
-    width: 100%; height: 48px;
-    font-family: 'Karla', sans-serif; font-size: var(--type-eyebrow);
-    font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase;
-    cursor: pointer; transition: opacity .2s; white-space: nowrap;
-    display: inline-flex; align-items: center; justify-content: center;
-    padding: 0 32px; text-decoration: none;
-  }
-  .btn-cta:hover { opacity: .85; }
-  .btn-cta-secondary {
-    display: flex; align-items: center; justify-content: center; gap: 4px;
-    width: 100%; height: 48px;
-    background: none; border: none;
-    font-family: 'Karla', sans-serif; font-size: var(--type-eyebrow);
-    font-weight: 700; letter-spacing: 1.8px; color: #fff;
-    padding: 0 32px;
-    cursor: pointer; white-space: nowrap;
-  }
-  .btn-cta-secondary img { width: 15px; height: 11px; }
-  .cta-text {
-    display: flex; flex-direction: column; gap: 20px;
-    align-items: center; width: 100%;
-  }
-  .cta-address {
-    font-family: 'Karla', sans-serif;
-    font-size: var(--type-body); line-height: var(--lh-body);
-    color: #7a7068; text-align: center;
-  }
+  /* FREE INTAKE */
+  #free-intake { padding: 0; display: flex; flex-direction: column; overflow: hidden; }
+  .intake-visual { position: relative; height: 361px; overflow: hidden; display: flex; align-items: flex-end; }
+  .intake-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .5; }
+  .intake-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(28,58,28,0.6) 80%); }
+  .intake-header { position: relative; z-index: 2; padding: 0 24px 28px; display: flex; flex-direction: column; gap: 12px; }
+  .intake-eyebrow { font-family: 'Karla', sans-serif !important; font-size: var(--type-eyebrow) !important; letter-spacing: 1.8px !important; color: var(--gold) !important; font-weight: 600 !important; text-transform: uppercase; margin-bottom: 0 !important; }
+  .intake-title { font-family: 'Cormorant Garamond', serif; font-size: var(--type-heading-section); line-height: var(--lh-heading-section); color: var(--cream); font-weight: 400; letter-spacing: -0.5px; margin: 0; }
+  .intake-title em { font-style: italic; color: #c4a96a; }
+  .intake-sub { font-size: var(--type-body); font-weight: 300; line-height: 1.6; color: rgba(255,255,255,0.75); margin: 0; }
+  .intake-steps { background: var(--dark-green); padding: 28px 24px 36px; display: flex; flex-direction: column; gap: 0; }
+  .intake-step { display: flex; gap: 16px; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .intake-step:last-of-type { border-bottom: none; }
+  .intake-step-num { font-family: 'Karla', sans-serif; font-size: var(--type-body-sm); color: rgba(255,255,255,0.35); font-weight: 400; line-height: 1.5; flex-shrink: 0; min-width: 22px; padding-top: 1px; }
+  .intake-step-content { display: flex; flex-direction: column; gap: 6px; }
+  .intake-step-title { font-family: 'Karla', sans-serif; font-size: var(--type-body); font-weight: 600; color: #fff; line-height: 1.3; }
+  .intake-step-desc { font-size: var(--type-body-sm); font-weight: 300; color: rgba(255,255,255,0.55); line-height: 1.55; margin: 0; }
+  .btn-intake-cta { width: 100%; height: 48px; background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 2px; font-family: 'Karla', sans-serif; font-size: var(--type-eyebrow); font-weight: 700; letter-spacing: 1.8px; cursor: pointer; margin-top: 24px; transition: border-color .2s, background .2s; }
+  .btn-intake-cta:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.55); }
+  .intake-address { font-size: var(--type-body-sm); color: rgba(255,255,255,0.4); text-align: center; margin: 16px 0 0; line-height: 1.5; }
 
   /* FOOTER */
   footer { background: #f0ebe0; padding: 36px 20px; display: flex; flex-direction: column; }
@@ -1395,31 +1298,14 @@
     .partners-label { white-space: nowrap; }
     .partners-logos { flex-wrap: nowrap; gap: 24px; justify-content: space-between; flex: 1; }
 
-    /* ---- MORE REASONS — 12-col grid (padded): col 1-3 header / col 4-13 cards ---- */
-    #more-reasons {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      column-gap: 20px;
-      padding: 80px 20px;
-      align-items: start;
-    }
-    .reasons-header { grid-column: 1 / 4; }
-    .reasons-scroll {
-      grid-column: 4 / 13;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      overflow: visible;
-    }
-    .reasons-offer-card { min-width: unset; width: 100%; }
-
-    /* ---- CTA ---- */
-    #cta { padding: 80px; align-items: flex-start; text-align: left; }
-    .cta-text { align-items: flex-start; text-align: left; }
-    .cta-actions { align-items: flex-start; }
-    .cta-buttons { flex-wrap: nowrap; }
-    .btn-cta { width: auto; padding: 0 32px; }
-    .cta-address { text-align: left; }
+    /* ---- FREE INTAKE ---- */
+    #free-intake { flex-direction: row; height: 580px; }
+    .intake-visual { flex: 1; height: 100%; }
+    .intake-header { padding: 0 48px 48px; justify-content: flex-end; height: 100%; }
+    .intake-steps { flex: 0 0 460px; padding: 48px; overflow-y: auto; justify-content: center; }
+    .intake-title { font-size: var(--type-display-cta); line-height: var(--lh-display-cta); }
+    .btn-intake-cta { max-width: 320px; }
+    .intake-address { text-align: left; }
 
     /* ---- FOOTER ---- */
     footer { padding: 60px 20px; }
@@ -1449,10 +1335,8 @@
       <div class="nav-links">
         <a href="#services">Services</a>
         <a href="#laser">Prices</a>
-        <a href="#more-reasons">Offers</a>
-        <a href="#free-intake">Gift Cards</a>
+        <a href="#free-intake">Free Intake</a>
         <a href="#team">About</a>
-        <a href="#cta">Contact</a>
       </div>
       <button class="btn-book-nav" onclick="openModal()">BOOK NOW</button>
       <button class="burger" id="burger-btn" aria-label="Menu" onclick="toggleMenu()">
@@ -1543,17 +1427,20 @@
     <div class="hero-stats-strip">
       <div class="hero-stat">
         <span class="hero-stat-num">+8</span>
-        <span class="hero-stat-label">Years of experience</span>
+        <span class="hero-stat-label">Years of<br>experience</span>
       </div>
       <div class="hero-stat-divider"></div>
       <div class="hero-stat">
         <span class="hero-stat-num">98%</span>
-        <span class="hero-stat-label">Satisfied clients</span>
+        <span class="hero-stat-label">Satisfied<br>clients</span>
       </div>
       <div class="hero-stat-divider"></div>
       <div class="hero-stat">
-        <span class="hero-stat-num">4.9★</span>
-        <span class="hero-stat-label">Average rating</span>
+        <div class="hero-stat-num-row">
+          <span class="hero-stat-num">4.9</span>
+          <span class="hero-stat-star">★</span>
+        </div>
+        <span class="hero-stat-label">Average<br>rating</span>
       </div>
     </div>
   </div>
@@ -2117,60 +2004,49 @@
   </div>
 </section-->
 
-<section id="more-reasons">
-  <div class="reasons-header reveal">
-    <span class="reasons-eyebrow">Offers</span>
-    <h2 class="reasons-title">More reasons<br><span class="reasons-title-em">to start.</span></h2>
-    <p class="reasons-desc">We treat the root - not just the surface. Every protocol is tailored to your skin.</p>
-  </div>
-  <div class="reasons-scroll reveal">
-    <div class="reasons-offer-card">
-      <img class="reasons-offer-img" src="https://www.figma.com/api/mcp/asset/4e70978e-16e4-4cb8-8c99-40fba66020fe" alt="Bring a Friend">
-      <div class="reasons-offer-body">
-        <div class="reasons-offer-text">
-          <p class="reasons-offer-title">Bring a Friend</p>
-          <p class="reasons-offer-sub">Both get 15% off your next treatment</p>
-        </div>
-        <button class="reasons-offer-cta" onclick="openModal()">Explore &rarr;</button>
-      </div>
-    </div>
-    <div class="reasons-offer-card">
-      <img class="reasons-offer-img" src="https://www.figma.com/api/mcp/asset/7cec4635-d2f8-4c79-81de-d7ac0e844056" alt="Gift Card">
-      <div class="reasons-offer-body">
-        <div class="reasons-offer-text">
-          <p class="reasons-offer-title">Gift Card</p>
-          <p class="reasons-offer-sub">Any amount, redeemable on all treatments</p>
-        </div>
-        <button class="reasons-offer-cta" onclick="openModal()">Buy &rarr;</button>
-      </div>
-    </div>
-    <div class="reasons-offer-card">
-      <img class="reasons-offer-img" src="https://www.figma.com/api/mcp/asset/6ec9fb90-7ff7-4365-a6b6-c81d8cd57d61" alt="Free Intake">
-      <div class="reasons-offer-body">
-        <div class="reasons-offer-text">
-          <p class="reasons-offer-title">Free Intake</p>
-          <p class="reasons-offer-sub">No commitment, no cost &mdash; 45 min</p>
-        </div>
-        <button class="reasons-offer-cta" onclick="openModal()">Book &rarr;</button>
-      </div>
+<section id="free-intake">
+  <div class="intake-visual">
+    <video class="intake-video" autoplay muted loop playsinline>
+      <source src="istockphoto-2217277037-640_adpp_is.mp4" type="video/mp4">
+    </video>
+    <div class="intake-overlay"></div>
+    <div class="intake-header">
+      <span class="eyebrow intake-eyebrow">FREE INTAKE</span>
+      <h2 class="intake-title">Your <em>first visit</em><br>is on us</h2>
+      <p class="intake-sub">A 45-minute first visit – skin mapping, VISIA diagnostic, and a written protocol. No upsells. You leave with a plan.</p>
     </div>
   </div>
-</section>
-
-<section id="cta">
-  <div class="cta-text">
-    <span class="eyebrow">READY TO BEGIN?</span>
-    <h2 class="cta-title">Start your skin <em>transformation</em></h2>
-  </div>
-  <div class="cta-actions">
-    <div class="cta-buttons">
-      <button class="btn-cta" onclick="openModal()">Book a free session</button>
-      <button class="btn-cta-secondary" onclick="openModal()">
-        Schedule appointment
-        <img src="https://www.figma.com/api/mcp/asset/fd063d80-c37d-4fa0-9832-ccab9117b1eb" alt="→">
-      </button>
+  <div class="intake-steps">
+    <div class="intake-step">
+      <span class="intake-step-num">01</span>
+      <div class="intake-step-content">
+        <p class="intake-step-title">Choose your concern</p>
+        <p class="intake-step-desc">Tell us what you'd like to address — we'll suggest the most effective protocol.</p>
+      </div>
     </div>
-    <p class="cta-address">&middot; Tweede Hugo de Grootstraat 14H &middot; 1052 LC Amsterdam</p>
+    <div class="intake-step">
+      <span class="intake-step-num">02</span>
+      <div class="intake-step-content">
+        <p class="intake-step-title">Skin analysis</p>
+        <p class="intake-step-desc">A thorough consultation with your specialist to assess, plan and personalise your treatment.</p>
+      </div>
+    </div>
+    <div class="intake-step">
+      <span class="intake-step-num">03</span>
+      <div class="intake-step-content">
+        <p class="intake-step-title">A personalised programme</p>
+        <p class="intake-step-desc">We design your full treatment journey, including between-session skincare recommendations.</p>
+      </div>
+    </div>
+    <div class="intake-step">
+      <span class="intake-step-num">04</span>
+      <div class="intake-step-content">
+        <p class="intake-step-title">Long-term results</p>
+        <p class="intake-step-desc">Our commitment doesn't end after your session — we monitor progress and adapt as needed.</p>
+      </div>
+    </div>
+    <button class="btn-intake-cta" onclick="openModal()">BOOK A FREE SESSION</button>
+    <p class="intake-address">&middot; Tweede Hugo de Grootstraat 14H &middot; 1052 LC Amsterdam</p>
   </div>
 </section>
 
