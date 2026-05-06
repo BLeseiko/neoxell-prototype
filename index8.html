@@ -346,14 +346,16 @@
   .laser-stats-grid {
     display: grid; grid-template-columns: 1fr 1fr;
     width: 100%; border: 1px solid rgba(196,169,106,.1);
-    border-radius: 2px; overflow: hidden; margin-top: 24px;
+    border-radius: 2px; overflow: hidden; margin-top: 24px; box-sizing: border-box;
   }
-  .laser-stat { padding: 32px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .laser-stat { padding: 32px 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
   .laser-stat:nth-child(1), .laser-stat:nth-child(2) { border-bottom: 1px solid rgba(196,169,106,.1); }
   /* Concept C compact horizontal layout */
   .laser-stats-compact { grid-template-columns: 1fr 1fr 1fr !important; }
-  .laser-stats-compact .laser-stat { padding: 24px 20px; gap: 8px; border-bottom: none !important; }
+  .laser-stats-compact .laser-stat { padding: 20px 10px; gap: 6px; border-bottom: none !important; min-width: 0; }
   .laser-stats-compact .laser-stat:not(:last-child) { border-right: 1px solid rgba(196,169,106,.1); }
+  .laser-stats-compact .laser-stat-num { font-size: 28px; white-space: nowrap; }
+  .laser-stats-compact .laser-stat-title { font-size: 12px; line-height: 1.3; word-break: break-word; hyphens: auto; }
   .laser-stat:nth-child(1), .laser-stat:nth-child(3) { border-right: 1px solid rgba(196,169,106,.1); }
   .laser-stat-num {
     font-family: 'Cormorant Garamond', serif;
@@ -361,6 +363,34 @@
   }
   .laser-stat-title { font-size: var(--type-body); color: var(--cream); font-weight: 400; line-height: 1.4; }
   .laser-stat-desc { font-size: var(--type-body); font-weight: 300; color: #c4bcae; line-height: 1.5; }
+
+  /* Laser desktop layout helpers — hidden on mobile */
+  .laser-eyebrow { display: none; }
+  .laser-bullets { display: none; }
+  .laser-desktop-more-btn { display: none; }
+  .laser-cta-btn-row { display: contents; }
+  .laser-desktop-ba { display: none; }
+
+  /* Facials layout helpers */
+  .facials-desktop-ba { display: none; }
+  .facials-bullets { display: none; }
+  .facials-desktop-more-btn { display: none; }
+  .facials-cta-btn-row { display: contents; }
+  #facials-treatments { display: block; }
+  #facials-treatments .svc-price-row:nth-child(n+5) { display: none; }
+
+  /* Body layout helpers */
+  .body-desktop-ba { display: none; }
+  .body-bullets { display: none; }
+  .body-desktop-more-btn { display: none; }
+  .body-cta-btn-row { display: contents; }
+
+  /* Hide "Less info" collapse buttons on mobile */
+  .svc-less-info-btn:has(.svc-less-info-icon-x) { display: none; }
+
+  /* Concerns grid: show max 6 items */
+  #facials-detail .concerns-grid .concern-tag:nth-child(n+7),
+  #body-detail .concerns-grid .concern-tag:nth-child(n+7) { display: none; }
 
   /* BEFORE & AFTER */
   #before-after { background: #f0ebe0; padding: 60px 20px; }
@@ -475,23 +505,7 @@
     height: auto;
     max-height: none;
   }
-  .fv-image-area {
-    background: url('index6Assets/image 38.png') center top / cover no-repeat;
-    position: relative;
-    padding: 100px 32px 32px 32px;
-  }
-  .fv-image-area::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(28,58,28,0.3) 0%, rgba(28,58,28,0.85) 100%);
-    pointer-events: none;
-    z-index: 1;
-  }
-  .fv-image-area > * {
-    position: relative;
-    z-index: 2;
-  }
+  /* .fv-image-area replaced by .fv-img-wrap real image */
   .fv-content {
     padding: 32px 24px 48px;
     display: flex;
@@ -1109,6 +1123,332 @@
     flex-shrink: 0;
   }
 
+  /* ================================================
+     SERVICE DETAIL SECTIONS
+     Replaces #concerns, #laser, #before-after, #treatments
+  ================================================ */
+
+  /* Laser Hair Removal — light cream background */
+  #laser-detail {
+    background: var(--cream);
+    padding: 0;
+  }
+  #laser-detail .svc-detail-top { border-bottom: 1px solid var(--cream3); }
+  #laser-detail .svc-section-title { color: var(--text-dark); }
+  #laser-detail .svc-sec-desc { color: #7a7068; font-weight: 400; line-height: 22px; }
+  #laser-detail .svc-expand-btn { border-color: var(--cream3); color: var(--text-dark); }
+  #laser-expandable { overflow: hidden; max-height: 0; transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1); }
+  #laser-expandable.open { max-height: 3000px; }
+  #laser-cta-expanded { display: none; }
+  #facials-expandable { overflow: hidden; max-height: 0; transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1); }
+  #facials-expandable.open { max-height: 4000px; }
+  #facials-cta-expanded { display: none; }
+  #body-expandable { overflow: hidden; max-height: 0; transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1); }
+  #body-expandable.open { max-height: 4000px; }
+  #body-cta-expanded { display: none; }
+  /* Stats grid overrides for laser — no box border, no cell borders */
+  #laser-detail .laser-stats-grid { margin: 0 20px; width: auto; border: none; background: none; }
+  #laser-detail .laser-stat-title { color: #152518; font-size: 14px; line-height: 18px; }
+  #laser-detail .laser-stats-compact .laser-stat:not(:last-child) { border-right: none; }
+  #laser-detail .laser-stats-compact .laser-stat-num { font-size: 32px; }
+
+  /* Summary highlight bar */
+  .svc-summary-bar {
+    display: flex; margin: 16px 20px 0;
+    background: rgba(240,235,224,0.5); border-radius: 2px; overflow: hidden;
+  }
+  .svc-summary-item {
+    flex: 1; display: flex; flex-direction: column; gap: 4px;
+    padding: 12px; min-width: 0;
+  }
+  .svc-summary-item:not(:last-child) { border-right: 1px solid rgba(43,98,65,0.1); }
+  .svc-summary-label {
+    font-family: 'Karla', sans-serif; font-weight: 500;
+    font-size: 9px; letter-spacing: 1.35px; color: #6b3d20; white-space: nowrap;
+  }
+  .svc-summary-val {
+    font-family: 'Karla', sans-serif; font-weight: 400;
+    font-size: 18px; color: #152518; line-height: 1.2;
+  }
+
+  /* Laser price table — flex layout, numbered rows, large Cormorant price */
+  #laser-detail .svc-price-table {
+    margin: 24px 0 0;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  #laser-detail .svc-price-table-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 12px;
+    border-bottom: none;
+  }
+  .svc-price-head-treatments {
+    font-family: 'Karla', sans-serif; font-size: 12px; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase; color: #6b3d20;
+    width: 160px; flex-shrink: 0;
+  }
+  .svc-price-head-col {
+    font-family: 'Karla', sans-serif; font-size: 10px; font-weight: 400;
+    letter-spacing: 1.5px; text-transform: uppercase; color: #7a7068;
+    white-space: nowrap; text-align: right;
+  }
+  #laser-detail .svc-price-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px;
+    border-top: 0.4px solid rgba(10,10,10,0.2);
+    border-bottom: 0.4px solid rgba(10,10,10,0.2);
+    gap: 0;
+  }
+  #laser-detail .svc-price-row + .svc-price-row { border-top: none; }
+  .svc-price-name-wrap {
+    display: flex; align-items: center; gap: 12px;
+    width: 160px; flex-shrink: 0; white-space: nowrap;
+  }
+  .svc-price-num {
+    font-family: 'Inter', sans-serif; font-weight: 600;
+    font-size: 10px; letter-spacing: 1.5px; color: #6b3d20; opacity: 0.5; flex-shrink: 0;
+  }
+  #laser-detail .svc-price-name {
+    font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 400;
+    color: #0a0a0a; white-space: nowrap;
+  }
+  #laser-detail .svc-price-dur {
+    font-family: 'Karla', sans-serif; font-size: 11px; color: rgba(10,10,10,0.55); white-space: nowrap; text-align: right;
+  }
+  #laser-detail .svc-price-val {
+    font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500;
+    color: #152518; letter-spacing: -0.4px; text-align: right; white-space: nowrap;
+    width: 50px; flex-shrink: 0;
+  }
+
+  /* Facials price table — same flex layout as laser */
+  #facials-detail .svc-price-table {
+    margin: 24px 0 0; padding: 0 20px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  #facials-detail .svc-price-table-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 12px;
+    grid-template-columns: unset;
+    border-bottom: none;
+  }
+  #facials-detail .svc-price-row {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    padding: 12px;
+    border-top: 0.4px solid rgba(10,10,10,0.2);
+    border-bottom: 0.4px solid rgba(10,10,10,0.2);
+    grid-template-columns: unset;
+    gap: 0;
+  }
+  #facials-detail .svc-price-row + .svc-price-row { border-top: none; }
+  #facials-detail .svc-price-name {
+    font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 400;
+    color: #0a0a0a; white-space: normal; overflow: visible;
+  }
+  #facials-detail .svc-price-dur {
+    font-size: 11px; color: rgba(10,10,10,0.55); white-space: nowrap; text-align: right; flex-shrink: 0;
+  }
+  #facials-detail .svc-price-val {
+    font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500;
+    color: #152518; letter-spacing: -0.4px; width: 50px; text-align: right; white-space: nowrap; flex-shrink: 0;
+  }
+
+  /* Instagram link below BA */
+  .svc-ig-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 20px 16px;
+    font-family: 'Karla', sans-serif; font-weight: 700;
+    font-size: 12px; letter-spacing: 1.2px;
+    color: #a67c52; text-decoration: none;
+  }
+  .svc-ig-link:hover { opacity: 0.75; }
+
+  /* Less info collapse button */
+  .svc-less-info-btn {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    width: 100%; height: 48px; background: none;
+    border: 1px solid #eae5dc; border-radius: 2px; cursor: pointer;
+    font-family: 'Karla', sans-serif; font-weight: 700;
+    font-size: 12px; letter-spacing: 1.8px;
+    color: #152518; transition: background .2s;
+  }
+  .svc-less-info-btn:hover { background: rgba(0,0,0,0.03); }
+  .svc-less-info-btn svg { flex-shrink: 0; }
+  .svc-less-info-icon-x { transform: rotate(45deg); }
+
+  /* Laser CTA — green button, dark address */
+  #laser-detail .svc-sec-cta-addr { color: rgba(17,26,17,0.6); }
+
+  /* Light service sections */
+  #facials-detail { background: var(--cream); padding: 0; }
+  #body-detail {  padding: 0; }
+
+  #facials-detail .svc-detail-top,
+  #body-detail .svc-detail-top { border-bottom: 1px solid var(--cream3); }
+
+  #facials-detail .svc-section-title,
+  #body-detail .svc-section-title { color: var(--text-dark); }
+
+  #facials-detail .svc-sec-desc,
+  #body-detail .svc-sec-desc { color: var(--text-mid); }
+
+  #facials-detail .svc-expand-btn,
+  #body-detail .svc-expand-btn { border-color: var(--cream3); color: var(--dark-green); }
+
+  /* Shared section top bar */
+  .svc-detail-top {
+    padding: 32px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .svc-section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 400; line-height: 1;
+    letter-spacing: -1.4px;
+    color: var(--text-dark);
+    padding: 0 20px;
+  }
+  .svc-expand-btn {
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+    background: transparent; border: 1px solid var(--cream3);
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    font-size: 1.25rem; line-height: 1; font-weight: 300;
+    transition: transform .3s, background .2s;
+    color: var(--dark-green);
+  }
+  .svc-expand-btn.open { transform: rotate(45deg); background: rgba(196,169,106,.08); }
+
+  /* Description under header */
+  .svc-sec-desc {
+    font-size: var(--type-body); font-weight: 300; line-height: 1.6;
+    padding: 20px 20px 0; margin: 0;
+  }
+
+  /* Service image */
+  .svc-detail-img {
+    margin: 24px 20px; border-radius: 8px; overflow: hidden; height: 280px;
+  }
+  .svc-detail-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* Treatment price table */
+  .svc-price-table { margin: 0 20px 24px; padding: 0 20px; }
+  .svc-price-table-head {
+    display: grid; grid-template-columns: 1fr 64px 80px;
+    padding: 8px 0; gap: 8px;
+  }
+  .svc-price-table-head span {
+    font-size: var(--type-badge); letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  #laser-detail .svc-price-table-head span { color: #6B3D20; }
+  .svc-price-row {
+    display: grid; grid-template-columns: 1fr 64px 80px;
+    padding: 14px 0; gap: 8px; align-items: center;
+  }
+  #laser-detail .svc-price-row { border-bottom: 1px solid rgba(196,169,106,.08); }
+  .svc-price-row:last-child { border-bottom: none !important; }
+
+  .svc-price-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: var(--type-heading-item); font-weight: 400; line-height: 1.2;
+  }
+  #laser-detail .svc-price-name { color: #152518; }
+
+  .svc-price-dur, .svc-price-val {
+    font-size: var(--type-body); text-align: right; white-space: nowrap;
+  }
+  #laser-detail .svc-price-dur { color: rgba(10,10,10,0.5); }
+    #laser-detail .svc-price-val { color: #152518; }
+
+  /* Body-detail price table — same flex layout as laser/facials */
+  #body-detail .svc-price-table {
+    margin: 24px 0 0; padding: 0 20px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  #body-detail .svc-price-table-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 12px;
+    grid-template-columns: unset;
+    border-bottom: none;
+  }
+  #body-detail .svc-price-row {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    padding: 12px;
+    border-top: 0.4px solid rgba(10,10,10,0.2);
+    border-bottom: 0.4px solid rgba(10,10,10,0.2);
+    grid-template-columns: unset;
+    gap: 0;
+  }
+  #body-detail .svc-price-row + .svc-price-row { border-top: none; }
+  #body-detail .svc-price-name {
+    font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 400;
+    color: #0a0a0a; white-space: normal; overflow: visible;
+  }
+  #body-detail .svc-price-dur {
+    font-size: 11px; color: rgba(10,10,10,0.55); white-space: nowrap; text-align: right; flex-shrink: 0;
+  }
+  #body-detail .svc-price-val {
+    font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500;
+    color: #152518; letter-spacing: -0.4px; width: 50px; text-align: right; white-space: nowrap; flex-shrink: 0;
+  }
+
+  /* More info toggle button */
+  .svc-more-toggle {
+    display: flex; align-items: center; gap: 8px;
+    margin: 0 20px; width: calc(100% - 40px); padding: 12px 16px;
+    background: none; border-radius: 2px; cursor: pointer;
+    font-family: 'Karla', sans-serif; font-size: var(--type-eyebrow);
+    font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+    transition: background .2s;
+  }
+  #laser-detail .svc-more-toggle {
+    border: 1px solid rgba(196,169,106,.2); color: var(--gold);
+  }
+  #facials-detail .svc-more-toggle,
+  #body-detail .svc-more-toggle { border: 1px solid var(--cream3); color: #a67c52; }
+  .svc-more-toggle:hover { background: rgba(196,169,106,.06); }
+  .svc-more-toggle-icon { font-size: 1.125rem; line-height: 1; transition: transform .3s; }
+  .svc-more-toggle.open .svc-more-toggle-icon { transform: rotate(45deg); }
+
+  .svc-expandable { display: none; }
+  .svc-expandable.open { display: block; }
+
+  /* Section CTA */
+  .svc-sec-cta {
+    padding: 24px 20px 40px;
+    display: flex; flex-direction: column; gap: 12px; align-items: center;
+  }
+  .svc-sec-cta-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 48px; background: var(--bright-green);
+    border-radius: 2px; border: none; cursor: pointer; text-decoration: none;
+    font-family: 'Karla', sans-serif; font-weight: 700;
+    font-size: var(--type-eyebrow); letter-spacing: 1.8px; text-transform: uppercase;
+    color: #fff; transition: opacity .2s;
+  }
+  .svc-sec-cta-btn:hover { opacity: .85; }
+  .svc-sec-cta-addr { font-size: var(--type-body); text-align: center; }
+  #facials-detail .svc-sec-cta-addr,
+  #body-detail .svc-sec-cta-addr { color: var(--text-mid); }
+
+  /* Inline before/after in service sections */
+  .svc-ba-wrap { margin: 24px 20px 0; }
+
+  /* Updated first-visit with real image at top */
+  .fv-img-wrap {
+    position: relative; width: 100%; overflow: hidden;
+    max-height: 380px;
+  }
+  .fv-img-main {
+    width: 100%; height: 100%; object-fit: cover; object-position: center top;
+    display: block; aspect-ratio: 1 / 1;
+  }
+  .fv-img-tag {
+    position: absolute; top: 20px; left: 20px; z-index: 1;
+    background: var(--gold); color: var(--dark-green);
+    font-size: var(--type-badge); letter-spacing: 1.5px; font-weight: 600;
+    padding: 4px 10px; border-radius: 2px;
+  }
+
   /* =========================
      DESKTOP RESPONSIVE
      @media (min-width: 900px)
@@ -1175,19 +1515,19 @@
     .hero-bg { display: none; }
     .hero-content {
       flex: 0 0 590px; width: 590px;
-      padding: 168px 40px 60px;
+      padding: 168px 48px 60px;
       background: var(--cream);
       position: relative; z-index: 2;
-      justify-content: flex-start;
+      justify-content: center;
       text-align: left; align-items: flex-start;
     }
     .hero-eyebrow { color: var(--text-mid); }
-    .hero-title { color: var(--dark-green); font-size: 4rem; line-height: 1.05; }
+    .hero-title { color: var(--dark-green); font-size: 4.75rem; line-height: 1.02; }
     .hero-title em { color: #b39462; }
-    .hero-sub { color: var(--text-mid); }
-    .hero-ctas { flex-direction: row; gap: 12px; flex-wrap: wrap; }
-    .btn-primary { width: 200px; }
-    .btn-outline { color: var(--dark-green); border-color: var(--dark-green); width: 200px; }
+    .hero-sub { color: var(--text-mid); font-size: 1.05rem; }
+    .hero-ctas { flex-direction: column; gap: 14px; flex-wrap: nowrap; align-items: flex-start; }
+    .btn-primary { width: auto; min-width: 260px; height: 62px; font-size: 0.8rem; padding: 0 40px; }
+    .btn-outline { color: var(--dark-green); border-color: var(--dark-green); width: auto; min-width: 260px; height: 62px; font-size: 0.8rem; padding: 0 40px; }
     .hero-image-desktop {
       flex: 1 1 0; min-width: 0; height: 100%;
       object-fit: cover;
@@ -1347,13 +1687,11 @@
       padding: 0;
       align-items: stretch;
     }
-    .fv-image-area {
+    .fv-img-wrap {
       grid-column: 1 / 8;
-      padding: 0;
-      background-position: center center;
+      max-height: none;
     }
-    .fv-image-area::after { display: none; }
-    .fv-image-area .fv-header { display: none; }
+    .fv-img-main { aspect-ratio: auto; height: 100%; object-position: center center; }
     .fv-content {
       grid-column: 8 / 13;
       padding: 48px 40px;
@@ -1430,6 +1768,277 @@
     /* ---- FOOTER ---- */
     footer { padding: 60px 20px; }
     .footer-links { gap: 24px; }
+
+    /* ---- LASER DETAIL — two-column layout ---- */
+    #laser-detail { background: var(--cream2); }
+    #laser-body {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: 20px;
+      padding: 40px 20px;
+      align-items: flex-start;
+    }
+    .laser-d-left {
+      order: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      padding: 36px 24px 0 0;
+    }
+    .laser-d-right {
+      order: 2;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .laser-eyebrow { display: block; }
+    #laser-detail .svc-section-title { padding: 0; }
+    #laser-detail .svc-sec-desc { padding: 0; }
+    #laser-detail .svc-summary-bar { margin: 0; }
+    #laser-detail .svc-detail-img { margin: 0; height: 432px; border-radius: 2px; }
+    .laser-mobile-cta { display: none !important; }
+    .laser-mobile-ba { display: none !important; }
+    .laser-mobile-stats { display: none !important; }
+    #laser-expandable { max-height: none !important; overflow: visible !important; }
+    #laser-cta-expanded {
+      display: flex !important;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 24px 0 40px;
+      gap: 12px;
+    }
+    .laser-desktop-more-btn { display: flex; width: auto; padding: 0 24px; }
+    .laser-cta-btn-row { display: flex; flex-direction: row; align-items: center; gap: 16px; }
+    #laser-cta-expanded .svc-sec-cta-btn { width: auto; padding: 0 42px; }
+    #laser-cta-expanded .svc-sec-cta-addr { text-align: left; }
+    #laser-cta-expanded .svc-less-info-btn:not(.laser-desktop-more-btn) { display: none !important; }
+    .laser-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      list-style: none;
+      margin: 0;
+      padding: 0 0 36px;
+    }
+    .laser-bullets li {
+      font-family: 'Karla', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: #7a7068;
+      line-height: 1.5;
+      padding-left: 16px;
+      position: relative;
+    }
+    .laser-bullets li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+    }
+    .laser-desktop-ba { display: flex; flex-direction: column; gap: 12px; }
+    .laser-dba-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      gap: 20px;
+    }
+    .laser-dba-track::-webkit-scrollbar { display: none; }
+    .laser-dba-track .ba-split-card {
+      flex: 0 0 353px;
+      max-width: 353px;
+      scroll-snap-align: start;
+    }
+    .laser-dba-nav {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      justify-content: center;
+    }
+    .laser-desktop-ba .ba-dot { flex-shrink: 0; }
+    #laser-detail .svc-price-table { margin: 0; padding: 0; }
+
+    /* ---- FACIALS DETAIL — two-column layout ---- */
+    #facials-body {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: 20px;
+      padding: 40px 20px;
+      align-items: flex-start;
+    }
+    .facials-d-left {
+      order: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      padding: 36px 24px 0 0;
+    }
+    .facials-d-right {
+      order: 2;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    #facials-detail .svc-section-title { padding: 0; }
+    #facials-detail .svc-sec-desc { padding: 0; }
+    #facials-detail .svc-summary-bar { margin: 0; }
+    #facials-detail .svc-detail-img { margin: 0; height: 432px; border-radius: 2px; }
+    .facials-mobile-cta { display: none !important; }
+    .facials-mobile-ba { display: none !important; }
+    #facials-expandable { max-height: none !important; overflow: visible !important; }
+    #facials-cta-expanded {
+      display: flex !important;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 24px 0 40px;
+      gap: 12px;
+    }
+    .facials-desktop-more-btn { display: flex; width: auto; padding: 0 24px; }
+    .facials-cta-btn-row { display: flex; flex-direction: row; align-items: center; gap: 16px; }
+    #facials-cta-expanded .svc-sec-cta-btn { width: auto; padding: 0 42px; }
+    #facials-cta-expanded .svc-sec-cta-addr { text-align: left; }
+    #facials-cta-expanded .svc-less-info-btn:not(.facials-desktop-more-btn) { display: none !important; }
+    .facials-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      list-style: none;
+      margin: 0;
+      padding: 0 0 24px;
+    }
+    .facials-bullets li {
+      font-family: 'Karla', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: #7a7068;
+      line-height: 1.5;
+      padding-left: 16px;
+      position: relative;
+    }
+    .facials-bullets li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+    }
+    .facials-desktop-ba { display: flex; flex-direction: column; gap: 12px; }
+    .facials-dba-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      gap: 20px;
+    }
+    .facials-dba-track::-webkit-scrollbar { display: none; }
+    .facials-dba-track .ba-split-card {
+      flex: 0 0 353px;
+      max-width: 353px;
+      scroll-snap-align: start;
+    }
+    .facials-dba-nav {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      justify-content: center;
+    }
+    .facials-desktop-ba .ba-dot { flex-shrink: 0; }
+    #facials-detail .svc-price-table { margin: 0; padding: 0; padding-top: 36px; }
+    #facials-detail .svc-expandable { display: block; }
+    #facials-detail .svc-price-row:nth-child(n+5) { display: none; }
+    #facials-detail .concerns-grid { padding: 0 !important; }
+
+    /* ---- BODY DETAIL — two-column layout ---- */
+    #body-body {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: 20px;
+      padding: 40px 20px;
+      align-items: flex-start;
+    }
+    .body-d-left {
+      order: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      padding: 36px 24px 0 0;
+    }
+    .body-d-right {
+      order: 2;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    #body-detail .svc-section-title { padding: 0; }
+    #body-detail .svc-sec-desc { padding: 0; }
+    #body-detail .svc-summary-bar { margin: 0; }
+    #body-detail .svc-detail-img { margin: 0; height: 432px; border-radius: 2px; }
+    .body-mobile-cta { display: none !important; }
+    .body-mobile-ba { display: none !important; }
+    #body-expandable { max-height: none !important; overflow: visible !important; }
+    #body-cta-expanded {
+      display: flex !important;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 24px 0 40px;
+      gap: 12px;
+    }
+    .body-desktop-more-btn { display: flex; width: auto; padding: 0 24px; }
+    .body-cta-btn-row { display: flex; flex-direction: row; align-items: center; gap: 16px; }
+    #body-cta-expanded .svc-sec-cta-btn { width: auto; padding: 0 42px; }
+    #body-cta-expanded .svc-sec-cta-addr { text-align: left; }
+    #body-cta-expanded .svc-less-info-btn:not(.body-desktop-more-btn) { display: none !important; }
+    .body-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      list-style: none;
+      margin: 0;
+      padding: 0 0 24px;
+    }
+    .body-bullets li {
+      font-family: 'Karla', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: #7a7068;
+      line-height: 1.5;
+      padding-left: 16px;
+      position: relative;
+    }
+    .body-bullets li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+    }
+    .body-desktop-ba { display: flex; flex-direction: column; gap: 12px; }
+    .body-dba-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      gap: 20px;
+    }
+    .body-dba-track::-webkit-scrollbar { display: none; }
+    .body-dba-track .ba-split-card {
+      flex: 0 0 353px;
+      max-width: 353px;
+      scroll-snap-align: start;
+    }
+    .body-dba-nav {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      justify-content: center;
+    }
+    .body-desktop-ba .ba-dot { flex-shrink: 0; }
+    #body-detail .svc-price-table { margin: 0; padding: 0; padding-top: 36px; }
+    #body-detail .concerns-grid { padding: 0 !important; }
   }
 </style>
 </head>
@@ -1585,172 +2194,592 @@
   </div>
 </section>
 
-<section id="concerns">
-  <div class="concerns-left-col">
-  <span class="eyebrow reveal">SKIN SOLUTIONS</span>
-  <h2 class="section-title reveal">Your concern.<br><em>Our expertise.</em></h2>
-  </div>
-  <img class="skin-concern-img reveal" src="unsplash__A0jYQvTm9M.png" alt="Skin Concerns">
-  <p class="concerns-desc reveal">We treat the root — not just the surface. Every protocol is tailored to your skin.</p>
-  <div class="concerns-grid reveal">
-    <div class="concern-tag"><div class="dot"></div><span>Scars & Texture</span></div>
-    <div class="concern-tag"><div class="dot"></div><span>Face Sculpting</span></div>
-    <div class="concern-tag"><div class="dot"></div><span>Pigmentation</span></div>
-    <div class="concern-tag"><div class="dot"></div><span>Skin Quality</span></div>
-    <div class="concern-tag"><div class="dot"></div><span>Dehydrated Skin</span></div>
-    <div class="concern-tag"><div class="dot"></div><span>Scalp Health</span></div>
-    <div class="concern-tag"><div class="dot"></div><span>Skin Barrier</span></div>
-    <div class="concern-tag"><div class="dot"></div><span>Routine Check-up</span></div>
-  </div>
-</section>
+<!-- LASER HAIR REMOVAL -->
+<section id="laser-detail">
 
-<section id="laser">
-  <div class="laser-left-col">
-  <span class="eyebrow reveal">LASER HAIR REMOVAL</span>
-  <h2 class="section-title reveal">Permanent results.<br><em>Zero compromise.</em></h2>
-  <p class="laser-sub reveal">Not all lasers are equal. We use German-engineered, medical-grade technology — trusted by leading clinics worldwide.</p>
-  </div>
-  <div class="laser-stats-grid laser-stats-compact reveal">
-    <div class="laser-stat">
-      <span class="laser-stat-num">98%</span>
-      <p class="laser-stat-title">Clinical safety record</p>
-    </div>
-    <div class="laser-stat">
-      <span class="laser-stat-num">3-6</span>
-      <p class="laser-stat-title">Sessions to permanent</p>
-    </div>
-    <div class="laser-stat">
-      <span class="laser-stat-num">Smart</span>
-      <p class="laser-stat-title">Time and money saver</p>
-    </div>
-  </div>
-</section>
+  <div id="laser-body">
 
-<section id="before-after">
-  <div class="ba-left-col">
-    <span class="eyebrow reveal">REAL RESULTS</span>
-    <h2 class="section-title reveal">See the <em>difference</em></h2>
-    <p class="ba-intro reveal">Every skin is different. These are real client results – no filters, no retouching. Photos provided by clients with their consent.</p>
-    <a href="https://www.instagram.com/" class="ba-ig-link ba-ig-link-desktop reveal">See more on Instagram</a>
-  </div>
-  <div class="ba-right-col">
-    <div class="ba-scroll-track reveal" id="baTrack">
-      <div class="ba-split-card">
-        <div class="ba-split-images">
-          <div class="ba-split-side">
-            <img src="Index6Assets/Before1.png" alt="Before" class="ba-split-img">
-            <span class="ba-split-label before-label">BEFORE</span>
-          </div>
-          <div class="ba-split-divider"></div>
-          <div class="ba-vs-badge">vs</div>
-          <div class="ba-split-side">
-            <img src="Index6Assets/After1.png" alt="After" class="ba-split-img">
-            <span class="ba-split-label after-label">AFTER</span>
-          </div>
-        </div>
-        <div class="ba-split-caption">
-          <p class="ba-split-treatment">Microneedling · 3 sessions</p>
-          <p class="ba-split-detail">Client, 29 — 15% new hair growth</p>
-        </div>
+    <!-- Desktop: right column | Mobile: image at top (DOM-first) -->
+    <div class="laser-d-right">
+      <div class="svc-detail-img reveal">
+        <img src="unsplash__A0jYQvTm9M.png" alt="Laser hair removal treatment">
       </div>
-      <div class="ba-split-card">
-        <div class="ba-split-images">
-          <div class="ba-split-side">
-            <img src="Index6Assets/Before2.png" alt="Before" class="ba-split-img">
-            <span class="ba-split-label before-label">BEFORE</span>
-          </div>
-          <div class="ba-split-divider"></div>
-          <div class="ba-vs-badge">vs</div>
-          <div class="ba-split-side">
-            <img src="Index6Assets/After2.png" alt="After" class="ba-split-img">
-            <span class="ba-split-label after-label">AFTER</span>
-          </div>
-        </div>
-        <div class="ba-split-caption">
-          <p class="ba-split-treatment">Scars &amp; Texture · 6 sessions</p>
-          <p class="ba-split-detail">Client, 29 — facial · 94% reduction</p>
-        </div>
-      </div>
-      <div class="ba-split-card">
-        <div class="ba-split-images">
-          <div class="ba-split-side">
-            <img src="Index6Assets/Before3.png" alt="Before" class="ba-split-img">
-            <span class="ba-split-label before-label">BEFORE</span>
-          </div>
-          <div class="ba-split-divider"></div>
-          <div class="ba-vs-badge">vs</div>
-          <div class="ba-split-side">
-            <img src="Index6Assets/After3.png" alt="After" class="ba-split-img">
-            <span class="ba-split-label after-label">AFTER</span>
-          </div>
-        </div>
-        <div class="ba-split-caption">
-          <p class="ba-split-treatment">Laser · 6 sessions</p>
-          <p class="ba-split-detail">Client, 29 — full lower legs · 94% reduction</p>
-        </div>
-      </div>
-
+      <!-- Desktop-only: BA carousel with dot controls -->
+      <div class="laser-desktop-ba">
+        <div class="laser-dba-track" id="laserDBATrack">
           <div class="ba-split-card">
-        <div class="ba-split-images">
-          <div class="ba-split-side">
-            <img src="Index6Assets/Before1.png" alt="Before" class="ba-split-img">
-            <span class="ba-split-label before-label">BEFORE</span>
+            <div class="ba-split-images">
+              <div class="ba-split-side">
+                <img src="Index6Assets/Before3.png" alt="Before" class="ba-split-img">
+                <span class="ba-split-label before-label">BEFORE</span>
+              </div>
+              <div class="ba-split-divider"></div>
+              <div class="ba-vs-badge">vs</div>
+              <div class="ba-split-side">
+                <img src="Index6Assets/After3.png" alt="After" class="ba-split-img">
+                <span class="ba-split-label after-label">AFTER</span>
+              </div>
+            </div>
+            <div class="ba-split-caption">
+              <p class="ba-split-treatment">Laser &middot; 6 sessions</p>
+              <p class="ba-split-detail">Client, 29 &mdash; full lower legs &middot; 94% reduction</p>
+            </div>
           </div>
-          <div class="ba-split-divider"></div>
-          <div class="ba-vs-badge">vs</div>
-          <div class="ba-split-side">
-            <img src="Index6Assets/After1.png" alt="After" class="ba-split-img">
-            <span class="ba-split-label after-label">AFTER</span>
+          <div class="ba-split-card">
+            <div class="ba-split-images">
+              <div class="ba-split-side">
+                <img src="Index6Assets/Before1.png" alt="Before" class="ba-split-img">
+                <span class="ba-split-label before-label">BEFORE</span>
+              </div>
+              <div class="ba-split-divider"></div>
+              <div class="ba-vs-badge">vs</div>
+              <div class="ba-split-side">
+                <img src="Index6Assets/After1.png" alt="After" class="ba-split-img">
+                <span class="ba-split-label after-label">AFTER</span>
+              </div>
+            </div>
+            <div class="ba-split-caption">
+              <p class="ba-split-treatment">Laser &middot; 4 sessions</p>
+              <p class="ba-split-detail">Client, 33 &mdash; underarms &middot; 91% reduction</p>
+            </div>
           </div>
         </div>
-        <div class="ba-split-caption">
-          <p class="ba-split-treatment">Laser · 6 sessions</p>
-          <p class="ba-split-detail">Client, 29 — full lower legs · 94% reduction</p>
+        <div class="laser-dba-nav" id="laserDBADots">
+          <button class="ba-dot active" onclick="laserDBAGoTo(0)" aria-label="Slide 1"></button>
+          <button class="ba-dot" onclick="laserDBAGoTo(1)" aria-label="Slide 2"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop: left column | Mobile: full-width below image -->
+    <div class="laser-d-left">
+      <!--p class="eyebrow laser-eyebrow">SKIN SOLUTIONS</p-->
+      <h2 class="svc-section-title">Laser Hair Removal</h2>
+      <p class="svc-sec-desc reveal">Not all lasers are equal. We use German-engineered, medical-grade technology — trusted by leading clinics worldwide.</p>
+      <div class="svc-summary-bar reveal">
+        <div class="svc-summary-item">
+          <span class="svc-summary-label">DURATION</span>
+          <span class="svc-summary-val">60–90min</span>
+        </div>
+        <div class="svc-summary-item">
+          <span class="svc-summary-label">PRICE, FROM</span>
+          <span class="svc-summary-val">€33</span>
+        </div>
+        <div class="svc-summary-item">
+          <span class="svc-summary-label">AVG COURSE</span>
+          <span class="svc-summary-val">4 sessions</span>
         </div>
       </div>
 
+      <!-- Mobile-only: collapsed CTA -->
+      <div class="svc-sec-cta laser-mobile-cta" id="laser-cta-collapsed">
+        <button class="svc-less-info-btn" onclick="laserToggleExpand()">More info <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        <a href="#booking" class="svc-sec-cta-btn" onclick="openModal(); return false;">Book a free session</a>
+      </div>
+
+      <!-- Expandable (hidden on mobile until toggled; always open on desktop) -->
+      <div id="laser-expandable">
+        <ul class="laser-bullets reveal">
+          <li>Suitable for all skin types, including darker tones</li>
+          <li>FDA &amp; CE certified technology</li>
+          <li>Sessions from 15–90 minutes</li>
+          <li>Virtually pain-free with integrated cooling</li>
+        </ul>
+        <div class="svc-price-table reveal">
+          <div class="svc-price-table-head">
+            <span class="svc-price-head-treatments">TREATMENTS</span>
+            <span class="svc-price-head-col">DURATION</span>
+            <span class="svc-price-head-col">PRICES, FROM</span>
+          </div>
+          <div class="svc-price-row">
+            <div class="svc-price-name-wrap">
+              <span class="svc-price-num">01</span>
+              <span class="svc-price-name">Facial hair removal</span>
+            </div>
+            <span class="svc-price-dur">45 min</span>
+            <span class="svc-price-val">€39</span>
+          </div>
+          <div class="svc-price-row">
+            <div class="svc-price-name-wrap">
+              <span class="svc-price-num">02</span>
+              <span class="svc-price-name">Upper body and arms</span>
+            </div>
+            <span class="svc-price-dur">60 min</span>
+            <span class="svc-price-val">€33</span>
+          </div>
+          <div class="svc-price-row">
+            <div class="svc-price-name-wrap">
+              <span class="svc-price-num">03</span>
+              <span class="svc-price-name">Legs and bikini</span>
+            </div>
+            <span class="svc-price-dur">60 min</span>
+            <span class="svc-price-val">€70</span>
+          </div>
+        </div>
+
+        <!-- Mobile-only: BA carousel -->
+        <div class="svc-ba-wrap reveal laser-mobile-ba">
+          <div class="ba-scroll-track" id="laserBATrack">
+            <div class="ba-split-card">
+              <div class="ba-split-images">
+                <div class="ba-split-side">
+                  <img src="Index6Assets/Before3.png" alt="Before" class="ba-split-img">
+                  <span class="ba-split-label before-label">BEFORE</span>
+                </div>
+                <div class="ba-split-divider"></div>
+                <div class="ba-vs-badge">vs</div>
+                <div class="ba-split-side">
+                  <img src="Index6Assets/After3.png" alt="After" class="ba-split-img">
+                  <span class="ba-split-label after-label">AFTER</span>
+                </div>
+              </div>
+              <div class="ba-split-caption">
+                <p class="ba-split-treatment">Laser · 6 sessions</p>
+                <p class="ba-split-detail">Client, 29 — full lower legs · 94% reduction</p>
+              </div>
+            </div>
+            <div class="ba-split-card">
+              <div class="ba-split-images">
+                <div class="ba-split-side">
+                  <img src="Index6Assets/Before1.png" alt="Before" class="ba-split-img">
+                  <span class="ba-split-label before-label">BEFORE</span>
+                </div>
+                <div class="ba-split-divider"></div>
+                <div class="ba-vs-badge">vs</div>
+                <div class="ba-split-side">
+                  <img src="Index6Assets/After1.png" alt="After" class="ba-split-img">
+                  <span class="ba-split-label after-label">AFTER</span>
+                </div>
+              </div>
+              <div class="ba-split-caption">
+                <p class="ba-split-treatment">Laser · 4 sessions</p>
+                <p class="ba-split-detail">Client, 33 — underarms · 91% reduction</p>
+              </div>
+            </div>
+            <div class="ba-split-card">
+              <div class="ba-split-caption">
+                <a href="https://www.instagram.com/neoxell_amsterdam/" class="svc-ig-link reveal" target="_blank" rel="noopener">See more on instagram →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile-only: stats -->
+        <div class="laser-stats-grid laser-stats-compact reveal laser-mobile-stats">
+          <div class="laser-stat">
+            <span class="laser-stat-num">98%</span>
+            <p class="laser-stat-title">Clinical safety record</p>
+          </div>
+          <div class="laser-stat">
+            <span class="laser-stat-num">3–6</span>
+            <p class="laser-stat-title">Sessions to permanent</p>
+          </div>
+          <div class="laser-stat">
+            <span class="laser-stat-num">Smart</span>
+            <p class="laser-stat-title">Time and money saver</p>
+          </div>
+        </div>
+
+        <!-- Expanded CTA -->
+        <div class="svc-sec-cta" id="laser-cta-expanded">
+          <div class="laser-cta-btn-row">
+            <a href="#booking" class="svc-sec-cta-btn" onclick="openModal(); return false;">Book a free session</a>
+            <button class="svc-less-info-btn laser-desktop-more-btn" onclick="laserToggleExpand()">Explore <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          </div>
+          <!--p class="svc-sec-cta-addr">· Tweede Hugo de Grootstraat 14H · 1052 LC Amsterdam</p-->
+          <!--button class="svc-less-info-btn" onclick="laserToggleExpand()">Less info <svg class="svc-less-info-icon-x" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button-->
+        </div>
+      </div>
     </div>
-    <div class="ba-slider-nav" id="baDots">
-      <button class="ba-dot active" onclick="baGoTo(0)" aria-label="Slide 1"></button>
-      <button class="ba-dot" onclick="baGoTo(1)" aria-label="Slide 2"></button>
-      <button class="ba-dot" onclick="baGoTo(2)" aria-label="Slide 3"></button>
-    </div>
-    <a href="https://www.instagram.com/" class="ba-ig-link ba-ig-link-mobile">See more on Instagram</a>
+
   </div>
 </section>
 
-<section id="treatments">
-  <div class="treatments-left-col">
-  <span class="eyebrow reveal">TREATMENTS</span>
-  <h2 class="section-title reveal">Advanced <em>protocols</em></h2>
-  <p class="treatments-sub reveal">Each treatment combines the best of clinical science with a tailored approach to your skin's needs.</p>
+<!-- FACIAL TREATMENTS -->
+<section id="facials-detail">
+  <!--div class="svc-detail-top">
+    <h2 class="svc-section-title">Facial Treatments</h2>
+    <button class="svc-expand-btn" onclick="toggleSvcSection('facials-body', this)" aria-label="Expand section">+</button>
+  </div-->
+  <div id="facials-body">
+
+    <!-- Desktop: right column | Mobile: image at top (DOM-first) -->
+    <div class="facials-d-right">
+      <div class="svc-detail-img reveal">
+        <img src="unsplash_RbIcMsh0NSk.png" alt="Facial treatment">
+      </div>
+      <!-- Desktop-only: BA carousel -->
+      <div class="facials-desktop-ba">
+        <div class="facials-dba-track" id="facialsDBATrack">
+          <div class="ba-split-card">
+            <div class="ba-split-images">
+              <div class="ba-split-side">
+                <img src="Index6Assets/Before1.png" alt="Before" class="ba-split-img">
+                <span class="ba-split-label before-label">BEFORE</span>
+              </div>
+              <div class="ba-split-divider"></div>
+              <div class="ba-vs-badge">vs</div>
+              <div class="ba-split-side">
+                <img src="Index6Assets/After1.png" alt="After" class="ba-split-img">
+                <span class="ba-split-label after-label">AFTER</span>
+              </div>
+            </div>
+            <div class="ba-split-caption">
+              <p class="ba-split-treatment">Microneedling &middot; 3 sessions</p>
+              <p class="ba-split-detail">Client, 29 &mdash; facial texture &middot; 15% new hair growth</p>
+            </div>
+          </div>
+          <div class="ba-split-card">
+            <div class="ba-split-images">
+              <div class="ba-split-side">
+                <img src="Index6Assets/Before2.png" alt="Before" class="ba-split-img">
+                <span class="ba-split-label before-label">BEFORE</span>
+              </div>
+              <div class="ba-split-divider"></div>
+              <div class="ba-vs-badge">vs</div>
+              <div class="ba-split-side">
+                <img src="Index6Assets/After2.png" alt="After" class="ba-split-img">
+                <span class="ba-split-label after-label">AFTER</span>
+              </div>
+            </div>
+            <div class="ba-split-caption">
+              <p class="ba-split-treatment">Scars &amp; Texture &middot; 6 sessions</p>
+              <p class="ba-split-detail">Client, 29 &mdash; facial &middot; 94% reduction</p>
+            </div>
+          </div>
+        </div>
+        <div class="facials-dba-nav" id="facialsDBADots">
+          <button class="ba-dot active" onclick="facialsDesktopBAGoTo(0)" aria-label="Slide 1"></button>
+          <button class="ba-dot" onclick="facialsDesktopBAGoTo(1)" aria-label="Slide 2"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop: left column -->
+    <div class="facials-d-left">
+      <h2 class="svc-section-title">Facial Treatments</h2>
+
+      <p class="svc-sec-desc reveal">Clinical facials designed for your unique skin concerns — combining proven technology with personalised care.</p>
+
+      <div class="svc-summary-bar reveal">
+        <div class="svc-summary-item">
+          <span class="svc-summary-label">DURATION</span>
+          <span class="svc-summary-val">60–90min</span>
+        </div>
+        <div class="svc-summary-item">
+          <span class="svc-summary-label">PRICE, FROM</span>
+          <span class="svc-summary-val">€33</span>
+        </div>
+      </div>
+
+      <!-- Collapsed CTA (mobile only on desktop) -->
+      <div class="svc-sec-cta facials-mobile-cta" id="facials-cta-collapsed">
+        <button class="svc-less-info-btn" onclick="facialsToggleExpand()">More info <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        <a href="#booking" class="svc-sec-cta-btn" onclick="openModal(); return false;">Book a free session</a>
+      </div>
+
+      <!-- Expandable content (default hidden on mobile; always open on desktop) -->
+      <div id="facials-expandable">
+        <ul class="facials-bullets reveal">
+          <li>Advanced medical-grade devices</li>
+          <li>Tailored protocols for your skin type</li>
+          <li>No downtime treatments available</li>
+          <li>Clinically proven results</li>
+        </ul>
+
+        <div class="concerns-grid reveal" style="padding: 24px 20px 0; margin-bottom: 0; margin-top: 0;">
+          <div class="concern-tag"><div class="dot"></div><span>Scars &amp; Texture</span></div>
+          <div class="concern-tag"><div class="dot"></div><span>Face Sculpting</span></div>
+          <div class="concern-tag"><div class="dot"></div><span>Pigmentation</span></div>
+          <div class="concern-tag"><div class="dot"></div><span>Skin Quality</span></div>
+          <div class="concern-tag"><div class="dot"></div><span>Dehydrated Skin</span></div>
+          <div class="concern-tag"><div class="dot"></div><span>Scalp Health</span></div>
+          <div class="concern-tag"><div class="dot"></div><span>Skin Barrier</span></div>
+          <div class="concern-tag"><div class="dot"></div><span>Routine Check-up</span></div>
+        </div>
+
+        <div class="svc-expandable" id="facials-treatments">
+          <div class="svc-price-table">
+            <div class="svc-price-table-head">
+              <span class="svc-price-head-treatments">TREATMENTS</span>
+              <span class="svc-price-head-col">DURATION</span>
+              <span class="svc-price-head-col">PRICES, FROM</span>
+            </div>
+            <div class="svc-price-row">
+              <div class="svc-price-name-wrap">
+                <span class="svc-price-num">01</span>
+                <span class="svc-price-name">Microneedling</span>
+              </div>
+              <span class="svc-price-dur">60 min</span>
+              <span class="svc-price-val">€39</span>
+            </div>
+            <div class="svc-price-row">
+              <div class="svc-price-name-wrap">
+                <span class="svc-price-num">02</span>
+                <span class="svc-price-name">RF Vacuum Eyes</span>
+              </div>
+              <span class="svc-price-dur">45 min</span>
+              <span class="svc-price-val">€33</span>
+            </div>
+            <div class="svc-price-row">
+              <div class="svc-price-name-wrap">
+                <span class="svc-price-num">03</span>
+                <span class="svc-price-name">HydroPeeling</span>
+              </div>
+              <span class="svc-price-dur">60 min</span>
+              <span class="svc-price-val">€70</span>
+            </div>
+            <div class="svc-price-row">
+              <div class="svc-price-name-wrap">
+                <span class="svc-price-num">04</span>
+                <span class="svc-price-name">Deep Cleansing</span>
+              </div>
+              <span class="svc-price-dur">60 min</span>
+              <span class="svc-price-val">€70</span>
+            </div>
+            <div class="svc-price-row">
+              <div class="svc-price-name-wrap">
+                <span class="svc-price-num">05</span>
+                <span class="svc-price-name">PRX-T33</span>
+              </div>
+              <span class="svc-price-dur">60 min</span>
+              <span class="svc-price-val">€70</span>
+            </div>
+            <div class="svc-price-row">
+              <div class="svc-price-name-wrap">
+                <span class="svc-price-num">06</span>
+                <span class="svc-price-name">Non-injectable Mesotherapy</span>
+              </div>
+              <span class="svc-price-dur">60 min</span>
+              <span class="svc-price-val">€70</span>
+            </div>
+            <div class="svc-price-row">
+              <div class="svc-price-name-wrap">
+                <span class="svc-price-num">07</span>
+                <span class="svc-price-name">Non-injectable Carboxytherapy</span>
+              </div>
+              <span class="svc-price-dur">45 min</span>
+              <span class="svc-price-val">€70</span>
+            </div>
+            <div class="svc-price-row">
+              <div class="svc-price-name-wrap">
+                <span class="svc-price-num">08</span>
+                <span class="svc-price-name">Microcurrent active massage</span>
+              </div>
+              <span class="svc-price-dur">60 min</span>
+              <span class="svc-price-val">€70</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile-only BA wrap -->
+        <div class="svc-ba-wrap reveal facials-mobile-ba">
+          <div class="ba-scroll-track" id="facialsBATrack">
+            <div class="ba-split-card">
+              <div class="ba-split-images">
+                <div class="ba-split-side">
+                  <img src="Index6Assets/Before1.png" alt="Before" class="ba-split-img">
+                  <span class="ba-split-label before-label">BEFORE</span>
+                </div>
+                <div class="ba-split-divider"></div>
+                <div class="ba-vs-badge">vs</div>
+                <div class="ba-split-side">
+                  <img src="Index6Assets/After1.png" alt="After" class="ba-split-img">
+                  <span class="ba-split-label after-label">AFTER</span>
+                </div>
+              </div>
+              <div class="ba-split-caption">
+                <p class="ba-split-treatment">Microneedling · 3 sessions</p>
+                <p class="ba-split-detail">Client, 29 — 15% new hair growth</p>
+              </div>
+            </div>
+            <div class="ba-split-card">
+              <div class="ba-split-images">
+                <div class="ba-split-side">
+                  <img src="Index6Assets/Before2.png" alt="Before" class="ba-split-img">
+                  <span class="ba-split-label before-label">BEFORE</span>
+                </div>
+                <div class="ba-split-divider"></div>
+                <div class="ba-vs-badge">vs</div>
+                <div class="ba-split-side">
+                  <img src="Index6Assets/After2.png" alt="After" class="ba-split-img">
+                  <span class="ba-split-label after-label">AFTER</span>
+                </div>
+              </div>
+              <div class="ba-split-caption">
+                <p class="ba-split-treatment">Scars &amp; Texture · 6 sessions</p>
+                <p class="ba-split-detail">Client, 29 — facial · 94% reduction</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expanded CTA -->
+        <div class="svc-sec-cta" id="facials-cta-expanded">
+          <div class="facials-cta-btn-row">
+            <a href="#booking" class="svc-sec-cta-btn" onclick="openModal(); return false;">Book a free session</a>
+            <button class="svc-less-info-btn facials-desktop-more-btn" onclick="facialsToggleExpand()">Explore <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          </div>
+          <!--p class="svc-sec-cta-addr">&middot; Tweede Hugo de Grootstraat 14H &middot; 1052 LC Amsterdam</p-->
+          <button class="svc-less-info-btn" onclick="facialsToggleExpand()">Less info <svg class="svc-less-info-icon-x" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        </div>
+      </div><!-- end facials-expandable -->
+    </div><!-- end facials-d-left -->
+
   </div>
-  <div class="treatment-list reveal">
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">01</span><span class="t-name">Microneedling with Dermapen 4™</span></div><span class="t-tag">COLLAGEN</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">02</span><span class="t-name">RF Vacuum Eyes</span></div><span class="t-tag">LIFTING</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">03</span><span class="t-name">HydroPeeling Facial</span></div><span class="t-tag">HYDRATION</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">04</span><span class="t-name">PRX-T33</span></div><span class="t-tag">RENEWAL</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">05</span><span class="t-name">Non-injectable Mesotherapy</span></div><span class="t-tag">NOURISHMENT</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">06</span><span class="t-name">BioRePeelCl3</span></div><span class="t-tag">EXFOLIATION</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">07</span><span class="t-name">Jalupro Glow Peel</span></div><span class="t-tag">GLOW</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">08</span><span class="t-name">Microcurrent Active Massage</span></div><span class="t-tag">SCULPTING</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">09</span><span class="t-name">Deep Cleansing</span></div><span class="t-tag">PURIFY</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">10</span><span class="t-name">Microneedling Hair</span></div><span class="t-tag">SCALP</span></div>
+</section>
+
+<!-- BODY WELLNESS -->
+<section id="body-detail">
+
+  <div id="body-body">
+
+    <!-- Desktop: right column | Mobile: image at top (DOM-first) -->
+    <div class="body-d-right">
+      <div class="svc-detail-img reveal">
+        <img src="body.png" alt="Body wellness treatment">
+      </div>
+      <!-- Desktop-only: BA carousel -->
+      <div class="body-desktop-ba">
+        <div class="body-dba-track" id="bodyDBATrack">
+          <div class="ba-split-card">
+            <div class="ba-split-images">
+              <div class="ba-split-side">
+                <img src="Index6Assets/Before2.png" alt="Before" class="ba-split-img">
+                <span class="ba-split-label before-label">BEFORE</span>
+              </div>
+              <div class="ba-split-divider"></div>
+              <div class="ba-vs-badge">vs</div>
+              <div class="ba-split-side">
+                <img src="Index6Assets/After2.png" alt="After" class="ba-split-img">
+                <span class="ba-split-label after-label">AFTER</span>
+              </div>
+            </div>
+            <div class="ba-split-caption">
+              <p class="ba-split-treatment">EMS &middot; 8 sessions</p>
+              <p class="ba-split-detail">Client, 35 &mdash; body sculpting &middot; visible results</p>
+            </div>
+          </div>
+        </div>
+        <div class="body-dba-nav" id="bodyDBADots">
+          <button class="ba-dot active" onclick="bodyDesktopBAGoTo(0)" aria-label="Slide 1"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop: left column -->
+    <div class="body-d-left">
+      <h2 class="svc-section-title">Body Wellness</h2>
+
+      <p class="svc-sec-desc reveal">Targeted body treatments for sculpting, skin renewal, and lasting wellbeing — personalised to your goals.</p>
+
+      <div class="svc-summary-bar reveal">
+        <div class="svc-summary-item">
+          <span class="svc-summary-label">DURATION</span>
+          <span class="svc-summary-val">60–90min</span>
+        </div>
+        <div class="svc-summary-item">
+          <span class="svc-summary-label">PRICE, FROM</span>
+          <span class="svc-summary-val">€33</span>
+        </div>
+      </div>
+
+      <!-- Collapsed CTA (mobile only on desktop) -->
+      <div class="svc-sec-cta body-mobile-cta" id="body-cta-collapsed">
+        <button class="svc-less-info-btn" onclick="bodyToggleExpand()">More info <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        <a href="#booking" class="svc-sec-cta-btn" onclick="openModal(); return false;">Book a free session</a>
+      </div>
+
+      <!-- Expandable content (default hidden on mobile; always open on desktop) -->
+      <div id="body-expandable">
+        <ul class="body-bullets reveal">
+          <li>Non-invasive body contouring</li>
+          <li>FDA &amp; CE certified devices</li>
+          <li>Visible results from the first session</li>
+          <li>Personalised treatment plans</li>
+        </ul>
+
+        <div class="concerns-grid reveal" style="padding: 24px 20px 0; margin-bottom: 0; margin-top: 0;">
+          <div class="concern-tag"><div class="dot"></div><span>Scars &amp; Texture</span></div>
+          <div class="concern-tag"><div class="dot"></div><span>Pigmentation</span></div>
+          <div class="concern-tag"><div class="dot"></div><span>Skin Quality</span></div>
+          <div class="concern-tag"><div class="dot"></div><span>Dehydrated Skin</span></div>
+          <div class="concern-tag"><div class="dot"></div><span>Scalp Health</span></div>
+          <div class="concern-tag"><div class="dot"></div><span>Skin Barrier</span></div>
+          <div class="concern-tag"><div class="dot"></div><span>Vascular Laser</span></div>
+          <div class="concern-tag"><div class="dot"></div><span>Routine Check-up</span></div>
+        </div>
+
+        <div class="svc-price-table">
+          <div class="svc-price-table-head">
+            <span class="svc-price-head-treatments">TREATMENTS</span>
+            <span class="svc-price-head-col">DURATION</span>
+            <span class="svc-price-head-col">PRICES, FROM</span>
+          </div>
+          <div class="svc-price-row">
+            <div class="svc-price-name-wrap">
+              <span class="svc-price-num">01</span>
+              <span class="svc-price-name">EMS</span>
+            </div>
+            <span class="svc-price-dur">45 min</span>
+            <span class="svc-price-val">€39</span>
+          </div>
+          <div class="svc-price-row">
+            <div class="svc-price-name-wrap">
+              <span class="svc-price-num">02</span>
+              <span class="svc-price-name">Pressotherapy</span>
+            </div>
+            <span class="svc-price-dur">45 min</span>
+            <span class="svc-price-val">€33</span>
+          </div>
+        </div>
+
+        <!-- Mobile-only BA wrap -->
+        <div class="svc-ba-wrap reveal body-mobile-ba">
+          <div class="ba-scroll-track" id="bodyBATrack">
+            <div class="ba-split-card">
+              <div class="ba-split-images">
+                <div class="ba-split-side">
+                  <img src="Index6Assets/Before2.png" alt="Before" class="ba-split-img">
+                  <span class="ba-split-label before-label">BEFORE</span>
+                </div>
+                <div class="ba-split-divider"></div>
+                <div class="ba-vs-badge">vs</div>
+                <div class="ba-split-side">
+                  <img src="Index6Assets/After2.png" alt="After" class="ba-split-img">
+                  <span class="ba-split-label after-label">AFTER</span>
+                </div>
+              </div>
+              <div class="ba-split-caption">
+                <p class="ba-split-treatment">EMS · 8 sessions</p>
+                <p class="ba-split-detail">Client, 35 — body sculpting · visible results</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expanded CTA -->
+        <div class="svc-sec-cta" id="body-cta-expanded">
+          <div class="body-cta-btn-row">
+            <a href="#booking" class="svc-sec-cta-btn" onclick="openModal(); return false;">Book a free session</a>
+            <button class="svc-less-info-btn body-desktop-more-btn" onclick="bodyToggleExpand()">Explore <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          </div>
+          <!--p class="svc-sec-cta-addr">&middot; Tweede Hugo de Grootstraat 14H &middot; 1052 LC Amsterdam</p-->
+          <button class="svc-less-info-btn" onclick="bodyToggleExpand()">Less info <svg class="svc-less-info-icon-x" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        </div>
+      </div><!-- end body-expandable -->
+    </div><!-- end body-d-left -->
+
   </div>
 </section>
 
 <section id="first-visit">
-  <div class="fv-image-area">
-    <div class="fv-header">
-      <p class="fv-eyebrow">Free Intake</p>
-      <div class="fv-title">Your <em>first visit</em><br>is on us.</div>
-      <p class="fv-body-text">A 45-minute first visit – skin mapping, VISIA diagnostic, and a written protocol. No upsells. You leave with a plan.</p>
-    </div>
-
+  <div class="fv-img-wrap">
+    <img src="image 39.png" alt="Your first visit at NeoXell" class="fv-img-main">
+    <span class="fv-img-tag">FREE INTAKE</span>
   </div>
   <div class="fv-content reveal">
     <div class="fv-header">
-      <p class="fv-eyebrow">Free Intake</p>
       <div class="fv-title">Your <em>first visit</em><br>is on us.</div>
       <p class="fv-body-text">A 45-minute first visit – skin mapping, VISIA diagnostic, and a written protocol. No upsells. You leave with a plan.</p>
     </div>
@@ -2189,6 +3218,78 @@
     document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 44);
   });
 
+  function laserDBAGoTo(index) {
+    var track = document.getElementById('laserDBATrack');
+    if (!track) return;
+    var cards = track.querySelectorAll('.ba-split-card');
+    if (!cards[index]) return;
+    track.scrollTo({ left: cards[index].offsetLeft, behavior: 'smooth' });
+  }
+
+  (function() {
+    var track = document.getElementById('laserDBATrack');
+    var nav = document.getElementById('laserDBADots');
+    if (!track || !nav) return;
+    var dots = nav.querySelectorAll('.ba-dot');
+    track.addEventListener('scroll', function() {
+      var cards = track.querySelectorAll('.ba-split-card');
+      var closest = 0, minDist = Infinity;
+      cards.forEach(function(card, i) {
+        var dist = Math.abs(card.offsetLeft - track.scrollLeft);
+        if (dist < minDist) { minDist = dist; closest = i; }
+      });
+      dots.forEach(function(d, i) { d.classList.toggle('active', i === closest); });
+    }, { passive: true });
+  })();
+
+  function facialsDesktopBAGoTo(index) {
+    var track = document.getElementById('facialsDBATrack');
+    if (!track) return;
+    var cards = track.querySelectorAll('.ba-split-card');
+    if (!cards[index]) return;
+    track.scrollTo({ left: cards[index].offsetLeft, behavior: 'smooth' });
+  }
+
+  (function() {
+    var track = document.getElementById('facialsDBATrack');
+    var nav = document.getElementById('facialsDBADots');
+    if (!track || !nav) return;
+    var dots = nav.querySelectorAll('.ba-dot');
+    track.addEventListener('scroll', function() {
+      var cards = track.querySelectorAll('.ba-split-card');
+      var closest = 0, minDist = Infinity;
+      cards.forEach(function(card, i) {
+        var dist = Math.abs(card.offsetLeft - track.scrollLeft);
+        if (dist < minDist) { minDist = dist; closest = i; }
+      });
+      dots.forEach(function(d, i) { d.classList.toggle('active', i === closest); });
+    }, { passive: true });
+  })();
+
+  function bodyDesktopBAGoTo(index) {
+    var track = document.getElementById('bodyDBATrack');
+    if (!track) return;
+    var cards = track.querySelectorAll('.ba-split-card');
+    if (!cards[index]) return;
+    track.scrollTo({ left: cards[index].offsetLeft, behavior: 'smooth' });
+  }
+
+  (function() {
+    var track = document.getElementById('bodyDBATrack');
+    var nav = document.getElementById('bodyDBADots');
+    if (!track || !nav) return;
+    var dots = nav.querySelectorAll('.ba-dot');
+    track.addEventListener('scroll', function() {
+      var cards = track.querySelectorAll('.ba-split-card');
+      var closest = 0, minDist = Infinity;
+      cards.forEach(function(card, i) {
+        var dist = Math.abs(card.offsetLeft - track.scrollLeft);
+        if (dist < minDist) { minDist = dist; closest = i; }
+      });
+      dots.forEach(function(d, i) { d.classList.toggle('active', i === closest); });
+    }, { passive: true });
+  })();
+
   function baGoTo(index) {
     var track = document.getElementById('baTrack');
     if (!track) return;
@@ -2283,8 +3384,74 @@
     item.classList.toggle('services-open');
   }
 
+  /* body detail collapsed/expanded toggle */
+  function bodyToggleExpand() {
+    var expandable = document.getElementById('body-expandable');
+    var ctaCollapsed = document.getElementById('body-cta-collapsed');
+    var ctaExpanded = document.getElementById('body-cta-expanded');
+    var isOpen = expandable.classList.contains('open');
+    if (isOpen) {
+      expandable.classList.remove('open');
+      ctaCollapsed.style.display = '';
+      ctaExpanded.style.display = 'none';
+    } else {
+      expandable.classList.add('open');
+      ctaCollapsed.style.display = 'none';
+      ctaExpanded.style.display = 'flex';
+    }
+  }
+
+  /* facials detail collapsed/expanded toggle */
+  function facialsToggleExpand() {
+    var expandable = document.getElementById('facials-expandable');
+    var ctaCollapsed = document.getElementById('facials-cta-collapsed');
+    var ctaExpanded = document.getElementById('facials-cta-expanded');
+    var isOpen = expandable.classList.contains('open');
+    if (isOpen) {
+      expandable.classList.remove('open');
+      ctaCollapsed.style.display = '';
+      ctaExpanded.style.display = 'none';
+    } else {
+      expandable.classList.add('open');
+      ctaCollapsed.style.display = 'none';
+      ctaExpanded.style.display = 'flex';
+    }
+  }
+
+  function laserToggleExpand() {
+    var expandable = document.getElementById('laser-expandable');
+    var ctaCollapsed = document.getElementById('laser-cta-collapsed');
+    var ctaExpanded = document.getElementById('laser-cta-expanded');
+    var isOpen = expandable.classList.contains('open');
+    if (isOpen) {
+      expandable.classList.remove('open');
+      ctaCollapsed.style.display = '';
+      ctaExpanded.style.display = 'none';
+    } else {
+      expandable.classList.add('open');
+      ctaCollapsed.style.display = 'none';
+      ctaExpanded.style.display = 'flex';
+    }
+  }
+
+  /* service section expand toggle */
+  function toggleSvcSection(bodyId, btn) {
+    var body = document.getElementById(bodyId);
+    if (!body) return;
+    var isHidden = body.style.display === 'none';
+    body.style.display = isHidden ? '' : 'none';
+    btn.classList.toggle('open', isHidden);
+  }
+
+  /* more-info price table toggle */
+  function toggleMoreInfo(contentId, btn) {
+    var el = document.getElementById(contentId);
+    if (!el) return;
+    el.classList.toggle('open');
+    btn.classList.toggle('open');
+  }
+
   function openModal() {
-    document.getElementById('modal').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
   function closeModal() {
