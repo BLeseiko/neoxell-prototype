@@ -108,41 +108,61 @@
     display: block; width: 20px; height: 1.5px;
     background: var(--dark-green); transition: background .3s, all .3s;
   }
-  nav:not(.scrolled) .burger-icon span { background: #fff; }
-  nav:not(.scrolled) .logo img { filter: brightness(10); }
+  nav:not(.scrolled) .burger-icon span { background: #111a11; }
+  nav:not(.scrolled) .logo img { filter: none; }
   .burger.open .burger-icon span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
   .burger.open .burger-icon span:nth-child(2) { opacity: 0; transform: scaleX(0); }
   .burger.open .burger-icon span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+  .burger.open .burger-icon span { background: var(--cream); }
 
   /* MENU OVERLAY */
   .menu-overlay {
-    position: fixed; inset: 0; z-index: 99;
-    background: var(--dark-green);
+    position: fixed; inset: 0; z-index: 102;
+    background: #255227;
     display: flex; flex-direction: column;
     transform: translateX(100%);
     transition: transform .4s cubic-bezier(.77,0,.18,1);
     overflow: hidden;
   }
   .menu-overlay.open { transform: translateX(0); }
-  body.menu-open nav { opacity: 0; pointer-events: none; }
   /* Inner nav bar */
-  .menu-overlay-header {
-    display: flex; align-items: center; justify-content: flex-end;
+  .menu-overlay-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #255227;
     height: 72px; min-height: 72px;
     padding: 0 20px;
     flex-shrink: 0;
   }
+  .menu-overlay-nav .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: var(--type-heading-small); color: var(--cream);
+    text-decoration: none; line-height: 1;
+  }
+  .menu-overlay-nav .logo span {
+    display: block; font-family: 'Karla', sans-serif;
+    font-size: 0.5rem; letter-spacing: 3px;
+    color: var(--cream); opacity: .55;
+  }
   .menu-overlay-nav-right { display: flex; align-items: center; gap: 12px; }
+  .menu-overlay-book {
+    font-family: 'Karla', sans-serif;
+    font-size: var(--type-label-nav); letter-spacing: 1.5px;
+    color: var(--cream); background: none;
+    border: 1px solid rgba(250,247,240,.45);
+    padding: 14px; cursor: pointer; text-transform: uppercase;
+    width: 100%;
+  }
+  .menu-book-wrap { padding: 20px 24px 0; }
   .menu-overlay-close {
     background: none; border: none; cursor: pointer;
-    padding: 6px; display: flex; align-items: center; color: #fdfcf9;
+    padding: 6px; display: flex; align-items: center; color: var(--cream);
   }
   /* Menu items */
   .menu-items-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
   .menu-item {
     display: flex; align-items: center;
     padding: 20px 24px;
-    border-bottom: 1px solid rgba(230,240,229,.5);
+    border-bottom: 1px solid rgba(230,240,229,.05);
     cursor: pointer; text-decoration: none;
     opacity: 0; transform: translateX(30px);
     transition: opacity .3s, transform .3s;
@@ -163,7 +183,7 @@
   .menu-item.services-open .menu-item-chevron { transform: rotate(180deg); }
   /* Sub-items */
   .menu-sub-items { display: none; flex-direction: column; }
-  .menu-sub-items.open { display: flex; border-bottom: 1px solid rgba(230,240,229,.5); }
+  .menu-sub-items.open { display: flex; border-bottom: 1px solid rgba(230,240,229,.05); }
   .menu-sub-item {
     padding: 10px 24px 10px 52px;
     font-family: 'Cormorant Garamond', serif;
@@ -196,26 +216,25 @@
 
   /* HERO */
   #hero {
-
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.30) 5.57%, rgba(102, 102, 102, 0.00) 62.06%), rgba(23, 48, 23, 0.30);
+    background: var(--cream);
     height: 100svh;
     position: relative; overflow: hidden;
     display: flex; flex-direction: column; justify-content: flex-end;
-    padding: 40px 20px 72px;
+    padding: 40px 20px 0;
   }
   .hero-video {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
     object-fit: cover; object-position: center top;
-    opacity: .45;
+    opacity: .55;
   }
   .hero-bg {
     position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(0,0,0,.3) 5%, rgba(102,102,102,0) 15%),
-                linear-gradient(90deg, rgba(23,48,23,.3) 0%, rgba(23,48,23,.3) 20%);
+    background: linear-gradient(-0.27deg, rgba(246,243,238,0) 81%, rgba(246,243,238,0.6) 100%),
+                linear-gradient(30deg, rgb(246,243,238) 0%, rgba(246,243,238,0.55) 20%, rgba(246,243,238,0) 60%);
     z-index: 1;
   }
-  .hero-content { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 28px; }
+  .hero-content { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 20px; }
   .hero-content > * {
     opacity: 0; transform: translateY(20px);
     animation: heroIn .7s ease forwards;
@@ -226,30 +245,40 @@
   .hero-content > *:nth-child(4) { animation-delay: .5s; }
   @keyframes heroIn { to { opacity: 1; transform: translateY(0); } }
 
-  .hero-eyebrow { font-size: var(--type-eyebrow); letter-spacing: 1.8px; color: #fff; font-weight: 600; }
+  .hero-eyebrow { font-size: var(--type-eyebrow); letter-spacing: 3px; color: #2c5f2e; font-weight: 400; }
   .hero-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: var(--type-display-hero); line-height: var(--lh-display-hero); color: var(--cream);
-    font-weight: 500; letter-spacing: -1.16px;
+    font-size: var(--type-display-hero); line-height: var(--lh-display-hero); color: #111a11;
+    font-weight: 400; letter-spacing: -1.16px;
   }
-  .hero-title em { font-style: italic; color: #b39462; }
-  .hero-sub { font-size: var(--type-body); font-weight: 300; line-height: 1.6; color: #fff; }
-  .hero-ctas { display: flex; flex-direction: column; gap: 4px; }
+  .hero-title em { font-style: italic; color: #2c5f2e; }
+  .hero-sub { font-size: var(--type-body); font-weight: 300; line-height: 1.43; color: #111a11; width: 297px; }
+  .hero-stats-strip { display: flex; align-items: stretch; gap: 0; border-top: 1px solid rgba(17,26,17,0.15); margin: 40px -20px 0; width: calc(100% + 40px); }
+  .hero-stat { display: flex; flex-direction: column; gap: 12px; flex: 1; padding: 16px 16px 24px; border-right: 1px solid rgba(196,169,106,0.1); border-bottom: 1px solid rgba(196,169,106,0.1); }
+  .hero-stat:last-child { border-right: none; }
+  .hero-stat-num-row { display: flex; align-items: flex-end; gap: 10px; }
+  .hero-stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 400; color: #111a11; line-height: 0.8; }
+  .hero-stat-star { font-size: 2rem; color: #f4a400; line-height: 1; }
+  .hero-stat-label { font-size: 0.625rem; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(17,26,17,0.5); line-height: 1.2; font-weight: 500; }
+  .hero-stat-divider { display: none; }
+  .hero-ctas { display: flex; flex-direction: column; gap: 12px; padding-top: 8px; }
   .btn-primary {
-    background: #a67c52; color: #fff;
-    border: none; border-radius: 2px; height: 48px; width: 100%;
-    font-family: 'Karla', sans-serif; font-size: var(--type-eyebrow); letter-spacing: 1.8px; font-weight: 700;
-    cursor: pointer; transition: opacity .2s;
+    background: #2c5f2e; color: #fff;
+    border: none; border-radius: 2px; height: 48px; width: auto;
+    font-family: 'Karla', sans-serif; font-size: var(--type-eyebrow); letter-spacing: 1.8px; font-weight: 400;
+    text-transform: uppercase; cursor: pointer; transition: opacity .2s; padding: 0 42px;
   }
   .btn-primary:hover { opacity: .88; }
   .btn-outline {
-    background: transparent; color: #fff;
-    border: none; border-radius: 2px;
-    height: 48px; width: 100%;
-    font-family: 'Karla', sans-serif; font-size: var(--type-eyebrow); letter-spacing: 1.8px; font-weight: 700;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
+    background: rgba(246,243,238,0.55); color: #111a11;
+    border: 1px solid rgba(17,26,17,0.35); border-radius: 2px;
+    height: 48px; width: auto;
+    font-family: 'Karla', sans-serif; font-size: var(--type-eyebrow); letter-spacing: 1.8px; font-weight: 400;
+    text-transform: uppercase; cursor: pointer; padding: 0 32px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    transition: border-color .2s;
   }
+  .btn-outline:hover { border-color: rgba(17,26,17,0.6); }
 
   @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
@@ -257,7 +286,7 @@
   section { padding: 40px 20px; }
   .eyebrow {
     font-size: var(--type-label-nav); letter-spacing: 15%;
-    color: #6B3D20; font-weight: 500;
+    color: #2C5F2E; font-weight: 500;
     margin-bottom: 24px; display: block;
   }
   .section-title {
@@ -265,7 +294,7 @@
     font-size: var(--type-heading-section); line-height: 1; color: #152518;
     margin-bottom: 32px; font-weight: 400;
   }
-  .section-title em { font-style: italic; color: #6B3D20; }
+  .section-title em { font-style: italic; color: #2C5F2E; }
 
   /* SERVICES */
 
@@ -313,36 +342,36 @@
   .concern-tag span { font-size: var(--type-body-sm); font-weight: 300; color: var(--text-dark); white-space: nowrap; }
 
   /* LASER */
-  #laser { background: var(--dark-green); }
-  #laser .eyebrow { color: var(--gold); }
-  #laser .section-title { color: var(--cream); }
-  #laser .section-title em { color: var(--gold); }
-  .laser-sub { font-size: var(--type-body); font-weight: 300; line-height: 1.6; color: #c4bcae; margin-bottom: 32px; }
+  #laser { background: var(--cream); }
+  #laser .eyebrow { color: var(--dark-green); opacity: 0.7; }
+  #laser .section-title { color: var(--dark-green); }
+  #laser .section-title em { color: var(--dark-green); font-style: italic; }
+  .laser-sub { font-size: var(--type-body); font-weight: 300; line-height: 1.6; color: #5a6b5a; margin-bottom: 32px; }
   .laser-quality-tag {
     display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(196,169,106,.12); border: 1px solid rgba(196,169,106,.3);
+    background: rgba(28,58,28,.06); border: 1px solid rgba(28,58,28,.18);
     border-radius: 2px; padding: 6px 12px; margin-bottom: 20px;
-    font-size: var(--type-badge); letter-spacing: 1.5px; color: var(--gold);
+    font-size: var(--type-badge); letter-spacing: 1.5px; color: var(--dark-green);
   }
   .laser-stats-grid {
     display: grid; grid-template-columns: 1fr 1fr;
-    width: 100%; border: 1px solid rgba(196,169,106,.1);
+    width: 100%; border: 1px solid rgba(28,58,28,.1);
     border-radius: 2px; overflow: hidden; margin-top: 24px;
   }
   .laser-stat { padding: 32px 20px; display: flex; flex-direction: column; gap: 12px; }
-  .laser-stat:nth-child(1), .laser-stat:nth-child(2) { border-bottom: 1px solid rgba(196,169,106,.1); }
-  .laser-stat:nth-child(1), .laser-stat:nth-child(3) { border-right: 1px solid rgba(196,169,106,.1); }
+  .laser-stat:nth-child(1), .laser-stat:nth-child(2) { border-bottom: 1px solid rgba(28,58,28,.1); }
+  .laser-stat:nth-child(1), .laser-stat:nth-child(3) { border-right: 1px solid rgba(28,58,28,.1); }
   .laser-stat-num {
     font-family: 'Cormorant Garamond', serif;
-    font-size: var(--type-stat-number); line-height: 1; color: #a67c52; font-weight: 600;
+    font-size: var(--type-stat-number); line-height: 1; color: #2C5F2E; font-weight: 400;
   }
-  .laser-stat-title { font-size: var(--type-body); color: var(--cream); font-weight: 400; line-height: 1.4; }
-  .laser-stat-desc { font-size: var(--type-body); font-weight: 300; color: #c4bcae; line-height: 1.5; }
+  .laser-stat-title { font-size: var(--type-body); color: var(--dark-green); font-weight: 400; line-height: 1.4; }
+  .laser-stat-desc { font-size: var(--type-body); font-weight: 300; color: #5a6b5a; line-height: 1.5; }
 
   /* BEFORE & AFTER */
   #before-after { background: #f0ebe0; padding: 60px 20px; }
-  #before-after .eyebrow { color: #6b3d20; }
-  #before-after .section-title em { color: #6b3d20; }
+  #before-after .eyebrow { color: #2C5F2E; }
+  #before-after .section-title em { color: #2C5F2E; }
   .ba-intro { font-size: var(--type-body-sm); color: var(--text-mid); line-height: 1.7; margin-bottom: 32px; }
   .ba-scroll-track {
     display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory;
@@ -386,7 +415,7 @@
   .ba-split-detail { font-size: var(--type-body); color: var(--text-mid); font-weight: 300; }
   .ba-ig-link {
     display: flex; align-items: center; gap: 8px;
-    font-size: var(--type-eyebrow); font-weight: 700; color: #A67C52;
+    font-size: var(--type-eyebrow); font-weight: 700; color: #2C5F2E;
     letter-spacing: 1.2px; text-decoration: none; margin-top: 32px;
     text-transform: uppercase;
   }
@@ -462,7 +491,6 @@
     content: '';
     position: absolute;
     inset: 0;
-    
     pointer-events: none;
     z-index: 1;
   }
@@ -470,13 +498,14 @@
     position: relative;
     z-index: 2;
   }
-  .fv-image-area .fv-header { display: none; }
   .fv-content {
     padding: 32px 24px 48px;
     display: flex;
     flex-direction: column;
     gap: 24px;
+    background: #255227;
   }
+  .fv-image-area .fv-header { display: none; }
   .fv-header {
     display: flex;
     flex-direction: column;
@@ -487,7 +516,7 @@
     font-weight: 600;
     font-size: var(--type-eyebrow);
     letter-spacing: 1.8px;
-    color: white;
+    color: #7BA87D;
     text-transform: uppercase;
   }
   .fv-title {
@@ -496,17 +525,17 @@
     font-size: var(--type-display-hero);
     line-height: 1;
     letter-spacing: -1.16px;
-    color: #fdfcf9;
+    color: var(--cream);
   }
   .fv-title em {
     font-style: italic;
-    color: #b39462;
+    color:  #7BA87D;
   }
   .fv-body-text {
     font-family: 'Karla', sans-serif;
     font-size: var(--type-body);
     line-height: var(--lh-body);
-    color: white;
+    color: #c4bcae;
     font-weight: 400;
   }
   .fv-steps {
@@ -527,7 +556,7 @@
     font-family: 'Karla', sans-serif;
     font-weight: 600;
     font-size: var(--type-eyebrow);
-    color: #b39462;
+    color: rgba(255,255,255,0.45);
     white-space: nowrap;
     flex-shrink: 0;
     padding-top: 4px;
@@ -537,14 +566,14 @@
     font-family: 'Cormorant Garamond', serif;
     font-size: var(--type-heading-item);
     line-height: 1.2;
-    color: white;
+    color: var(--cream);
     font-weight: 400;
   }
   .fv-step-desc {
     font-family: 'Karla', sans-serif;
     font-size: var(--type-body);
     line-height: var(--lh-body);
-    color: rgba(214,228,216,0.5);
+    color: #c4bcae;
     font-weight: 400;
     margin-top: 2px;
   }
@@ -570,14 +599,14 @@
     font-size: var(--type-eyebrow);
     letter-spacing: 1.8px;
     text-transform: uppercase;
-    color: white;
+    color: #fff;
     text-decoration: none;
   }
   .fv-cta-address {
     font-family: 'Karla', sans-serif;
     font-size: var(--type-body);
     line-height: var(--lh-body);
-    color: rgba(214,228,216,0.5);
+    color: rgba(255,255,255,0.5);
     text-align: center;
     width: 100%;
   }
@@ -611,8 +640,8 @@
   }
   .reviews-track::-webkit-scrollbar { display: none; }
   .reviews-title { font-family: 'Cormorant Garamond', serif; font-size: var(--type-heading-section); line-height: var(--lh-heading-section); color: var(--dark-green); }
-  .reviews-title-em { font-style: italic; color: #6b3d20; }
-  .pb-logo-img { height: 14px; width:76px; display: block; }
+  .reviews-title-em { font-style: italic; color: #2C5F2E; }
+  .pb-logo-img { height: 14px; width:76px; display: block;  }
   .pb-logo-img.google { height: 16px; width:61px; }
   .review-card {
     width: 300px; height: 400px; flex-shrink: 0;
@@ -723,7 +752,7 @@
     display: flex; flex-direction: column; gap: 32px;
     overflow: hidden;
   }
-  #team .eyebrow { color: #6b3d20; }
+  #team .eyebrow { color: #2C5F2E; }
   .team-header { display: flex; flex-direction: column; gap: 20px; padding-right: 20px; }
   .team-title {
     font-family: 'Cormorant Garamond', serif;
@@ -731,7 +760,7 @@
     color: #152518; margin: 0;
     font-weight: 400;
   }
-  .team-title em { font-style: italic; color: #6b3d20; }
+  .team-title em { font-style: italic; color: #2C5F2E; }
   .team-intro { font-family: 'Karla', sans-serif; font-size: var(--type-body); line-height: var(--lh-body-lg); color: #7a7068; margin: 0; }
   .team-cards {
     display: flex; gap: 10px; align-items: flex-start;
@@ -760,11 +789,12 @@
     color: #1c3a1c; letter-spacing: 1px; white-space: nowrap;
   }
   .team-specialist-info { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 8px; }
-  .team-specialist-name { font-family: 'Karla', sans-serif; font-size: var(--type-body); line-height: var(--lh-body); color: #152518; margin: 0; }
+  .team-specialist-name { font-size: var(--type-body); color: var(--text-dark); font-weight: 400; }
+  .team-specialist-bio { font-size: var(--type-body); color: var(--text-mid); font-weight: 300; }
   .team-carousel { display: flex; flex-direction: column; }
   .team-dots { display: flex; gap: 6px; justify-content: center; margin-top: 16px; padding-right: 20px; }
   .team-dot { width: 6px; height: 6px; border-radius: 3px; background: #c9bfb0; cursor: pointer; transition: background .2s, width .2s; }
-  .team-dot.active { background: #6b3d20; width: 18px; }
+  .team-dot.active { background: #1c3a1c; width: 18px; }
   #partners {
     background: var(--cream2); padding: 26px 20px;
     display: flex; gap: 24px; align-items: center; overflow: visible;
@@ -774,188 +804,67 @@
   .partners-logos::-webkit-scrollbar { display: none; }
   .partner-logo { height: 28px; width: auto;  display: block; }
 
-  /* FREE INTAKE */
-  #free-intake { background: var(--dark-green); padding: 0; overflow: hidden; }
-  .fi-hero {
-    position: relative; min-height: 360px;
-    display: flex; flex-direction: column; justify-content: flex-end;
-    padding: 24px 32px; overflow: hidden;
-  }
-  .fi-hero-img {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; display: block;
-  }
-  .fi-hero-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(11deg, var(--dark-green) 22%, rgba(28,58,28,.3) 72%);
-  }
-  .fi-hero-inner {
-    position: relative; z-index: 1;
-    display: flex; flex-direction: column; gap: 22px;
-  }
-  .fi-eyebrow {
-    font-size: var(--type-eyebrow); letter-spacing: 1.8px; font-weight: 600;
-    color: #fff; display: block;
-  }
-  .fi-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: var(--type-display-rating); line-height: 1.05;
-    color: var(--cream); font-weight: 600; letter-spacing: -1px;
-  }
-  .fi-title em { color: #b39462; font-style: italic; }
-  .fi-desc { font-size: var(--type-body); line-height: 1.5; color: #fff; font-weight: 300; }
-  .fi-content { padding: 32px; display: flex; flex-direction: column; gap: 32px; }
-  .fi-steps { display: flex; flex-direction: column; }
-  .fi-step {
-    display: flex; gap: 12px; align-items: flex-start;
-    padding: 12px; border-bottom: 1px solid rgba(255,255,255,.1);
-  }
-  .fi-step:last-child { border-bottom: none; }
-  .fi-step-num {
-    font-size: var(--type-eyebrow); font-weight: 600; color: #b39462;
-    min-width: 20px; padding-top: 4px; flex-shrink: 0;
-  }
-  .fi-step-body { display: flex; flex-direction: column; gap: 4px; }
-  .fi-step-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: var(--type-heading-item); color: #fff; line-height: 1.2;
-  }
-  .fi-step-desc {
-    font-size: var(--type-body); font-weight: 300; color: rgba(214,228,216,.5); line-height: 1.5;
-  }
-  .fi-cta-btn {
-    display: block; width: 100%; padding: 16px; border: none; border-radius: 2px;
-    background: #b39462; color: var(--dark-green);
-    font-family: 'Karla', sans-serif; font-size: var(--type-label-nav);
-    letter-spacing: 1.1px; cursor: pointer; text-align: center;
-  }
-  .fi-address {
-    font-size: var(--type-eyebrow); color: rgba(255,255,255,.5); text-align: center; line-height: 1.6;
-  }
-
-  /* MORE REASONS */
-  #more-reasons {
-    background: #fdfcf9;
-    padding: 40px 20px;
-    display: flex; flex-direction: column; gap: 32px;
-  }
-  .reasons-header {
-    display: flex; flex-direction: column; gap: 24px;
-  }
-  .reasons-eyebrow {
-    font-family: 'Karla', sans-serif;
-    font-size: var(--type-eyebrow); letter-spacing: 1.8px;
-    color: #6b3d20; font-weight: 600; text-transform: uppercase;
-  }
-  .reasons-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: var(--type-heading-section); line-height: var(--lh-heading-section);
-    color: #152518; font-weight: 400; margin: 0;
-  }
-  .reasons-title-em { color: #6b3d20; }
-  .reasons-desc {
-    font-family: 'Karla', sans-serif;
-    font-size: var(--type-body); line-height: var(--lh-body-lg); color: #7a7068; margin: 0;
-  }
-  .reasons-scroll {
-    display: flex; gap: 12px;
-    overflow-x: auto; scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding: 0 0 4px;
-    scrollbar-width: none;
-  }
-  .reasons-scroll::-webkit-scrollbar { display: none; }
-  .reasons-offer-card {
-    flex-shrink: 0; width: 260px;
-    display: flex; flex-direction: column;
-    scroll-snap-align: start;
-    overflow: hidden;
-    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    will-change: transform;
-  }
-  .reasons-offer-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 40px rgba(21, 37, 24, 0.14);
-  }
-  .reasons-offer-img {
-    width: 100%; height: 190px; object-fit: cover; display: block;
-    transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transform-origin: center center;
-  }
-  .reasons-offer-card:hover .reasons-offer-img {
-    transform: scale(1.05);
-  }
-  .reasons-offer-body {
-    background: #FAF7F0;
-    padding: 24px 16px;
-    display: flex; flex-direction: column; gap: 24px;
-    flex: 1;
-  }
-  .reasons-offer-text {
-    display: flex; flex-direction: column; gap: 8px;
-  }
-  .reasons-offer-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: var(--type-heading-card); font-weight: 400;
-    color: #1c3a1c; line-height: normal;
-  }
-  .reasons-offer-sub {
-    font-family: 'Karla', sans-serif;
-    font-size: var(--type-body); font-weight: 400;
-    line-height: var(--lh-body); color: #7a7068;
-  }
-  .reasons-offer-cta {
-    font-family: 'Karla', sans-serif;
-    font-size: var(--type-eyebrow); font-weight: 700; color: #a67c52;
-    letter-spacing: 1.2px;
-    text-decoration: none;
-    background: none; border: none; padding: 0;
-    cursor: pointer; text-align: left;
-  }
-  .reasons-offer-cta:hover { opacity: .75; }
-
   /* CTA */
   #cta {
-    background: #1c3a1c;
+    background: #255227;
     display: flex; flex-direction: column; align-items: center;
     justify-content: flex-end; text-align: center;
     padding: 40px 32px; gap: 32px;
   }
-  #cta .eyebrow { color: #a67c52; margin-bottom: 0; }
+  #cta .eyebrow { color: #7BA87D; margin-bottom: 0; }
   .cta-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: var(--type-display-cta); line-height: var(--lh-display-cta);
     color: #fdfcf9; font-weight: 400;
     letter-spacing: -1.14px; margin: 0;
   }
-  .cta-title em { font-style: italic; color: #a67c52; }
+  .cta-title em { font-style: italic; color:#7BA87D; }
   .cta-actions {
     display: flex; flex-direction: column; gap: 12px;
     width: 100%; align-items: center;
   }
   .cta-buttons {
-    display: flex; flex-direction: row; gap: 4px; align-items: center; flex-wrap: wrap;
+    display: flex; flex-direction: row; gap: 12px; align-items: center; flex-wrap: wrap;
   }
   .btn-cta {
-    background: #a67c52; color: #fff;
-    border: none; border-radius: 2px;
-    width: 100%; height: 48px;
-    font-family: 'Karla', sans-serif; font-size: var(--type-eyebrow);
-    font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase;
-    cursor: pointer; transition: opacity .2s; white-space: nowrap;
-    display: inline-flex; align-items: center; justify-content: center;
-    padding: 0 32px; text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 48px;
+    background: #a67c52;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Karla', sans-serif;
+    font-weight: 700;
+    font-size: var(--type-eyebrow);
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: #fff;
+    text-decoration: none;
   }
   .btn-cta:hover { opacity: .85; }
   .btn-cta-secondary {
-    display: flex; align-items: center; justify-content: center; gap: 4px;
-    width: 100%; height: 48px;
-    background: none; border: none;
-    font-family: 'Karla', sans-serif; font-size: var(--type-eyebrow);
-    font-weight: 700; letter-spacing: 1.8px; color: #fff;
+    background: rgba(166, 124, 82, 0.05);
+    color: #fff;
+    border: 1px solid rgba(166, 124, 82, 0.55);
+    border-radius: 2px;
+    height: 48px;
+     width: 100%;
+    font-family: 'Karla', sans-serif;
+    font-size: var(--type-eyebrow);
+    letter-spacing: 1.8px;
+    font-weight: 400;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
     padding: 0 32px;
-    cursor: pointer; white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: border-color .2s;
   }
   .btn-cta-secondary img { width: 15px; height: 11px; }
   .cta-text {
@@ -965,7 +874,7 @@
   .cta-address {
     font-family: 'Karla', sans-serif;
     font-size: var(--type-body); line-height: var(--lh-body);
-    color: #7a7068; text-align: center;
+    color: rgba(255, 255, 255, 0.5); text-align: center;
   }
 
   /* FOOTER */
@@ -975,7 +884,7 @@
     border-bottom: 1px solid rgba(28,58,28,0.12);
   }
   .footer-logo-wrap { display: flex; flex-direction: column; gap: 3px; }
-  .footer-logo-wrap .logo-main { height: 20px; width: 111px; }
+  .footer-logo-wrap .logo-main { height: 36px; width: 111px; }
   .footer-logo-wrap .logo-sub { height: 7px; width: 89px; }
   .footer-links { display: flex; flex-wrap: wrap; gap: 10px; padding: 12px 0; }
   .footer-links a {
@@ -1008,33 +917,246 @@
   }
   .modal-backdrop.open { opacity: 1; pointer-events: all; }
   .modal-sheet {
-    background: var(--cream); width: 100%;
-    border-radius: 12px 12px 0 0;
-    padding: 40px 24px 48px;
+    background: #fafaf7; width: 100%;
+    border-radius: 28px 28px 0 0;
+    max-height: 92vh;
+    display: flex; flex-direction: column;
     transform: translateY(100%);
     transition: transform .4s cubic-bezier(.77,0,.18,1);
-    text-align: center;
+    overflow: hidden; position: relative;
   }
   .modal-backdrop.open .modal-sheet { transform: translateY(0); }
-  .modal-handle {
-    width: 40px; height: 4px; border-radius: 2px;
-    background: var(--cream3); margin: 0 auto 32px;
+
+  /* BK Header */
+  .bk-header { padding: 24px 24px 0; flex-shrink: 0; }
+  .bk-title-row { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
+  .bk-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: #2b6241; letter-spacing: -0.5px; line-height: 1.2; font-weight: 500; }
+  .bk-sub { font-family: 'Karla', sans-serif; font-size: 15px; font-weight: 300; line-height: 1.5; color: #6b6b6b; margin-bottom: 4px; }
+  .bk-close { background: none; border: none; padding: 4px; cursor: pointer; color: var(--dark-green); flex-shrink: 0; margin-left: 12px; margin-top: 4px; }
+
+  /* Stepper */
+  .bk-stepper { display: flex; align-items: flex-start; padding: 16px 0 0; }
+  .bk-step-item { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+  .bk-step-circle {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1.5px solid rgba(17,26,17,.15);
+    display: flex; align-items: center; justify-content: center;
+    background: transparent; transition: all .2s;
   }
-  .modal-icon { font-size: var(--type-stat-number); margin-bottom: 16px; }
-  .modal-title { font-family: 'Cormorant Garamond', serif; font-size: var(--type-heading-section); color: var(--dark-green); margin-bottom: 12px; }
-  .modal-sub { font-size: 0.9375rem; font-weight: 300; line-height: 1.6; color: var(--text-mid); margin-bottom: 32px; }
-  .modal-treatwell {
-    display: block; width: 100%;
-    background: var(--bright-green); color: var(--cream);
-    border: none; border-radius: 2px; height: 52px;
-    font-family: 'Karla', sans-serif; font-size: var(--type-eyebrow); letter-spacing: 1.2px;
-    cursor: pointer; margin-bottom: 12px; transition: background .2s;
-  }
-  .modal-treatwell:hover { background: var(--dark-green); }
-  .modal-close {
-    font-size: var(--type-body-sm); font-weight: 300; color: var(--text-mid);
-    cursor: pointer; background: none; border: none; padding: 12px;
-  }
+  .bk-step-circle span { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--dark-green); line-height: 1; }
+  .bk-step-item.active .bk-step-circle { border-color: #2c5f2e; }
+  .bk-step-item.done .bk-step-circle { background: #2c5f2e; border-color: #2c5f2e; }
+  .bk-step-item.done .bk-step-circle span { color: #fff; }
+  .bk-step-label { font-family: 'Karla', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 1.35px; text-transform: uppercase; color: #2c5f2e; text-align: center; }
+  .bk-step-connector { flex: 1; height: 1px; background: rgba(17,26,17,.1); margin-top: 18px; }
+  .bk-header-divider { height: 1px; background: rgba(17,26,17,.08); margin: 12px -24px 0; }
+
+  /* Scrollable body */
+  .bk-body { overflow-y: auto; flex: 1; padding: 0 24px 8px; -webkit-overflow-scrolling: touch; }
+
+  /* Step panels */
+  .bk-step-panel { display: none; }
+  .bk-step-panel.active { display: block; }
+
+  /* Questions */
+  @keyframes bkReveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .bk-q-anim { animation: bkReveal .35s ease forwards; }
+  .bk-btn-next:disabled { opacity: .38; cursor: default; pointer-events: none; }
+  .bk-q { margin: 20px 0 0; }
+  .bk-q-label { font-family: 'Karla', sans-serif; font-size: 16px; font-weight: 500; color: #111a11; margin-bottom: 10px; line-height: 1.4; }
+  .bk-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .bk-option { font-family: 'Karla', sans-serif; font-size: 16px; font-weight: 400; color: #152518; background: #fdfcf9; border: 1px solid rgba(17,26,17,.08); border-radius: 2px; padding: 10px 16px; cursor: pointer; text-align: left; transition: border-color .15s; line-height: 1.5; }
+  .bk-option.selected { border-color: #2c5f2e; }
+  .bk-options-col { display: flex; flex-direction: column; gap: 8px; }
+  .bk-option-full { font-family: 'Karla', sans-serif; font-size: 16px; font-weight: 400; color: #152518; background: #fdfcf9; border: 1px solid rgba(17,26,17,.08); border-radius: 2px; padding: 10px 16px; cursor: pointer; text-align: left; transition: border-color .15s; width: 100%; }
+  .bk-option-full.selected { border-color: #2c5f2e; }
+  .bk-option-desc { display: flex; flex-direction: column; gap: 2px; padding: 10px 16px; }
+  .bk-opt-title { font-size: 16px; line-height: 1.6; color: #152518; font-weight: 400; }
+  .bk-opt-desc { font-size: 13px; line-height: 1.4; color: rgba(17,26,17,.6); font-weight: 300; }
+
+  /* Promo banners */
+  .bk-promos { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; }
+  .bk-promo { background: #eef0e8; display: flex; align-items: center; gap: 10px; padding: 12px 16px; font-family: 'Karla', sans-serif; font-size: 12px; letter-spacing: .2px; color: #152518; }
+  .bk-promo-tag { background: #d6e4d8; color: #2c5f2e; font-weight: 600; padding: 3px 10px; font-size: 10px; letter-spacing: 1px; border-radius: 2px; white-space: nowrap; }
+  .bk-promo strong { font-weight: 600; }
+
+  /* Trust badge */
+  .bk-trust { background: #f7f5f0; border-radius: 2px; display: flex; gap: 20px; align-items: flex-start; padding: 16px; margin-top: 8px; margin-bottom: 4px; }
+  .bk-trust-left { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+  .bk-stars { color: #f4a400; font-size: 14px; letter-spacing: 2px; }
+  .bk-trust-score { font-family: 'Karla', sans-serif; font-size: 14px; color: #152518; display: flex; gap: 4px; align-items: center; }
+  .bk-trust-score strong { font-weight: 700; }
+  .bk-trust-score span { color: rgba(17,26,17,.6); font-weight: 300; }
+  .bk-trust-logos { display: flex; gap: 6px; align-items: center; }
+  .bk-treatwell { font-family: 'Karla', sans-serif; font-size: 11px; color: #009fe3; font-weight: 600; }
+  .bk-google { font-family: 'Karla', sans-serif; font-size: 11px; color: #4285f4; font-weight: 400; }
+  .bk-trust-right { flex: 1; }
+  .bk-trust-title { font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 700; color: #152518; line-height: 1.4; }
+  .bk-trust-desc { font-family: 'Karla', sans-serif; font-size: 12px; color: rgba(17,26,17,.6); margin-top: 4px; line-height: 1.4; }
+
+  /* Step 3: Selected Treatment card */
+  .bk-sel-treat { background: #eef0e8; border: 1.5px solid #2c5f2e; border-radius: 2px; padding: 16px; }
+  .bk-sel-treat-eyebrow { font-family: 'Karla', sans-serif; font-size: 12px; font-weight: 400; color: #2c5f2e; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px; }
+  .bk-sel-treat-body { display: flex; align-items: center; gap: 10px; }
+  .bk-sel-treat-info { flex: 1; display: flex; flex-direction: column; gap: 2px; line-height: 1.4; }
+  .bk-sel-treat-title { font-family: 'Karla', sans-serif; font-size: 16px; font-weight: 700; color: #152518; }
+  .bk-sel-treat-sub { font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 400; color: #152518; }
+  .bk-sel-treat-meta { font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 400; color: rgba(21,37,24,.5); }
+  .bk-sel-treat-price { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500; color: #2c5f2e; letter-spacing: -0.4px; flex-shrink: 0; }
+  /* Day strip */
+  .bk-day-strip-wrap { display: flex; align-items: center; gap: 4px; }
+  .bk-strip-nav { background: none; border: none; font-size: 24px; line-height: 1; cursor: pointer; color: #2c5f2e; padding: 4px 2px; flex-shrink: 0; }
+  .bk-strip-nav:disabled { color: rgba(44,95,46,.25); cursor: default; }
+  .bk-day-strip { display: flex; gap: 6px; flex: 1; overflow: hidden; }
+  .bk-day-cell { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 12px 4px; border: 1px solid rgba(17,26,17,.08); border-radius: 2px; background: none; cursor: pointer; transition: background .15s, border-color .15s; }
+  .bk-day-cell.selected { background: #255227; border-color: #255227; }
+  .bk-day-cell.disabled { opacity: .38; cursor: default; pointer-events: none; }
+  .bk-dc-dow { font-family: 'Karla', sans-serif; font-size: 11px; font-weight: 600; color: rgba(44,95,46,.6); letter-spacing: 1.6px; text-transform: uppercase; }
+  .bk-day-cell.selected .bk-dc-dow { color: #7ba87d; }
+  .bk-dc-num { font-family: 'Karla', sans-serif; font-size: 20px; font-weight: 700; color: #152518; line-height: 1.2; }
+  .bk-day-cell.selected .bk-dc-num { color: #fff; }
+  .bk-dc-mon { font-family: 'Karla', sans-serif; font-size: 13px; font-weight: 400; color: rgba(21,37,24,.8); }
+  .bk-day-cell.selected .bk-dc-mon { color: rgba(255,255,255,.8); }
+  /* Time slots */
+  .bk-time-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
+  .bk-time-slot { font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 400; color: #152518; background: #fdfcf9; border: 1px solid rgba(17,26,17,.08); border-radius: 2px; height: 40px; cursor: pointer; text-align: center; transition: border-color .15s; }
+  .bk-time-slot.selected { border-color: #2c5f2e; }
+  /* Opening hours note */
+  .bk-open-hours { font-family: 'Karla', sans-serif; font-size: 12px; font-weight: 400; color: rgba(17,26,17,.6); text-align: center; line-height: 1.5; margin-top: 14px; }
+
+  /* Form fields */
+  .bk-form { display: flex; flex-direction: column; gap: 12px; }
+  .bk-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .bk-form-field { display: flex; flex-direction: column; gap: 6px; }
+  .bk-label { font-family: 'Karla', sans-serif; font-size: 12px; font-weight: 500; color: rgba(17,26,17,.6); letter-spacing: .5px; text-transform: uppercase; }
+  .bk-input { font-family: 'Karla', sans-serif; font-size: 16px; font-weight: 300; color: #152518; background: #fdfcf9; border: 1px solid rgba(17,26,17,.15); border-radius: 2px; padding: 12px 16px; outline: none; transition: border-color .15s; box-sizing: border-box; width: 100%; }
+  .bk-input:focus { border-color: #2c5f2e; }
+  .bk-input::placeholder { color: rgba(17,26,17,.4); }
+  .bk-consent { display: flex; gap: 10px; align-items: flex-start; font-family: 'Karla', sans-serif; font-size: 13px; font-weight: 300; color: rgba(17,26,17,.7); line-height: 1.5; cursor: pointer; }
+  .bk-consent input { margin-top: 3px; accent-color: #2c5f2e; flex-shrink: 0; }
+  /* Step 4: phone field */
+  .bk-phone-wrap { display: flex; align-items: stretch; background: #fdfcf9; border: 1px solid rgba(17,26,17,.15); border-radius: 2px; overflow: hidden; transition: border-color .15s; }
+  .bk-phone-wrap:focus-within { border-color: #2c5f2e; }
+  .bk-phone-flag { display: flex; align-items: center; gap: 4px; padding: 0 10px; border-right: 1px solid rgba(17,26,17,.1); flex-shrink: 0; }
+  .bk-phone-flag span { font-size: 18px; line-height: 1; }
+  .bk-phone-flag select { appearance: none; background: none; border: none; outline: none; font-family: 'Karla', sans-serif; font-size: 13px; color: #152518; cursor: pointer; padding: 0 2px 0 2px; }
+  .bk-phone-input { border: none !important; flex: 1; min-width: 0; padding-left: 12px; }
+  .bk-phone-input:focus { outline: none; }
+  .bk-textarea { resize: none; height: 76px; line-height: 1.5; padding-top: 10px; }
+  /* Step 4: booking summary card */
+  .bk-s4-card { background: #eef0e8; border: 1.5px solid #2c5f2e; border-radius: 2px; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+  .bk-s4-card-eyebrow { font-family: 'Karla', sans-serif; font-size: 11px; font-weight: 400; color: #2c5f2e; letter-spacing: 3px; text-transform: uppercase; }
+  .bk-s4-card-row { display: flex; align-items: flex-start; gap: 10px; }
+  .bk-s4-card-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .bk-s4-card-head { font-family: 'Karla', sans-serif; font-size: 16px; font-weight: 700; color: #152518; line-height: 1.4; }
+  .bk-s4-card-sub { font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 400; color: #152518; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bk-s4-card-price { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500; color: #2c5f2e; letter-spacing: -0.4px; white-space: nowrap; flex-shrink: 0; text-align: right; }
+  .bk-s4-card-total { display: flex; align-items: center; gap: 10px; padding-top: 2px; border-top: 1px solid rgba(44,95,46,.15); }
+  .bk-s4-card-total-label { font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 600; color: #152518; flex: 1; }
+  /* Step 4: what to expect */
+  .bk-s4-expect { background: #f7f5f0; border-radius: 2px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .bk-s4-expect-hdr { display: flex; align-items: center; gap: 10px; }
+  .bk-s4-bulb { font-size: 20px; line-height: 1; flex-shrink: 0; }
+  .bk-s4-expect-hdr strong { font-family: 'Karla', sans-serif; font-size: 16px; font-weight: 700; color: #152518; }
+  .bk-s4-expect p { font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 400; color: #152518; line-height: 1.55; margin: 0; }
+  /* Step 4: checkboxes */
+  .bk-s4-checks { display: flex; flex-direction: column; gap: 12px; }
+  .bk-s4-check { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+  .bk-s4-check input[type="checkbox"] { flex-shrink: 0; width: 20px; height: 20px; margin-top: 2px; accent-color: #2c5f2e; cursor: pointer; border-radius: 2px; }
+  .bk-s4-check span { font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 400; color: #152518; line-height: 1.55; }
+  .bk-terms-link { color: #2c5f2e; text-decoration: underline; }
+
+  /* Step 2 recommendation card */
+  .bk-rec-card { background: #255227; border-radius: 2px; padding: 16px; margin-top: 20px; }
+  .bk-rec-eyebrow { font-family: 'Karla', sans-serif; font-size: 11px; font-weight: 400; color: #7ba87d; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px; }
+  .bk-rec-body { display: flex; align-items: flex-start; gap: 10px; }
+  .bk-rec-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  .bk-rec-title { font-family: 'Karla', sans-serif; font-size: 16px; font-weight: 700; color: #fff; line-height: 1.4; white-space: nowrap; }
+  .bk-rec-sub { font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 400; color: #fff; line-height: 1.4; }
+  .bk-rec-meta { font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 300; color: rgba(255,255,255,.5); line-height: 1.4; }
+  .bk-rec-price { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500; color: #fff; letter-spacing: -0.4px; white-space: nowrap; flex-shrink: 0; }
+  .bk-step2-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; padding-bottom: 8px; }
+  .bk-btn-accept { width: 100%; height: 52px; background: #2c5f2e; color: #fff; border: none; border-radius: 2px; font-family: 'Karla', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; cursor: pointer; transition: background .2s; }
+  .bk-btn-accept:hover { background: var(--dark-green); }
+  .bk-btn-specify { width: 100%; height: 52px; background: rgba(246,243,238,.55); color: #111a11; border: 1px solid rgba(17,26,17,.35); border-radius: 2px; font-family: 'Karla', sans-serif; font-size: 12px; font-weight: 400; letter-spacing: 1.8px; text-transform: uppercase; cursor: pointer; transition: background .2s; }
+  .bk-btn-specify:hover { background: rgba(246,243,238,.85); }
+  /* Step 2 zone picker (shown after OR SPECIFY ZONE) */
+  .bk-zone-picker { margin-top: 0; display: flex; flex-direction: column; gap: 16px; }
+  /* Popular packages */
+  .bk-popular { display: flex; flex-direction: column; gap: 8px; }
+  .bk-popular-header { display: flex; justify-content: space-between; align-items: flex-end; }
+  .bk-popular-title { font-family: 'Karla', sans-serif; font-size: 12px; font-weight: 600; color: #2c5f2e; letter-spacing: 3px; text-transform: uppercase; }
+  .bk-popular-col-label { font-family: 'Karla', sans-serif; font-size: 10px; font-weight: 400; color: #7a7068; letter-spacing: 1.5px; text-transform: uppercase; }
+  .bk-popular-row { display: flex; align-items: center; justify-content: space-between; background: #eef0e8; border-radius: 2px; padding: 8px 16px; width: 100%; border: 1.5px solid transparent; cursor: pointer; text-align: left; transition: border-color .15s; }
+  .bk-popular-row.selected { border-color: #2c5f2e; background: #fdfcf9; }
+  .bk-popular-row-left { display: flex; align-items: center; gap: 8px; }
+  .bk-popular-name { font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 500; color: #152518; line-height: 22px; }
+  .bk-popular-fire { display: inline-flex; align-items: center; justify-content: center; background: #d6e4d8; border-radius: 22px; width: 20px; height: 20px; font-size: 10px; flex-shrink: 0; }
+  .bk-popular-price { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #2c5f2e; letter-spacing: -0.4px; flex-shrink: 0; }
+  /* Zone table */
+  .bk-zone-section { display: flex; flex-direction: column; gap: 8px; }
+  .bk-zone-section-label { font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 500; color: #111a11; line-height: 20px; }
+  .bk-zone-table { display: flex; flex-direction: column; gap: 6px; }
+  .bk-zone-table-header { display: flex; align-items: flex-end; justify-content: space-between; padding: 0 16px; font-family: 'Karla', sans-serif; font-size: 10px; font-weight: 400; color: #7a7068; letter-spacing: 1.5px; text-transform: uppercase; }
+  .bk-zone-col-name { width: 90px; flex-shrink: 0; }
+  .bk-zone-col-sessions { flex: 1; text-align: right; white-space: nowrap; }
+  .bk-zone-col-price { width: 72px; text-align: right; flex-shrink: 0; }
+  .bk-zone-row { display: flex; align-items: center; justify-content: space-between; background: #fdfcf9; border: 1.5px solid rgba(17,26,17,0.08); border-radius: 2px; padding: 8px 16px; width: 100%; cursor: pointer; text-align: left; transition: border-color .15s; }
+  .bk-zone-row.selected { border-color: #2c5f2e; }
+  .bk-zone-row-name { font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 500; color: #152518; line-height: 22px; width: 90px; flex-shrink: 0; }
+  .bk-zone-row-sessions { flex: 1; font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 400; color: rgba(10,10,10,0.55); text-align: right; }
+  .bk-zone-row-price { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #2c5f2e; letter-spacing: -0.4px; width: 72px; text-align: right; flex-shrink: 0; }
+  .bk-btn-select-date { width: 100%; height: 48px; background: #2c5f2e; color: #fff; border: none; border-radius: 2px; font-family: 'Karla', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; cursor: pointer; transition: background .2s; }
+  .bk-btn-select-date:hover { background: var(--dark-green); }
+  .bk-btn-select-date:disabled { opacity: .38; cursor: default; pointer-events: none; }
+  /* Your selection (revealed after zone pick) */
+  .bk-your-selection { display: flex; flex-direction: column; gap: 8px; }
+  #bk-your-sel-list { display: flex; flex-direction: column; gap: 6px; }
+  .bk-your-selection > .bk-zone-section-label { margin-bottom: 0; }
+  .bk-sel-row { display: flex; align-items: center; justify-content: space-between; background: #fdfcf9; border: 1.5px solid rgba(17,26,17,0.08); border-radius: 2px; padding: 8px 16px; width: 100%; cursor: pointer; text-align: left; transition: border-color .15s; }
+  .bk-sel-row.selected { border-color: #2c5f2e; }
+  .bk-sel-row-left { display: flex; flex-direction: column; gap: 0; }
+  .bk-sel-row-name-row { display: flex; align-items: center; gap: 8px; }
+  .bk-sel-row-name { font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 500; color: #152518; line-height: 22px; }
+  .bk-sel-row-sub { font-family: 'Karla', sans-serif; font-size: 13px; font-weight: 400; color: rgba(10,10,10,0.55); line-height: 16px; }
+  .bk-sel-badge { display: inline-flex; align-items: center; justify-content: center; background: #d6e4d8; border-radius: 2px; padding: 0 8px; height: 20px; font-family: 'Karla', sans-serif; font-size: 10px; font-weight: 600; color: #2c5f2e; letter-spacing: 1px; white-space: nowrap; }
+  .bk-sel-price { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #2c5f2e; letter-spacing: -0.4px; flex-shrink: 0; }
+  /* Step 5: Done */
+  .bk-done-hero { background: #255227; border-radius: 2px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .bk-done-eyebrow { font-family: 'Karla', sans-serif; font-size: 11px; font-weight: 400; color: #7ba87d; letter-spacing: 3px; text-transform: uppercase; }
+  .bk-done-headline { font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 400; color: #fff; line-height: 1; margin: 0; }
+  .bk-done-headline em { font-style: italic; color: #7ba87d; }
+  .bk-done-appt { display: flex; flex-direction: column; gap: 3px; }
+  .bk-done-appt-pre { font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 400; color: rgba(255,255,255,.5); }
+  .bk-done-appt-dt { font-family: 'Karla', sans-serif; font-size: 16px; font-weight: 700; color: #fff; }
+  .bk-done-appt-detail { font-family: 'Karla', sans-serif; font-size: 14px; font-weight: 400; color: #fff; }
+  /* What to expect box */
+  .bk-done-expect { background: #f7f5f0; border-radius: 2px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .bk-done-expect-hdr { display: flex; align-items: center; gap: 10px; }
+  .bk-done-expect-hdr strong { font-family: 'Karla', sans-serif; font-size: 16px; font-weight: 700; color: #152518; }
+  .bk-done-expect p { font-family: 'Karla', sans-serif; font-size: 14px; color: #152518; line-height: 1.55; margin: 0; }
+  /* Before your visit */
+  .bk-done-before-eyebrow { font-family: 'Karla', sans-serif; font-size: 11px; font-weight: 600; color: #2c5f2e; letter-spacing: 3px; text-transform: uppercase; }
+  .bk-done-checklist { display: flex; flex-direction: column; gap: 8px; }
+  .bk-done-check-item { display: flex; align-items: center; gap: 12px; background: #fdfcf9; border: 1px solid #eae5dc; border-radius: 2px; padding: 10px 16px; }
+  .bk-done-check-icon { flex-shrink: 0; width: 22px; height: 22px; color: #2c5f2e; }
+  .bk-done-check-item span { font-family: 'Karla', sans-serif; font-size: 14px; color: #152518; line-height: 1.55; }
+  /* WhatsApp button */
+  .bk-done-wa { display: flex; align-items: center; justify-content: center; gap: 14px; height: 52px; background: #4cb648; border: none; border-radius: 2px; width: 100%; cursor: pointer; font-family: 'Karla', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: #fff; text-decoration: none; }
+  .bk-done-wa:hover { background: #3da339; }
+  .bk-done-wa-icon { width: 18px; height: 18px; flex-shrink: 0; }
+  /* Bring a friend strip */
+  .bk-done-friend { display: flex; align-items: center; gap: 10px; background: #eef0e8; border-radius: 2px; padding: 12px 16px; }
+  .bk-done-friend-badge { background: #d6e4d8; border-radius: 2px; padding: 2px 10px; font-family: 'Karla', sans-serif; font-size: 10px; font-weight: 600; color: #2c5f2e; letter-spacing: 1px; white-space: nowrap; }
+  .bk-done-friend p { font-family: 'Karla', sans-serif; font-size: 12px; color: #152518; margin: 0; line-height: 1.4; }
+  .bk-done-friend strong { font-weight: 600; }
+
+  /* BK Footer */
+  .bk-footer { padding: 16px 24px 32px; flex-shrink: 0; border-top: 1px solid rgba(17,26,17,.06); display: flex; gap: 12px; align-items: center; }
+  .bk-btn-back { height: 52px; width: 52px; flex-shrink: 0; background: none; color: #2c5f2e; border: 1px solid rgba(44,95,46,.35); border-radius: 2px; font-size: 20px; line-height: 1; cursor: pointer; display: none; align-items: center; justify-content: center; transition: background .2s; }
+  .bk-btn-back:hover { background: rgba(44,95,46,.06); }
+  .bk-btn-next { flex: 1; height: 52px; background: #2c5f2e; color: #fff; border: none; border-radius: 2px; font-family: 'Karla', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; cursor: pointer; transition: background .2s; }
+  .bk-btn-next:hover { background: var(--dark-green); }
 
   /* SCROLL REVEAL */
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
@@ -1042,19 +1164,22 @@
 
   /* CAMPAIGN OFFER BANNER */
   #campaign-banner {
-    background: var(--dark-green);
+    background: rgba(246,243,238,0.7);
     height: 44px;
     overflow: hidden;
     display: flex;
     align-items: center;
-    position: relative;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 101;
+    transition: transform 0.3s ease;
   }
   #campaign-banner::before {
     content: '';
     position: absolute;
     left: 0; top: 0; bottom: 0;
     width: 40px;
-    background: linear-gradient(to right, var(--dark-green), transparent);
+    background: linear-gradient(to right, rgba(246,243,238,0.9), transparent);
     z-index: 2;
     pointer-events: none;
   }
@@ -1063,7 +1188,7 @@
     position: absolute;
     right: 0; top: 0; bottom: 0;
     width: 40px;
-    background: linear-gradient(to left, var(--dark-green), transparent);
+    background: linear-gradient(to left, rgba(246,243,238,0.9), transparent);
     z-index: 2;
     pointer-events: none;
   }
@@ -1076,27 +1201,30 @@
   .campaign-item {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     padding-right: 64px;
-    font-size: var(--type-label-nav);
-    letter-spacing: 1.5px;
-    color: rgba(255,255,255,.85);
+    font-size: 12px;
+    letter-spacing: 0.2px;
+    color: #152518;
   }
   .campaign-item .campaign-tag {
-    background: var(--gold);
-    color: var(--dark-green);
-    font-size: 0.5625rem;
-    letter-spacing: 1.5px;
-    font-weight: 500;
-    padding: 2px 8px;
+    background: #eaf1ea;
+    color: #2c5f2e;
+    font-size: 12px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    padding: 0 8px;
+    height: 24px;
+    line-height: 24px;
     border-radius: 2px;
+    border: 1px solid rgba(44,95,46,0.2);
     flex-shrink: 0;
   }
   .campaign-item .campaign-dot {
     width: 3px;
     height: 3px;
     border-radius: 50%;
-    background: var(--gold);
+    background: rgba(44,95,46,0.4);
     flex-shrink: 0;
   }
 
@@ -1134,10 +1262,8 @@
       letter-spacing: 1.8px; text-transform: uppercase; text-decoration: none; white-space: nowrap;
       transition: opacity .2s;
       color: #152518;
-      text-shadow: 0 0 12px rgba(255,255,255,0.6), 0 1px 4px rgba(255,255,255,0.4);
     }
     .nav-links a:hover { opacity: .6; }
-    nav.scrolled .nav-links a { text-shadow: none; }
     .burger { display: none; }
     /* btn-book-nav always visible on desktop */
     .btn-book-nav {
@@ -1168,19 +1294,20 @@
     .hero-bg { display: none; }
     .hero-content {
       flex: 0 0 590px; width: 590px;
-      padding: 168px 48px 60px;
+      padding: 168px 40px 60px;
       background: var(--cream);
       position: relative; z-index: 2;
-      justify-content: center;
+      justify-content: flex-start;
       text-align: left; align-items: flex-start;
     }
-    .hero-eyebrow { color: var(--text-mid); }
-    .hero-title { color: var(--dark-green); font-size: 4.75rem; line-height: 1.02; }
-    .hero-title em { color: #b39462; }
-    .hero-sub { color: var(--text-mid); font-size: 1.05rem; }
-    .hero-ctas { flex-direction: column; gap: 14px; flex-wrap: nowrap; align-items: flex-start; }
-    .btn-primary { width: auto; min-width: 260px; height: 62px; font-size: 0.8rem; padding: 0 40px; }
-    .btn-outline { color: var(--dark-green); border-color: var(--dark-green); width: auto; min-width: 260px; height: 62px; font-size: 0.8rem; padding: 0 40px; }
+    .hero-eyebrow { color: #2c5f2e; }
+    .hero-title { color: var(--dark-green); font-size: 4rem; line-height: 1.05; }
+    .hero-title em { color: #2c5f2e; }
+    .hero-sub { color: var(--text-mid); white-space: nowrap; width: auto; }
+    .hero-ctas { flex-direction: column; gap: 12px; }
+    .btn-primary { width: 100%; height: 56px; font-size: 0.8125rem; }
+    .btn-outline { color: var(--dark-green); border-color: rgba(17,26,17,0.35); background: rgba(246,243,238,0.55); width: 100%; height: 56px; font-size: 0.8125rem; }
+    .hero-stats-strip { margin: auto 0 0; width: 100%; }
     .hero-image-desktop {
       flex: 1 1 0; min-width: 0; height: 100%;
       object-fit: cover;
@@ -1346,26 +1473,26 @@
       grid-column: 8 / 13;
       padding: 48px 40px;
       overflow-y: visible;
-      background: var(--dark-green);
+      background: #255227;
       display: flex; flex-direction: column; justify-content: center; gap: 24px;
     }
     .fv-content .fv-header {
       display: flex; flex-direction: column; gap: 22px;
     }
-    .fv-eyebrow { color: #b39462; }
-    .fv-title { color: #fdfcf9; font-size: clamp(2rem, 4vw, 3.625rem); line-height: 1; }
-    .fv-body-text { color: rgba(214,228,216,0.7); }
+    .fv-eyebrow { color: rgba(255,255,255,0.55); }
+    .fv-title { color: var(--cream); font-size: clamp(2rem, 4vw, 3.625rem); line-height: 1; }
+    .fv-body-text { color: #c4bcae; }
     .fv-step { border-bottom-color: rgba(255,255,255,0.1); }
-    .fv-step-name { color: #fdfcf9; }
-    .fv-step-desc { color: rgba(214,228,216,0.5); }
-    .fv-cta-address { color: rgba(214,228,216,0.5); }
+    .fv-step-name { color: var(--cream); }
+    .fv-step-desc { color: #c4bcae; }
+    .fv-cta-address { color: rgba(255,255,255,0.5); }
     .fv-steps.two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
       column-gap: 0;
     }
     .fv-steps.two-col .fv-step {
-      border-bottom-color: rgba(255,255,255,0.1);
+      border-bottom-color: rgba(0,0,0,0.08);
     }
 
     /* ---- REVIEWS ---- */
@@ -1389,30 +1516,12 @@
     .partners-label { white-space: nowrap; }
     .partners-logos { flex-wrap: nowrap; gap: 24px; justify-content: space-between; flex: 1; }
 
-    /* ---- MORE REASONS — 12-col grid (padded): col 1-3 header / col 4-13 cards ---- */
-    #more-reasons {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      column-gap: 20px;
-      padding: 80px 20px;
-      align-items: start;
-    }
-    .reasons-header { grid-column: 1 / 4; }
-    .reasons-scroll {
-      grid-column: 4 / 13;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      overflow: visible;
-    }
-    .reasons-offer-card { min-width: unset; width: 100%; }
-
     /* ---- CTA ---- */
-    #cta { padding: 80px; align-items: flex-start; text-align: left; }
+    #cta { padding: 60px 20px; align-items: flex-start; text-align: left; }
     .cta-text { align-items: flex-start; text-align: left; }
-    .cta-actions { align-items: flex-start; }
+    .cta-actions { align-items: flex-start; gap: 24px; }
     .cta-buttons { flex-wrap: nowrap; }
-    .btn-cta { width: auto; padding: 0 32px; }
+    .btn-cta { width: 100%; padding: 0 32px; }
     .cta-address { text-align: left; }
 
     /* ---- FOOTER ---- */
@@ -1443,10 +1552,8 @@
       <div class="nav-links">
         <a href="#services">Services</a>
         <a href="#laser">Prices</a>
-        <a href="#more-reasons">Offers</a>
-        <a href="#free-intake">Gift Cards</a>
+        <a href="#free-intake">Free Intake</a>
         <a href="#team">About</a>
-        <a href="#cta">Contact</a>
       </div>
       <button class="btn-book-nav" onclick="openModal()">BOOK NOW</button>
       <button class="burger" id="burger-btn" aria-label="Menu" onclick="toggleMenu()">
@@ -1457,10 +1564,15 @@
     </div>
   </nav>
   <div class="menu-overlay" id="menu-overlay">
-    <div class="menu-overlay-header">
-      <button class="menu-overlay-close" onclick="closeMenu()" aria-label="Close menu">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
+    <div class="menu-overlay-nav">
+        <a href="#hero" class="logo">
+      <img src="Logo1.svg" alt="NeoXell" height="36" style="filter: brightness(0) invert(1);">
+    </a>
+      <div class="menu-overlay-nav-right">
+        <button class="menu-overlay-close" onclick="closeMenu()" aria-label="Close menu">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
     </div>
     <div class="menu-items-list">
       <a href="#hero" class="menu-item" onclick="closeMenu()" style="transition-delay:.05s">
@@ -1499,6 +1611,9 @@
         <span class="menu-item-label">Contact</span>
       </a>
     </div>
+    <div class="menu-book-wrap">
+      <button class="menu-overlay-book" onclick="openModal(); closeMenu();">BOOK NOW</button>
+    </div>
     <div class="menu-footer">
       <div class="menu-lang">
         <span class="active">NL</span>
@@ -1513,23 +1628,41 @@
     </div>
   </div>
   <video class="hero-video" autoplay muted loop playsinline>
-    <source src="istockphoto-2217277037-640_adpp_is.mp4" type="video/mp4">
+    <source src="Neoxell2.mp4" type="video/mp4">
   </video>
-  <div class="hero-bg"></div>
+  <div class="hero-bg"></div> 
   <div class="hero-content">
     <p class="hero-eyebrow">BEAUTY CLINIC • AMSTERDAM</p>
     <h1 class="hero-title">Where <em>science</em><br>meets nature</h1>
     <p class="hero-sub">Advanced skin treatments rooted in science, guided by nature.</p>
     <div class="hero-ctas">
-      <button class="btn-primary" onclick="openModal()">BOOK A CONSULTATION</button>
+      <button class="btn-primary" onclick="openModal()">BOOK FREE INTAKE</button>
       <button class="btn-outline" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">
-        Explore all treatments
-        <svg width="15" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        Explore Treatments
       </button>
+    </div>
+    <div class="hero-stats-strip">
+      <div class="hero-stat">
+        <span class="hero-stat-num">+8</span>
+        <span class="hero-stat-label">Years of<br>experience</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">98%</span>
+        <span class="hero-stat-label">Satisfied<br>clients</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-num-row">
+          <span class="hero-stat-num">4.9</span>
+          <span class="hero-stat-star">★</span>
+        </div>
+        <span class="hero-stat-label">Average<br>rating</span>
+      </div>
     </div>
   </div>
   <video class="hero-image-desktop" autoplay muted loop playsinline>
-    <source src="istockphoto-2217277037-640_adpp_is.mp4" type="video/mp4">
+    <source src="Neoxell2.mp4" type="video/mp4">
   </video>
 </section>
 
@@ -1566,51 +1699,54 @@
   </div>
 </section>
 
-<section id="concerns">
-  <div class="concerns-left-col">
-  <span class="eyebrow reveal">SKIN SOLUTIONS</span>
-  <h2 class="section-title reveal">Your concern.<br><em>Our expertise.</em></h2>
-  </div>
-  <img class="skin-concern-img reveal" src="unsplash__A0jYQvTm9M.png" alt="Skin Concerns">
-  <p class="concerns-desc reveal">We treat the root — not just the surface. Every protocol is tailored to your skin.</p>
-  <div class="concerns-grid reveal">
-    <div class="concern-tag"><div class="dot"></div><span>Scars & Texture</span></div>
-    <div class="concern-tag"><div class="dot"></div><span>Face Sculpting</span></div>
-    <div class="concern-tag"><div class="dot"></div><span>Pigmentation</span></div>
-    <div class="concern-tag"><div class="dot"></div><span>Skin Quality</span></div>
-    <div class="concern-tag"><div class="dot"></div><span>Dehydrated Skin</span></div>
-    <div class="concern-tag"><div class="dot"></div><span>Scalp Health</span></div>
-    <div class="concern-tag"><div class="dot"></div><span>Skin Barrier</span></div>
-    <div class="concern-tag"><div class="dot"></div><span>Routine Check-up</span></div>
-  </div>
-</section>
+<section id="first-visit">
+  <div class="fv-image-area">
+    <div class="fv-header">
+      <p class="fv-eyebrow">Free Intake</p>
+      <div class="fv-title">Your <em>first visit</em><br>is on us.</div>
+      <p class="fv-body-text">A 45-minute first visit – skin mapping, VISIA diagnostic, and a written protocol. No upsells. You leave with a plan.</p>
+    </div>
 
-<section id="laser">
-  <div class="laser-left-col">
-  <span class="eyebrow reveal">LASER HAIR REMOVAL</span>
-  <h2 class="section-title reveal">Permanent results.<br><em>Zero compromise.</em></h2>
-  <p class="laser-sub reveal">Not all lasers are equal. We use German-engineered, medical-grade technology — trusted by leading clinics worldwide.</p>
   </div>
-  <div class="laser-stats-grid reveal">
-    <div class="laser-stat">
-      <span class="laser-stat-num">98%</span>
-      <p class="laser-stat-title">Clinical safety record</p>
-      <p class="laser-stat-desc">Among the highest safety profiles in medical-grade laser technology.</p>
+  <div class="fv-content reveal">
+    <div class="fv-header">
+      <p class="fv-eyebrow">Free Intake</p>
+      <div class="fv-title">Your <em>first visit</em><br>is on us.</div>
+      <p class="fv-body-text">A 45-minute first visit – skin mapping, VISIA diagnostic, and a written protocol. No upsells. You leave with a plan.</p>
     </div>
-    <div class="laser-stat">
-      <span class="laser-stat-num">3-6</span>
-      <p class="laser-stat-title">Sessions to permanent</p>
-      <p class="laser-stat-desc">Fewer treatments needed vs budget devices — real results, faster.</p>
+    <div class="fv-steps">
+      <div class="fv-step">
+        <span class="fv-num">01</span>
+        <div class="fv-step-body">
+          <p class="fv-step-name">Choose your concern</p>
+          <p class="fv-step-desc">Tell us what you'd like to address — we'll suggest the most effective protocol.</p>
+        </div>
+      </div>
+      <div class="fv-step">
+        <span class="fv-num">02</span>
+        <div class="fv-step-body">
+          <p class="fv-step-name">Skin analysis</p>
+          <p class="fv-step-desc">A thorough consultation with your specialist to assess, plan and personalise your treatment.</p>
+        </div>
+      </div>
+      <div class="fv-step">
+        <span class="fv-num">03</span>
+        <div class="fv-step-body">
+          <p class="fv-step-name">A personalised programme</p>
+          <p class="fv-step-desc">We design your full treatment journey, including between-session skincare recommendations.</p>
+        </div>
+      </div>
+      <div class="fv-step">
+        <span class="fv-num">04</span>
+        <div class="fv-step-body">
+          <p class="fv-step-name">Long-term results</p>
+          <p class="fv-step-desc">Our commitment doesn't end after your session — we monitor progress and adapt as needed.</p>
+        </div>
+      </div>
     </div>
-    <div class="laser-stat">
-      <span class="laser-stat-num">All</span>
-      <p class="laser-stat-title">All skin tones, year-round</p>
-      <p class="laser-stat-desc">Safe for darker skin types and summer-treated skin alike.</p>
-    </div>
-    <div class="laser-stat">
-      <span class="laser-stat-num">Smart</span>
-      <p class="laser-stat-title">Time and money saver</p>
-      <p class="laser-stat-desc">Fewer sessions = lower total cost than repeated cheap treatments.</p>
+    <div class="fv-cta">
+      <a href="#booking" class="fv-cta-btn">Book a free session</a>
+      <p class="fv-cta-address">· Tweede Hugo de Grootstraat 14H · 1052 LC Amsterdam</p>
     </div>
   </div>
 </section>
@@ -1708,105 +1844,6 @@
   </div>
 </section>
 
-<section id="treatments">
-  <div class="treatments-left-col">
-  <span class="eyebrow reveal">TREATMENTS</span>
-  <h2 class="section-title reveal">Advanced <em>protocols</em></h2>
-  <p class="treatments-sub reveal">Each treatment combines the best of clinical science with a tailored approach to your skin's needs.</p>
-  </div>
-  <div class="treatment-list reveal">
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">01</span><span class="t-name">Microneedling with Dermapen 4™</span></div><span class="t-tag">COLLAGEN</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">02</span><span class="t-name">RF Vacuum Eyes</span></div><span class="t-tag">LIFTING</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">03</span><span class="t-name">HydroPeeling Facial</span></div><span class="t-tag">HYDRATION</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">04</span><span class="t-name">PRX-T33</span></div><span class="t-tag">RENEWAL</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">05</span><span class="t-name">Non-injectable Mesotherapy</span></div><span class="t-tag">NOURISHMENT</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">06</span><span class="t-name">BioRePeelCl3</span></div><span class="t-tag">EXFOLIATION</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">07</span><span class="t-name">Jalupro Glow Peel</span></div><span class="t-tag">GLOW</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">08</span><span class="t-name">Microcurrent Active Massage</span></div><span class="t-tag">SCULPTING</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">09</span><span class="t-name">Deep Cleansing</span></div><span class="t-tag">PURIFY</span></div>
-    <div class="treatment-item"><div class="treatment-header"><span class="t-num">10</span><span class="t-name">Microneedling Hair</span></div><span class="t-tag">SCALP</span></div>
-  </div>
-</section>
-
-<section id="first-visit">
-  <div class="fv-image-area">
-    <div class="fv-header">
-      <p class="fv-eyebrow">Free Intake</p>
-      <div class="fv-title">Your <em>first visit</em><br>is on us.</div>
-      <p class="fv-body-text">A 45-minute first visit – skin mapping, VISIA diagnostic, and a written protocol. No upsells. You leave with a plan.</p>
-    </div>
-
-  </div>
-  <div class="fv-content reveal">
-    <div class="fv-header">
-      <p class="fv-eyebrow">Free Intake</p>
-      <div class="fv-title">Your <em>first visit</em><br>is on us.</div>
-      <p class="fv-body-text">A 45-minute first visit – skin mapping, VISIA diagnostic, and a written protocol. No upsells. You leave with a plan.</p>
-    </div>
-    <div class="fv-steps">
-      <div class="fv-step">
-        <span class="fv-num">01</span>
-        <div class="fv-step-body">
-          <p class="fv-step-name">Choose your concern</p>
-          <p class="fv-step-desc">Tell us what you’d like to address — we’ll suggest the most effective protocol.</p>
-        </div>
-      </div>
-      <div class="fv-step">
-        <span class="fv-num">02</span>
-        <div class="fv-step-body">
-          <p class="fv-step-name">Skin analysis</p>
-          <p class="fv-step-desc">A thorough consultation with your specialist to assess, plan and personalise your treatment.</p>
-        </div>
-      </div>
-      <div class="fv-step">
-        <span class="fv-num">03</span>
-        <div class="fv-step-body">
-          <p class="fv-step-name">A personalised programme</p>
-          <p class="fv-step-desc">We design your full treatment journey, including between-session skincare recommendations.</p>
-        </div>
-      </div>
-      <div class="fv-step">
-        <span class="fv-num">04</span>
-        <div class="fv-step-body">
-          <p class="fv-step-name">Long-term results</p>
-          <p class="fv-step-desc">Our commitment doesn’t end after your session — we monitor progress and adapt as needed.</p>
-        </div>
-      </div>
-    </div>
-    <div class="fv-cta">
-      <a href="#booking" class="fv-cta-btn">Book a free session</a>
-      <p class="fv-cta-address">· Tweede Hugo de Grootstraat 14H · 1052 LC Amsterdam</p>
-    </div>
-  </div>
-</section>
-<!--section id="photos" style="padding:40px 20px">
-  <div class="photos-grid reveal">
-    <div class="photo-left">
-      <img src="data:image/png;base64,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" alt="Beauty treatment">
-    </div>
-    <div class="photo-right">
-      <div class="photo-top">
-        <img src="data:image/png;base64,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" alt="Skin care">
-      </div>
-      <div class="photo-bottom"><p>Where beauty meets health</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="about">
-  <span class="eyebrow reveal">ABOUT NEOXELL</span>
-  <h2 class="section-title reveal">Beauty that<br>goes <em>deeper</em></h2>
-  <p class="about-body reveal">Founded in Amsterdam on the belief that real beauty comes from healthy, balanced skin.</p>
-  <div class="values-grid reveal">
-    <div class="value-card"><p class="value-name">Science-backed</p><p class="value-desc">Clinically proven technology</p></div>
-    <div class="value-card"><p class="value-name">Personalized</p><p class="value-desc">Tailored to your unique skin</p></div>
-    <div class="value-card"><p class="value-name">Nature-rooted</p><p class="value-desc">Respects skin and environment</p></div>
-    <div class="value-card"><p class="value-name">Welcoming</p><p class="value-desc">Dutch, Ukrainian & English</p></div>
-  </div>
-</section-->
-
-
-
 <section id="reviews">
   <div class="reviews-header reveal">
     <div class="reviews-left">
@@ -1819,13 +1856,13 @@
     </div>
     <div class="platform-badges">
       <div class="platform-badge">
-        <img class="pb-logo-img" src="https://www.figma.com/api/mcp/asset/5eed064e-2501-4e83-a49e-eb805d4cd485" alt="Treatwell">
+        <img class="pb-logo-img" src="Treatwell_idNu9SbqSn_0 1.svg" alt="Treatwell">
         <span class="pb-stars">★ ★ ★ ★ ★</span>
         <span class="pb-score">4.9</span>
         <span class="pb-count">47 reviews</span>
       </div>
       <div class="platform-badge">
-        <img class="pb-logo-img google" src="https://www.figma.com/api/mcp/asset/ca81465b-7103-4236-9f39-d7932764ebed" alt="Google">
+        <img class="pb-logo-img google" src="Google_2015_logo.svg" alt="Google">
         <span class="pb-stars">★ ★ ★ ★ ★</span>
         <span class="pb-score">5.0</span>
         <span class="pb-count">21 reviews</span>
@@ -1842,7 +1879,7 @@
           <p class="review-name">Anna K.</p>
           <div class="review-via">
             <span class="review-via-text">via</span>
-            <img class="review-via-logo" src="https://www.figma.com/api/mcp/asset/491d5113-f9e4-4487-a750-89e45f00c9d2" alt="Treatwell">
+            <img class="review-via-logo" src="Google_2015_logo.svg" alt="Treatwell">
           </div>
         </div>
       </div>
@@ -1890,7 +1927,7 @@
           <p class="review-name">Lena V.</p>
           <div class="review-via">
             <span class="review-via-text">via</span>
-            <img class="review-via-logo" src="https://www.figma.com/api/mcp/asset/ca81465b-7103-4236-9f39-d7932764ebed" alt="Google" style="width:37px;height:12px;">
+            <img class="review-via-logo" src="Treatwell_idNu9SbqSn_0 1.svg" alt="Google" style="width:37px;height:12px;">
           </div>
         </div>
       </div>
@@ -1902,7 +1939,7 @@
           <p class="review-name">Sophie M.</p>
           <div class="review-via">
             <span class="review-via-text">via</span>
-            <img class="review-via-logo google" src="https://www.figma.com/api/mcp/asset/ca81465b-7103-4236-9f39-d7932764ebed" alt="Google" style="width:37px; height:12px;">
+            <img class="review-via-logo google" src="Google_2015_logo.svg" alt="Google" style="width:37px; height:12px;">
           </div>
         </div>
       </div>
@@ -1950,7 +1987,7 @@
           <p class="review-name">Sophie M.</p>
           <div class="review-via">
             <span class="review-via-text">via</span>
-            <img class="review-via-logo google" src="https://www.figma.com/api/mcp/asset/ca81465b-7103-4236-9f39-d7932764ebed" alt="Google" style="width:37px; height:12px;">
+            <img class="review-via-logo google" src="Treatwell_idNu9SbqSn_0 1.svg" alt="Google" style="width:37px; height:12px;">
           </div>
         </div>
       </div>
@@ -1964,6 +2001,102 @@
     </div>
   </div>
 </section>
+
+<section id="concerns">
+  <div class="concerns-left-col">
+  <span class="eyebrow reveal">SKIN SOLUTIONS</span>
+  <h2 class="section-title reveal">Your concern.<br><em>Our expertise.</em></h2>
+  </div>
+  <img class="skin-concern-img reveal" src="unsplash__A0jYQvTm9M.png" alt="Skin Concerns">
+  <p class="concerns-desc reveal">We treat the root — not just the surface. Every protocol is tailored to your skin.</p>
+  <div class="concerns-grid reveal">
+    <div class="concern-tag"><div class="dot"></div><span>Scars & Texture</span></div>
+    <div class="concern-tag"><div class="dot"></div><span>Face Sculpting</span></div>
+    <div class="concern-tag"><div class="dot"></div><span>Pigmentation</span></div>
+    <div class="concern-tag"><div class="dot"></div><span>Skin Quality</span></div>
+    <div class="concern-tag"><div class="dot"></div><span>Dehydrated Skin</span></div>
+    <div class="concern-tag"><div class="dot"></div><span>Scalp Health</span></div>
+    <div class="concern-tag"><div class="dot"></div><span>Skin Barrier</span></div>
+    <div class="concern-tag"><div class="dot"></div><span>Routine Check-up</span></div>
+  </div>
+</section>
+
+<section id="laser">
+  <div class="laser-left-col">
+  <span class="eyebrow reveal">LASER HAIR REMOVAL</span>
+  <h2 class="section-title reveal">Permanent results.<br><em>Zero compromise.</em></h2>
+  <p class="laser-sub reveal">Not all lasers are equal. We use German-engineered, medical-grade technology — trusted by leading clinics worldwide.</p>
+  </div>
+  <div class="laser-stats-grid reveal">
+    <div class="laser-stat">
+      <span class="laser-stat-num">98%</span>
+      <p class="laser-stat-title">Clinical safety record</p>
+      <p class="laser-stat-desc">Among the highest safety profiles in medical-grade laser technology.</p>
+    </div>
+    <div class="laser-stat">
+      <span class="laser-stat-num">3-6</span>
+      <p class="laser-stat-title">Sessions to permanent</p>
+      <p class="laser-stat-desc">Fewer treatments needed vs budget devices — real results, faster.</p>
+    </div>
+    <div class="laser-stat">
+      <span class="laser-stat-num">All</span>
+      <p class="laser-stat-title">All skin tones, year-round</p>
+      <p class="laser-stat-desc">Safe for darker skin types and summer-treated skin alike.</p>
+    </div>
+    <div class="laser-stat">
+      <span class="laser-stat-num">Smart</span>
+      <p class="laser-stat-title">Time and money saver</p>
+      <p class="laser-stat-desc">Fewer sessions = lower total cost than repeated cheap treatments.</p>
+    </div>
+  </div>
+</section>
+
+<section id="treatments">
+  <div class="treatments-left-col">
+  <span class="eyebrow reveal">TREATMENTS</span>
+  <h2 class="section-title reveal">Advanced <em>protocols</em></h2>
+  <p class="treatments-sub reveal">Each treatment combines the best of clinical science with a tailored approach to your skin's needs.</p>
+  </div>
+  <div class="treatment-list reveal">
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">01</span><span class="t-name">Microneedling with Dermapen 4™</span></div><span class="t-tag">COLLAGEN</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">02</span><span class="t-name">RF Vacuum Eyes</span></div><span class="t-tag">LIFTING</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">03</span><span class="t-name">HydroPeeling Facial</span></div><span class="t-tag">HYDRATION</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">04</span><span class="t-name">PRX-T33</span></div><span class="t-tag">RENEWAL</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">05</span><span class="t-name">Non-injectable Mesotherapy</span></div><span class="t-tag">NOURISHMENT</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">06</span><span class="t-name">BioRePeelCl3</span></div><span class="t-tag">EXFOLIATION</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">07</span><span class="t-name">Jalupro Glow Peel</span></div><span class="t-tag">GLOW</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">08</span><span class="t-name">Microcurrent Active Massage</span></div><span class="t-tag">SCULPTING</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">09</span><span class="t-name">Deep Cleansing</span></div><span class="t-tag">PURIFY</span></div>
+    <div class="treatment-item"><div class="treatment-header"><span class="t-num">10</span><span class="t-name">Microneedling Hair</span></div><span class="t-tag">SCALP</span></div>
+  </div>
+</section>
+<!--section id="photos" style="padding:40px 20px">
+  <div class="photos-grid reveal">
+    <div class="photo-left">
+      <img src="data:image/png;base64,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" alt="Beauty treatment">
+    </div>
+    <div class="photo-right">
+      <div class="photo-top">
+        <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCACcAK0DASIAAhEBAxEB/8QAHQAAAgMBAQEBAQAAAAAAAAAABQYDBAcCCAEACf/EAD4QAAEDAwMBBgQFAgQEBwAAAAECAwQABREGEiExBxNBUWFxIjKBkRQjQlKhscEIFTPwJGJyghdEU4OS0eH/xAAaAQACAwEBAAAAAAAAAAAAAAAEBQACAwEG/8QAJBEAAgICAwADAQEAAwAAAAAAAQIAAxEhBBIxE0FRBTJhcZH/2gAMAwEAAhEDEQA/ANinEhrP6ln7CqrLSnXMYzxV+7N4cAxyKmtzPAUBWQEsYY0/8EMNEdDU90tUO4sFqSylYI8uRXEJOzgDrRBBrQeSkUGrPqCzSAbPce+i55jyMnA9D1FMKbkrYlMoOMrI+I7eM+9Ekp3eFRS3I7KPztpHlXQAJCcwVdG23Iq3XpOWUpyTmsC1PqmQ3Kms2mOI8daiN+35vWtev0+PcJKoDPwtJ+dKT1oNK0/CeTtUwgg+G2rMCRqcBx7M+0jdBcYKoTzqUvp8/EUebhKioBxwDRB/suacUJVvfVHe6gDpVCSLtYnPw14YUtjoH0jj60M9ZG5urgx10ZPC4C4bh+XpV19oJejBJ4ClGk2yy0syEuNOBTa+hBpoalhbscKP7q0RsiZOuDDkN0ZAUeavcGgDLo7zr40Yir3IBJq8rKV3tLUpQcCQCKqmG4yyQlROBwKMPu84SajRsSQXPGpOxIulkXLafkqbCnE4BSfKla0x3NOasg3OHuDRdAcR5A8EfzWtR0BaHXMcLWftSbqW34ubCm0/CXU5H1rGxPuao/1LsnV7UeeUqXtcZkKacAP2pqtF9gzWUlDiSo9RmsD1kmQ1ry4KQFBpUnkDnJwKMORblEWmXb31pSUg7d2RUFhzIaxqb42ptxPwkGuFNjNZJYNcTYTiW7i2ogHBNazapjFwhNyml7kLGQRWqsGmbKV9gAqi3VwSYb7akq/Qo4Iq9HirbACk/aqDdpbcZEkQiAf1snFTMpQ3hP8AxQ9FKqgnTDDKMDkYqwFJSMk1UblPlsBLIIA6k812JKgPzGU1pKmQXG7Jjp2NhS1nolIyaUdVX4wmsvqH4pz4WWQckepo1qi8oh2l92P3TboSQFHwrLtOwpVzuv42U6uS8s/MfD28qnskatK21xDRkSFFbrh3KJ9aY0x+8cSlA6HmuosLuWEAqwcciicVKEgAD61pKTgd4woccVKtMOe0piW0hxJ4IUM1Zc2OIx5UNlsqbVvbNcnYu3Ts+Qh1UmxP91nlTCjlJ9vKgk0T7XLYRNYW1gkFRHw/enli5uMObVmiRl2+4R+5lNNuAjkKFVKD2d7GZ+mWSQUqFEIlxkYCc4ojcdHW50l23yVxT+3OU0Ff0zfWziPMYdHrwargidyIUblrzlSqtl/cwVE9BSk5bNUsE5ZSsA87F1UuU27Q4a+9bdb45ynioSRINx9gvJ/BNgnBxmqU2Ol+cwRg4WDSQzrmAhhptyU2FpSArBzj3ozYtVQbjLa7pwKwrqOlU7qZfow+oHs8NE7U92clIyoTVd2ojjHlRe7WwNPqUynYhX6R0qREy3x3nfwykK3OKWo+ZJq+m5h9IAbBHnUAkJOYsmzKkkpW1wfEin7RsRdus6Iylk4PGT0oUy6krG4AUXjyQEcHFaImNyjNmMrsMBkdw4tOPBJoS4pxtZS5ISoj9LiMGhkedKQkFD6x9anXce+b2TGkuJ/cByK71nOwlt7JZK28pIH6TSXrG8ri291SpjqCnwSME1cvDMphJkW2Wvb5ZyKWZ9y/EtONXOMlSgM5x1rItjRmgGdiKUpdwubra3X3lIWRhsn+talom1iFBStacLIFBtH2ZLiETZDeM8oTjpTw2nagADArRRKEyRzwrlKyivp6VysbqvKyVLxHOa/OOg8GqnKSc9K/KVxnNSSfJTKHUnGKFSUusHc2avLd255oRqK9QrRaX7jNcCGWUEnPifKuMwUZM6AScCU7/rKJp+3Kl3J/ukDhKRypZ8gKx3VHbjen3lIs8dMdBOE7gSceZNZ/rLVk7WWonHEuKSzuKWkJ/SnyHlTTpHstu94YbecaDDRxhbg3Ej60j5H9B2bqmhHFHBVV7Psyoz2r6+Q4VqfQoJ6q25wPYc/av0ztTv0uK5/mF0DocSUlOz5R7itRsXY5AgIKpLxkEjhBHwirF67JLPMtr7SGtrh5b2pwM4xWZvsxjJmoprz4JgcDUAfkbY8psJVyUrykmniyTrnGaS4hwFtXTenB9gR1pE1poO66WuKjKacTHBwl9sbkj3Sc1c01drjC/Ifaakx1ADc35f8AMk9PcEj2oYsc5BhHQY2Jqtqv6ysI3J3YyQP648R6inG03xpCUF9GEL+VaeUmsuiNR5bIkNq2KxkZOAkjHj1Hv4ePFHbNOcjrMKRx3hwCvgKV5K8M+o60VRy2X2C3cVW8mnJukNxxKWu8W4TwlCck0SakyNgxbZp/9vFJ+nrmLLcWZbiD3fyE9SnNa7ZpMe7Q0yo35iTwSFU5psFgii2soYnst/APzFD/ALqm7x1pOSe8T4+dDWpOUgA/WrTbilIxwaU1cpwdGM7OOpGxK0q4pjuBxCssr4UD4VVWxHmzW2wkKCznI8qG6o3R/wAwD4F8KHka/dnsh2U844s5DY2ppqji0BotdDUSI+xmAwlKEgBIGBVodKhaO5HrUyCMYNbzGfM81+UvBr6rbioVny6VJJ+WQc5qspZHXpXbisVA5yM9K5JiQyHU7fWvNPb1rCTqHUDOlbQtxbId7shrlTzmcYH1/ua3TtHuos+kLlPQoBbbJ2HyUeKxbsw0HGl2NGrp82WzeZzZdhlv/wAuyQQk/wDUoc58ARS7+hd1XH1GX8+ns3aNfZb2WwrHGbl3Frv5ywCdwyEegrarVB7plCUp2oHgKy3RGtXrNdW9P6sCVhWExpiRnd/1HxrboCW3mgpBBSRwRS3jqr7jDkFk0ZAiOg9U8V0YoU4k4x5YHFXnEJCwkeHWu2k55Io0ViBlyInaz0zFvNveYfQF94gp6f7xXlTVelZOlLq7DJUIra8AnlTOTkH1Qc/TFe3lshXGBWXds2j03GA7cYzQVKjtqIGOHEeKTQvJpIHZYVx7QT1aYZpqYITjK5WVR3yGypHVJ5woD9Q8P45p0Ytpkn/L1oC96AqMsc7gRnZnyx8vlgjypIscdj4rbMGGXzhlZPCFftJ8M9Pt5U86ZcV+GEKU6VPMcoUr5in38+PDoUmskTtL2N1hLT5ckMLt0vC3kZS2pXVwD9CvX1qZpy+WrItMt5DLvJTk5BHgfvV6ZG/EMC6Rk/nJI73Z1yMfEPXGD9TReOj/ADFlMmKpO4/6o9fP60eilfuAOwPsHQZZUAAeaMRnCeh5pAtlyGAd4zTNbLik4yc5pOj4jN0/IauluNyt7jPAKhwryND9AwHIKZDD6NrqVYUKYbXJGBkjHhRJ1uOVB9soQvx5AzTviXBf+op5NZbyfmV7Oo96sFQUMjioWEuP8sNlwDrtGa4WsoUUqSUkHBFMgwPhi8qR6JNu8M1Gs+tch0EA1w4oEZrsmJ+UrjNV3l8elfXHSM1TlPK2YT8x4FVJwMzoGYn9qdvXqWwq060pTYmLCXXEn/Taz8avtwPUiiOilWwShDjraDMbDJbHPd7QAEnywMUwNWlt2KptxKV94MObxnd7jypCl9j9mYuLtzsrsyzzHDlTsCUtgk+yTj+KR8mz5X7fQjzi1/EnU+mHO1bTVueaD7SAnHKgnqD+9PqP5po7L5chywNNKUp3u04K8daUrVpa7qV/l8i8T7qkpxukqSpSPUqAB++a1jSFnjWK1NxUp3JQnknqTWPHrLXlgMCbcixVpCZyZXcucSOvEp5LfmTVy33K3TVFuLLadUPAK5+1K+uYceUsoeaGDykZ5+lZ05aXGpSXg9dozTR+BxA3pT6kp5FbveamwZROMti5zN6HQjNUri024ghacg/CT7ilKxztQswUzWpAvERI52lJWU+/HP3pqizo9ygB9hStquqSMKSfEEeBFEo4sEFdGrM8tdp1kNn1NOhpBbjySXUY4wfT1/viurPeVztPsz9yVTGctSCOCVj9Q8s4Cvqqnz/EDbWJEYPKUEvoRtKvI5xn+R/NYno66Ki3RTTqgGpI7h9J8HEnKF/Xx9QaE7CvQhJBcdjNl0hfWXGW3HFDun/y1gnkHw9sHKfqmvkm7Ks05+MFK7oq3tFP7T4f786SLU85b70bcskRZqStpWMFKvH7YB+lOpjtXZhpx8ht5sbF5HU/7zXVvyMTNqQDmRwdV6NmvIadS5HU6tLaSWs/Eo4A4z4/3rU9K6Msdw0w3IkxlbnXXFsyGF7V93uwnpwehPI8a85TOz6VGubTzF4kFTC9yEvIScjxwpIGDjxwcVs2le1SPDU1ablbZFrLKEttbU72tgGBtUPDjx5pyy1vpgIoVnTakx0ToVyKrLE1clofKhYCVD3I6/xSvrUyrGyt56E4yw3jc4R8OPPNaJaNTQZ7SXGnkOg9Ck0YQuLKQpKihQV1SsAgj1oa3+ejrhDiE085kbLjMStKTm02SIphaFoeG4K5IPGc8V3qEoU63IAAKhtVgEAkeNWL3pSVFWiTpluKw2knfCUNjefFSMcD24FVLnBvsiI2p6EgKR8yGlZP2zVKEurfqw0P/Jve1FlRdTs/X3BaldTmuQ7jg1VdWpCylWUqHVJGCKhXIIVijyYslt10YxVFUhCJrTZPXKsVyt4dSeKAvSFO3rvUk92E4HsKA593x1YHph3Aq+S3fgj4w8FIyOlUXLzb1X+LZHZSG5EhKnMbsHYOpH3H3qCBIQ4nYlzI8cUCvmlXLrd27k0kF9lQU07nBQcYI9RgnilHdiNRuEXOGmuW+3sRY4XHCSCMlQOatJw6yraec1lmpla6sV2s9200EXK194G7zb5K0gtNfCA6yrAORzlJJHTjxrToD7aiSjlDgBSfWmVbgYEDsrOMzN+1m6Xa0ojTY1mVcG4zn5zTZIcU0eqkeBUOu3xGcc0c7PNR6f1DbESLbKYdzwoJOClXilQPKVehwaarnCZmMlt1CVA+dINy7LbQ7d0Xe1vv2i5oUD+Jinb3g8nE/Kse4+1UFZFhf2dFqMnRtRjlxWbTdkT7bhtL52yWU/KT4Kx0965S2iPeX3o6S21IbCigdNwPJohFtb6IwRIfTIUAMqKNvSq84YwCMY4q/TrKs4OvZif+JyeYVoQoKSkupIIzyQK89wZSpja32jhxxBV6BxBz9M81qH+Ki+NvTWIwWkpZWkAKPB9/IZxWK6KkLN3/AAxylEvKkJWPkUAoDPuc0LbWSC35N620BNrZUi76aYltHbIjlO5XglXmfQ9DTPZZb7kNKwlSV4AcQrAwodf9+lIugZZjXdVvmo/IlIO5Ch4qJz/Ip3jRhAW7FknOCCjceoI6/XAoVfZq0f7jbUyIuUpHeJ5FI0O2x7nqebCk4SppaQn4ykjKR0x7VqLgCOPKsn1wJOnNes6hfSU2uU+hBeQcgEj5VAcjBBOTwRTz+gCKwV/Yn4GDYQfyPcbRV2gtLkWO5vb1Jyhp8Aoz5E8H+tcWS/dqMCamNdtDrktbsd9CntKSPU7ikgfSna2XmP8AgmZDHxocQDk9D7V9ueqbe1EXmRFSvHG51IOfbNYV2MqZVoU9YZsMsP2a43JbSVuw3mir5kFaTj14NF0XFhSR3qFDPGQKz6JeLvJituMQHQlQOFrGxBPueooXrW7XyFDjJXIbay6N3cnJT4jBIx4eVFVchmxmYW8REBIMabe+zqrWV6jByLNs0FttpKmlfE3I53o6cKHU4JGCnioLvoR7ldrmJWP/AEn+Ff8AyH9xS5A1Jdoie+bEJ9CzvVhAjqWo9VHaCCT4k4zTHaO0aC64iNckqhvKOB+IRtCj5BYJSfvmi9GL4j6liXO1bWpsR1jecJWRlKvYjg1QjsNOyQ3uKUpb5I65p27S7vpe8Pw7LMukdiXBCropK1gAJDa20D0KlODrjgeopYgW5bU1ILrLgVxvbdSsEj2+nXHWlP8ASoc4ceRn/OuQZQ+mJcCNq+NcJTFvubU5CXCptpwd24pJOcZ6Ejp4U76V1gUvi03ZlcaS2ASlxOFD78H3FEZul1vOJmwnjGlp6KAyFDyNWmrc5KQYl4tUd8fu25+3iD7UvqrIP5PSryeNZX0cRvguRpscKRsdaUMdOPariI7bTKW2UBISeAPCkGNb71pl78VZ0OToHVyKs5cAzyEn9Xpnn1NN+n71GusJMuP3gQofK4gpUkjggg8gimKqPD7E/Kq+M5Q5Uw2hBUOa6LAUMniqf+YIR1IrhVwC+EHmteyrAShJlt7u2k8qyaV9Wv8AcW6TIR1Q0TRKVJ4+agF93zmfwTYyXjtJ8hWLvmaomDPFvancGrrOlNznCQtwlJHUfXwpHs7rjWq4CVvBSA8hsqQrO0HgCvYH/ghpy5XdqZcxJlMNKKjGb+AOHwBV5e1Vu0XSPZ/bSi0taOjwpbbQkx5jAG9pbahgKPXnpyceFD/J0QlxqGLV3bCTJ7x3n+TtXWOgB+3EmQkfqVgHnyyMj3rUrOI2pLNCnhaVBTQIJPgRWdaVR+NY1AhaMpmuvpIxxlKvhV/FMnZolyHpluCtSssLUnPTIzkf1oYYzKvma23drZOdUiLcI77ifmShwEiq2orVHvdjft7qkoUshTa1JyErHIJHiPA+hry7GDbE1EiDNkwn0HKXEKx/TrWkab7UZ8OK01dmRNKeO+R8KlD1FelOGHVhqIBlTkT9e7Xc4j7tjBuDS2gFCKw+4ptST0UgpPynkdOCMGgkJUy1yW2pjEyMsu7WDMjLKVccjeB/HJrRHtXaN1A9DkpuptlyYBS2483wpJ5KFemecg5FFpnfqhofTLjyGyfmbfWpJpW/DIJC+RrXzVwGJwYdsutVyI0GM9HXuyA8veVhIx0ACQf4rntBkNf8KErDhdKnu7TyUcADPl49azPUnapp/TCTHVPXKkjq3F+Lb6FRobbe1XTsxrvpX42A6o5CHWsqV9qJpqZf9TC+9XGFE0KyvKC9kpWxtXTJ5zV+7TYcVlTLr8dtKhgocUn4h7HrWFdoXai282Lbph5aHVjD0tadpR/yoHn61jlwfuEyQ49JkvSnv1rccKle/NEwPE9TTXrPGlSrghcBDryEoUQtJUvggDr5cVzpjUsi3ahZRdFKG/B3KPzJI4UfXjxrzx2Q2x6/6yQ7IyqHAUHFpJ4Uv9KfbPP0rfdU2czWWnmzh5HT1HlSbnWkuE/I44NQCl/2egrHPjT2kKZWlWR1Bo4mOkjJSDmvLuitW3PTU/un+8W0TgoJ/oa3nTGs7ddY6VtSBuI5SeCDV6LQdGVuqI2I2FKWxgiqcgNJcUpCRlXU+JqREhD6cpV1r6GU9VKFFnY1BQcHcFvsuOcjgeVcoSWk4FFHNm3ANUpK20gnihyNzcNqVHiSPU9Kt2yO0ziQ4lTrhOAlIyfalbU+rrBpvuHr5NTEjvO7O9V8qPUnwotBvVqeaTMtlyYeYcTkqQ6FII8DmuZAO5cKzSt+Hfja7cnNPuNtuMpa7vcdp5yRjp1rCu3DWEJ/tViaWgyhIkKnIeuK21Z7plrlLIP7lK5PlgU19pnbDaLQ1Ja0sY94vqUqQqQ07vjxVdMqxwpY/aPqa829n8R+TryXcX1reeztcUvlS3V8qOfP/wC6xYLkhoZ8hVR0/MGal2ex1HTapJSEnarvcD5leJ+/H0pxsFvWv8V3fRLu0nPUgc18t1tRZdLtIUlH5TOSP3LPQffP2o7aG3rNY4aHGA7JkJLzu44IyeP71K6s+wOy3Hk8qpkzjMWhHxNg7CR5elXm7g42A0lQKvBOKhiB0MAuo2ocV3qsDp6DxzUKm1rfVsAKeu3PT2p6IpEJTZEQQFPzkobAGSUnCgKXLZfp0e3zJlvuEyPFWFNpZMg7V+ZxQfUrkh6WxamivKiO8SDk/wC8Vxc3mmGSmKy4hJwhptQyD4cetcO5JzaVrmXFTz2S1H+PJ6Ff6R96JOT3mUhTyiXXDjjqPPnwoZbUrjS2IRBzu3OZ8Vf3ApkfipcU2Gmwt3jeQPpzVZBI7NE7ttTqmtu/naSCrr/WpL/FTFs65qAVPubUNjGCVqOAPPz+1ELawtUlDXzKWobkEZ6f1/n+aMx7W3eNcQ7c2gKZt4DsjA4U+rkfYc/91VtsFSFj9TWqs2OFEb+x3TIsVjaS8B+Ic/MeV5qPP/5WnRYrkt9LYJKRwPWorTa1AoQG8JwBT1p+1IRhxY5HQCkKKXYs33HTsEUKPqDkaMgyImx+OhZUOciqS+zmXGP4i1TloIGQlXUema0hpgADAyaKNJShsYHOKMFS/YgZtYeTK2rhq2xkNyoZlNj9TZ5+1Eomv2SEtykuR1+KXElJp7kRG3gStKapu2G2vp/OjNuY/ckGu9Cvhk7qf9CBY+qYckBLbu8noE8murhNDVvdnTXEwoLCC488vjCR5etGmrdbbe2SxGaawMkpSBxXnjtj1w1ftUJ0/FkLdhQHAp1hlQ2uup5AV54/r7V1iVGvZFAJ35Mv/wAROuXrtfAvunfw7KcQYyuUMp/evzWevp0rFoJn3OcI6HnSt9X5hCjj3I6VuN80xD1ApxT1xVHcJypD0UoSg+pqlpvQxs01LpXGnKUctrYO5H18fpVTyBQhOMmd+E3MMnAkL0NGndPR7fEaC5j2EMtjklR6k+1N/YzphS7rGBUFMQVLkzn1DIddI4APkDn7UUsWhbldJypTqFIUvhcpwYKEftQPD3rWtM6ZXEht2u3MCJCRguOrT8Thobj02XNkjU25FyVLgHcisVmVqW/I/EIW3a4iw4N3BdI/t/enE2ATpL0p5oneQEJH6EjoKL2e3MxmA2wCCsjco9TR5hpLaNo6eHrTyugINxK9pYz+et1Whho92VhKh8oxyMe/8UMlPtNMAr47xJKQnwI6HmrdywmMVoG08qwDkZGPOlDUb7gSpIVhOAcfz/WtfJJ3YPzrjMuDhKlf6TSlY4J5J+w/mu3VkyVynVFSmhhkfMCojlX0FT2yK0myMvJ3BaWg4D/zHJJqvdHCizQ0pAAWkrV6k8mqGSQ2VEmVdE92EreWNvPO1PiafLdAQwx3gUlGeFKIyeAfHFL2jmWm7e/ISgd4tSGyfIKODTXcVFhIQ18IACfvUEktWVCYcV+4qQpaWmypvA+Iq/Sn2PAp67F9OFD7kiV8ct1RdfV4lxRyfp4fSlyC0lESFHypSO+CuT6Z/rWvdjzDfduOY+NThyfPBpfzn7ME+ow4aYUvHREFLEdpOME+FG4DSm8EJOK+T20h1gAcbauRANuKHUYM1Y5Evw1gqwRg1bABOT0qtA5CiQOKnSSpQBOPaiB5MT7O1/EfhAGKpXW4xLZHU9NkNtJAzyeT9Kg1DMehsHuCEkjqRkisK7S7rNcWGlulQWcKOTkiqM+DgSwXRJnXav2s3Cey9Z9H7YyXD3btyeBKWh0JAHU1jjFijWF3MZ1yW+ohx+U4rKnF+PToPIetMDwBhtkpTjehG0DAAPPQUOjgPTFMLSCjAwMdPmHH2phTT02dmB2299DQmkaCLF2SYkxplzckFDhHKT601G12W3TW48htVteX8q+5BbX6hQFZHpuXIhy4zkdwoPfN9OnIGa9CzozU2wpVITvKAkpPkTQ1iD5CAP8AmaKx6DcY4ESK7GZcaLS0LSCNg4JolHhtqCgkFKUnClHzoVoxINmjg/oUpI9qaXEpSopSMBxPxCmCHKgwJhuQRWilXOAQcfSrqcdPKuHOASAMjH9K+t8pzXZyf//Z" alt="Skin care">
+      </div>
+      <div class="photo-bottom"><p>Where beauty meets health</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <span class="eyebrow reveal">ABOUT NEOXELL</span>
+  <h2 class="section-title reveal">Beauty that<br>goes <em>deeper</em></h2>
+  <p class="about-body reveal">Founded in Amsterdam on the belief that real beauty comes from healthy, balanced skin.</p>
+  <div class="values-grid reveal">
+    <div class="value-card"><p class="value-name">Science-backed</p><p class="value-desc">Clinically proven technology</p></div>
+    <div class="value-card"><p class="value-name">Personalized</p><p class="value-desc">Tailored to your unique skin</p></div>
+    <div class="value-card"><p class="value-name">Nature-rooted</p><p class="value-desc">Respects skin and environment</p></div>
+    <div class="value-card"><p class="value-name">Welcoming</p><p class="value-desc">Dutch, Ukrainian & English</p></div>
+  </div>
+</section-->
+
+
 
 <section id="team">
   <div class="team-header">
@@ -2088,46 +2221,6 @@
   </div>
 </section-->
 
-<section id="more-reasons">
-  <div class="reasons-header reveal">
-    <span class="reasons-eyebrow">Offers</span>
-    <h2 class="reasons-title">More reasons<br><span class="reasons-title-em">to start.</span></h2>
-    <p class="reasons-desc">We treat the root - not just the surface. Every protocol is tailored to your skin.</p>
-  </div>
-  <div class="reasons-scroll reveal">
-    <div class="reasons-offer-card">
-      <img class="reasons-offer-img" src="https://www.figma.com/api/mcp/asset/4e70978e-16e4-4cb8-8c99-40fba66020fe" alt="Bring a Friend">
-      <div class="reasons-offer-body">
-        <div class="reasons-offer-text">
-          <p class="reasons-offer-title">Bring a Friend</p>
-          <p class="reasons-offer-sub">Both get 15% off your next treatment</p>
-        </div>
-        <button class="reasons-offer-cta" onclick="openModal()">Explore &rarr;</button>
-      </div>
-    </div>
-    <div class="reasons-offer-card">
-      <img class="reasons-offer-img" src="https://www.figma.com/api/mcp/asset/7cec4635-d2f8-4c79-81de-d7ac0e844056" alt="Gift Card">
-      <div class="reasons-offer-body">
-        <div class="reasons-offer-text">
-          <p class="reasons-offer-title">Gift Card</p>
-          <p class="reasons-offer-sub">Any amount, redeemable on all treatments</p>
-        </div>
-        <button class="reasons-offer-cta" onclick="openModal()">Buy &rarr;</button>
-      </div>
-    </div>
-    <div class="reasons-offer-card">
-      <img class="reasons-offer-img" src="https://www.figma.com/api/mcp/asset/6ec9fb90-7ff7-4365-a6b6-c81d8cd57d61" alt="Free Intake">
-      <div class="reasons-offer-body">
-        <div class="reasons-offer-text">
-          <p class="reasons-offer-title">Free Intake</p>
-          <p class="reasons-offer-sub">No commitment, no cost &mdash; 45 min</p>
-        </div>
-        <button class="reasons-offer-cta" onclick="openModal()">Book &rarr;</button>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section id="cta">
   <div class="cta-text">
     <span class="eyebrow">READY TO BEGIN?</span>
@@ -2138,7 +2231,7 @@
       <button class="btn-cta" onclick="openModal()">Book a free session</button>
       <button class="btn-cta-secondary" onclick="openModal()">
         Schedule appointment
-        <img src="https://www.figma.com/api/mcp/asset/fd063d80-c37d-4fa0-9832-ccab9117b1eb" alt="→">
+        <img src="arrow-right.svg" alt="→">
       </button>
     </div>
     <p class="cta-address">&middot; Tweede Hugo de Grootstraat 14H &middot; 1052 LC Amsterdam</p>
@@ -2148,13 +2241,12 @@
 <footer>
   <div class="footer-logo-row">
     <div class="footer-logo-wrap">
-      <img class="logo-main" src="https://www.figma.com/api/mcp/asset/73e53fdf-3f45-4383-a0f8-f6878f856893" alt="NeoXell">
-      <img class="logo-sub" src="https://www.figma.com/api/mcp/asset/425a40a2-08e1-4774-9a7b-47b0e24f24c3" alt="Beauty Clinic">
+      <img class="logo-main" src="Logo1.svg" alt="NeoXell">
     </div>
   </div>
   <div class="footer-links">
     <a href="#hero">Home</a><a href="#about">About</a><a href="#services">Services</a>
-    <a href="#">Schedule</a><a href="#">Prices</a><a href="#">Professional Cosmetics</a><a href="#">Gift Cards</a>
+    <a href="#">Schedule</a><a href="#">Prices</a><a href="#">Cosmetics</a><a href="#">Gift Cards</a>
   </div>
   <div class="footer-lang"><span>NL</span><span class="active">EN</span><span>UA</span></div>
   <p class="footer-meta">KVK 97558796 &nbsp;&bull;&nbsp; VAT NL00239823982749287342942</p>
@@ -2163,19 +2255,367 @@
 </footer>
 
 <div class="modal-backdrop" id="modal" onclick="handleBackdropClick(event)">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-icon">🌿</div>
-    <h3 class="modal-title">Online booking<br>coming soon</h3>
-    <p class="modal-sub">Our scheduling system is being set up. In the meantime, book directly via Treatwell or contact us.</p>
-    <button class="modal-treatwell" onclick="closeModal()">BOOK VIA TREATWELL →</button>
-    <button class="modal-close" onclick="closeModal()">Maybe later</button>
-  </div>
+  <div class="modal-sheet" id="bk-sheet">
+
+    <!-- Header -->
+    <div class="bk-header">
+      <div class="bk-title-row">
+        <div>
+          <p class="bk-title">Book Appointment</p>
+          <p class="bk-sub">Few questions and we'll find the right appointment for you.</p>
+        </div>
+        <button class="bk-close" onclick="closeModal()" aria-label="Close">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <!-- Stepper -->
+      <div class="bk-stepper">
+        <div class="bk-step-item active" data-step="1">
+          <div class="bk-step-circle"><span>1</span></div>
+          <span class="bk-step-label">Qualify</span>
+        </div>
+        <div class="bk-step-connector"></div>
+        <div class="bk-step-item" data-step="2">
+          <div class="bk-step-circle"><span>2</span></div>
+          <span class="bk-step-label">Treatment</span>
+        </div>
+        <div class="bk-step-connector"></div>
+        <div class="bk-step-item" data-step="3">
+          <div class="bk-step-circle"><span>3</span></div>
+          <span class="bk-step-label">Date</span>
+        </div>
+        <div class="bk-step-connector"></div>
+        <div class="bk-step-item" data-step="4">
+          <div class="bk-step-circle"><span>4</span></div>
+          <span class="bk-step-label">Details</span>
+        </div>
+        <div class="bk-step-connector"></div>
+        <div class="bk-step-item" data-step="5">
+          <div class="bk-step-circle"><span>5</span></div>
+          <span class="bk-step-label">Done</span>
+        </div>
+      </div>
+      <div class="bk-header-divider"></div>
+    </div>
+
+    <!-- Scrollable body -->
+    <div class="bk-body">
+
+      <!-- STEP 1: Qualify -->
+      <div class="bk-step-panel active" id="bk-step-1">
+        <!-- Q1: always visible -->
+        <div class="bk-q" id="bk-q-interest">
+          <p class="bk-q-label">What brings you in today?</p>
+          <div class="bk-options-grid">
+            <button class="bk-option" onclick="bkSelectInterest(this)">Laser Hair Removal</button>
+            <button class="bk-option" onclick="bkSelectInterest(this)">Anti-aging</button>
+            <button class="bk-option" onclick="bkSelectInterest(this)">Skin Concerns</button>
+            <button class="bk-option" onclick="bkSelectInterest(this)">Hair health</button>
+            <button class="bk-option" onclick="bkSelectInterest(this)">Vascular Lesions</button>
+            <button class="bk-option" onclick="bkSelectInterest(this)">Body Shaping</button>
+          </div>
+        </div>
+        <!-- Q2: revealed after Q1 -->
+        <div class="bk-q" id="bk-q-experience" style="display:none">
+          <p class="bk-q-label">Have you visited a laser or skin clinic before?</p>
+          <div class="bk-options-col">
+            <button class="bk-option-full bk-option-desc" onclick="bkSelectExperience(this)">
+              <span class="bk-opt-title">Yes, I have experience</span>
+              <span class="bk-opt-desc">I've had treatments before</span>
+            </button>
+            <button class="bk-option-full bk-option-desc" onclick="bkSelectExperience(this)">
+              <span class="bk-opt-title">No, this is my first time</span>
+              <span class="bk-opt-desc">I'm new to laser hair removal</span>
+            </button>
+          </div>
+        </div>
+        <!-- Q3: revealed after Q2 -->
+        <div class="bk-q" id="bk-q-zone" style="display:none">
+          <p class="bk-q-label">Are you interested in a particular zone?</p>
+          <div class="bk-options-grid">
+            <button class="bk-option" onclick="bkSelectZone(this)">No, I need advice</button>
+            <button class="bk-option" onclick="bkSelectZone(this)">Full body</button>
+            <button class="bk-option" onclick="bkSelectZone(this)">Face</button>
+            <button class="bk-option" onclick="bkSelectZone(this)">Arms</button>
+            <button class="bk-option" onclick="bkSelectZone(this)">Bikini</button>
+            <button class="bk-option" onclick="bkSelectZone(this)">Legs</button>
+          </div>
+        </div>
+        <!-- Promo banners -->
+        <div class="bk-promos" id="bk-q-promos">
+          <div class="bk-promo">
+            <span class="bk-promo-tag">-15%</span>
+            <span><strong>Bring a Friend</strong> – Both get 15% off</span>
+          </div>
+          <div class="bk-promo">
+            <span class="bk-promo-tag">FREE TRIAL</span>
+            <span><strong>Free trial</strong> – no obligation treatment trial available</span>
+          </div>
+        </div>
+        <!-- Trust badge -->
+        <div class="bk-trust" id="bk-q-trust">
+          <div class="bk-trust-left">
+            <div class="bk-stars">★ ★ ★ ★ ★</div>
+            <div class="bk-trust-score"><strong>4.9</strong><span>· 47 reviews</span></div>
+            <div class="bk-trust-logos">
+              <span class="bk-treatwell">treatwell</span>
+              <span class="bk-google">Google</span>
+            </div>
+          </div>
+          <div class="bk-trust-right">
+            <p class="bk-trust-title">Top-rated on Treatwell &amp; Google</p>
+            <p class="bk-trust-desc">Amsterdam's trusted laser &amp; skin specialists</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: Treatment recommendation -->
+      <div class="bk-step-panel" id="bk-step-2">
+        <!-- Recommendation card (populated by JS based on step 1) -->
+        <div class="bk-rec-card">
+          <p class="bk-rec-eyebrow">Recommended for you</p>
+          <div class="bk-rec-body">
+            <div class="bk-rec-info">
+              <span class="bk-rec-title" id="bk-rec-title">Free Laser Intake</span>
+              <span class="bk-rec-sub" id="bk-rec-sub">Full Body Laser Hair Removal</span>
+              <span class="bk-rec-meta" id="bk-rec-meta">single session &middot; 30 min</span>
+            </div>
+            <span class="bk-rec-price" id="bk-rec-price">Free</span>
+          </div>
+        </div>
+        <!-- Inline CTAs replacing footer button -->
+        <div class="bk-step2-actions" id="bk-step2-actions">
+          <button class="bk-btn-accept" onclick="bkAcceptRec()">
+            THAT&rsquo;S RIGHT, SELECT DATE &rarr;
+          </button>
+          <button class="bk-btn-specify" onclick="bkShowZonePicker()">
+            OR SPECIFY ZONE
+          </button>
+          <!-- Zone picker: revealed when OR SPECIFY ZONE clicked -->
+          <div class="bk-zone-picker" id="bk-zone-picker" style="display:none">
+            <!-- Most booked this month -->
+            <div class="bk-popular">
+              <div class="bk-popular-header">
+                <span class="bk-popular-title">Most booked this month</span>
+                <span class="bk-popular-col-label">Price</span>
+              </div>
+              <button class="bk-popular-row" onclick="bkPickZone(this)" data-zone="Armpits + Bikini full" data-price="120" data-sub="combo session, 45min">
+                <div class="bk-popular-row-left">
+                  <span class="bk-popular-name">Armpits + Bikini full</span>
+                  <span class="bk-popular-fire">&#x1F525;</span>
+                </div>
+                <span class="bk-popular-price">&euro;120</span>
+              </button>
+              <button class="bk-popular-row" onclick="bkPickZone(this)" data-zone="Armpits + Full legs" data-price="65" data-sub="combo session, 45min">
+                <div class="bk-popular-row-left">
+                  <span class="bk-popular-name">Armpits + Full legs</span>
+                  <span class="bk-popular-fire">&#x1F525;</span>
+                </div>
+                <span class="bk-popular-price">&euro;65</span>
+              </button>
+              <button class="bk-popular-row" onclick="bkPickZone(this)" data-zone="Armpits + Bikini + Full legs" data-price="52" data-sub="combo session, 60min">
+                <div class="bk-popular-row-left">
+                  <span class="bk-popular-name">Armpits + Bikini + Full legs</span>
+                  <span class="bk-popular-fire">&#x1F525;</span>
+                </div>
+                <span class="bk-popular-price">&euro;52</span>
+              </button>
+            </div>
+            <!-- Zone table -->
+            <div class="bk-zone-section">
+              <p class="bk-zone-section-label">Specify zone</p>
+              <div class="bk-zone-table">
+                <div class="bk-zone-table-header">
+                  <span class="bk-zone-col-name">Zone</span>
+                  <span class="bk-zone-col-sessions">Avg Course, sessions</span>
+                  <span class="bk-zone-col-price">Price</span>
+                </div>
+                <button class="bk-zone-row" onclick="bkPickZone(this)" data-zone="Full Back" data-price="120" data-sub="single session, 30min">
+                  <span class="bk-zone-row-name">Full Back</span>
+                  <span class="bk-zone-row-sessions">4</span>
+                  <span class="bk-zone-row-price">&euro;120</span>
+                </button>
+                <button class="bk-zone-row" onclick="bkPickZone(this)" data-zone="Full Abdomen" data-price="65" data-sub="single session, 30min">
+                  <span class="bk-zone-row-name">Full Abdomen</span>
+                  <span class="bk-zone-row-sessions">2</span>
+                  <span class="bk-zone-row-price">&euro;65</span>
+                </button>
+                <button class="bk-zone-row" onclick="bkPickZone(this)" data-zone="Chest" data-price="52" data-sub="single session, 30min">
+                  <span class="bk-zone-row-name">Chest</span>
+                  <span class="bk-zone-row-sessions">3</span>
+                  <span class="bk-zone-row-price">&euro;52</span>
+                </button>
+                <button class="bk-zone-row" onclick="bkPickZone(this)" data-zone="Upper back" data-price="70" data-sub="single session, 30min">
+                  <span class="bk-zone-row-name">Upper back</span>
+                  <span class="bk-zone-row-sessions">3</span>
+                  <span class="bk-zone-row-price">&euro;70</span>
+                </button>
+                <button class="bk-zone-row" onclick="bkPickZone(this)" data-zone="Lower back" data-price="70" data-sub="single session, 30min">
+                  <span class="bk-zone-row-name">Lower back</span>
+                  <span class="bk-zone-row-sessions">3</span>
+                  <span class="bk-zone-row-price">&euro;70</span>
+                </button>
+                <button class="bk-zone-row" onclick="bkPickZone(this)" data-zone="Navel line" data-price="120" data-sub="single session, 30min">
+                  <span class="bk-zone-row-name">Navel line</span>
+                  <span class="bk-zone-row-sessions">3</span>
+                  <span class="bk-zone-row-price">&euro;120</span>
+                </button>
+              </div>
+            </div>
+            <!-- Your selection: revealed after a zone row is picked -->
+            <div class="bk-your-selection" id="bk-your-selection" style="display:none">
+              <p class="bk-zone-section-label">Your selection</p>
+              <div id="bk-your-sel-list"></div>
+            </div>
+            <!-- Select date CTA (enabled after a row is selected) -->
+            <button class="bk-btn-select-date" id="bk-btn-select-date" onclick="bkZoneSelectDate()" disabled>SELECT DATE &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: Date & time -->
+      <div class="bk-step-panel" id="bk-step-3">
+        <div class="bk-sel-treat">
+          <p class="bk-sel-treat-eyebrow">Selected Treatment</p>
+          <div class="bk-sel-treat-body">
+            <div class="bk-sel-treat-info">
+              <span class="bk-sel-treat-title" id="bk-st-title">&ndash;</span>
+              <span class="bk-sel-treat-sub" id="bk-st-sub"></span>
+              <span class="bk-sel-treat-meta" id="bk-st-meta"></span>
+            </div>
+            <span class="bk-sel-treat-price" id="bk-st-price"></span>
+          </div>
+        </div>
+        <p class="bk-q-label" style="margin-top:20px;">Select date and time</p>
+        <div class="bk-day-strip-wrap">
+          <button class="bk-strip-nav" id="bk-strip-prev" onclick="bkStripPrev()">&#8249;</button>
+          <div class="bk-day-strip" id="bk-day-strip"></div>
+          <button class="bk-strip-nav" onclick="bkStripNext()">&#8250;</button>
+        </div>
+        <div class="bk-time-grid" id="bk-time-grid"></div>
+        <p class="bk-open-hours">Open Mon&ndash;Tue 9:00&ndash;17:00 &middot; Thu&ndash;Sat 9:00&ndash;17:00<br>Closed Wednesday &amp; Sunday</p>
+      </div>
+
+      <!-- STEP 4: Details -->
+      <div class="bk-step-panel" id="bk-step-4">
+        <!-- Contact form -->
+        <div class="bk-form">
+          <div class="bk-form-row">
+            <input class="bk-input" id="bk-fname" type="text" placeholder="First name *" autocomplete="given-name" />
+            <input class="bk-input" id="bk-lname" type="text" placeholder="Last name *" autocomplete="family-name" />
+          </div>
+          <input class="bk-input" id="bk-email" type="email" placeholder="Email *" autocomplete="email" />
+          <div class="bk-phone-wrap">
+            <div class="bk-phone-flag">
+              <span>&#127475;&#127473;</span>
+              <select aria-label="Country code"><option value="+31">+31</option><option value="+32">+32</option><option value="+49">+49</option><option value="+44">+44</option><option value="+33">+33</option></select>
+            </div>
+            <input class="bk-input bk-phone-input" id="bk-phone" type="tel" placeholder="Mobile Phone *" autocomplete="tel" />
+          </div>
+          <textarea class="bk-input bk-textarea" id="bk-comments" placeholder="Comments"></textarea>
+        </div>
+        <!-- Booking summary card -->
+        <div class="bk-s4-card" style="margin-top:20px;">
+          <p class="bk-s4-card-eyebrow">Selected Treatment</p>
+          <div class="bk-s4-card-row">
+            <div class="bk-s4-card-info">
+              <span class="bk-s4-card-head" id="bk-s4-head">&ndash;</span>
+              <span class="bk-s4-card-sub" id="bk-s4-sub"></span>
+            </div>
+            <span class="bk-s4-card-price" id="bk-s4-price"></span>
+          </div>
+          <div class="bk-s4-card-total">
+            <span class="bk-s4-card-total-label">Total</span>
+            <span class="bk-s4-card-price" id="bk-s4-total"></span>
+          </div>
+        </div>
+        <!-- What to expect -->
+        <div class="bk-s4-expect" style="margin-top:16px;">
+          <div class="bk-s4-expect-hdr">
+            <span class="bk-s4-bulb">&#128161;</span>
+            <strong>What to expect?</strong>
+          </div>
+          <p>Beauty specialist will walk you through the treatment at the start of your session. We are happy to answer any questions beforehand! Reach us out on WhatsApp.</p>
+        </div>
+        <!-- Checkboxes -->
+        <div class="bk-s4-checks" style="margin-top:20px;">
+          <label class="bk-s4-check">
+            <input type="checkbox" id="bk-save-info" checked />
+            <span>Save my information for the next time I make an appointment</span>
+          </label>
+          <label class="bk-s4-check">
+            <input type="checkbox" id="bk-newsletter" />
+            <span>I would like to receive newsletters</span>
+          </label>
+          <label class="bk-s4-check">
+            <input type="checkbox" id="bk-terms" />
+            <span>I agree to the <a href="#" class="bk-terms-link">Booking Terms</a></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- STEP 5: Done -->
+      <div class="bk-step-panel" id="bk-step-5">
+        <!-- Confirmed hero card -->
+        <div class="bk-done-hero">
+          <p class="bk-done-eyebrow">Your appointment confirmed</p>
+          <p class="bk-done-headline">See your <em>soon!</em></p>
+          <div class="bk-done-appt">
+            <span class="bk-done-appt-pre">we are expecting you on</span>
+            <span class="bk-done-appt-dt" id="bk-done-dt">&ndash;</span>
+            <span class="bk-done-appt-detail" id="bk-done-detail">&ndash;</span>
+          </div>
+        </div>
+        <!-- What to expect -->
+        <div class="bk-done-expect" style="margin-top:16px;">
+          <div class="bk-done-expect-hdr">
+            <span style="font-size:20px;">&#128161;</span>
+            <strong>What to expect?</strong>
+          </div>
+          <p>Beauty specialist will walk you through the treatment at the start of your session. We are happy to answer any questions beforehand! Reach us out on WhatsApp.</p>
+        </div>
+        <!-- Before your visit -->
+        <div style="margin-top:20px; display:flex; flex-direction:column; gap:12px;">
+          <p class="bk-done-before-eyebrow">Before your visit</p>
+          <div class="bk-done-checklist">
+            <div class="bk-done-check-item">
+              <svg class="bk-done-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
+              <span>Come with clean skin &mdash; avoid heavy makeup or SPF if possible.</span>
+            </div>
+            <div class="bk-done-check-item">
+              <svg class="bk-done-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
+              <span>Avoid sun exposure and self-tanner 48h before your session.</span>
+            </div>
+          </div>
+        </div>
+        <!-- WhatsApp CTA -->
+        <a href="https://wa.me/31000000000" target="_blank" class="bk-done-wa" style="margin-top:20px;">
+          <svg class="bk-done-wa-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.52 14.16c-.23.65-1.35 1.26-1.84 1.34-.48.08-1.09.11-1.75-.11-.4-.13-.92-.3-1.58-.59-2.79-1.21-4.61-4.03-4.75-4.22-.14-.19-1.14-1.52-1.14-2.9s.72-2.06.98-2.34c.26-.28.57-.35.76-.35h.54c.17 0 .4-.07.63.48l.87 2.12c.07.17.12.37.01.59-.1.2-.15.33-.3.5-.15.17-.32.38-.45.51-.16.16-.32.33-.14.65.19.32.83 1.37 1.79 2.22 1.23 1.1 2.27 1.44 2.59 1.6.32.16.51.13.7-.08.19-.21.83-.97 1.05-1.3.22-.33.44-.27.74-.16l2.11.99c.31.15.51.22.59.35.07.12.07.72-.16 1.37z"/></svg>
+          Questions? WhatsApp us!
+        </a>
+        <!-- Bring a friend strip -->
+        <div class="bk-done-friend" style="margin-top:12px;">
+          <span class="bk-done-friend-badge">-15%</span>
+          <p><strong>Bring a Friend</strong> &ndash; Both get 15% off</p>
+        </div>
+      </div>
+
+    </div><!-- /.bk-body -->
+
+    <!-- Footer button -->
+    <div class="bk-footer" id="bk-footer">
+      <button class="bk-btn-back" id="bk-btn-back" onclick="bkBack()" aria-label="Go back">&#8592;</button>
+      <button class="bk-btn-next" id="bk-btn-next" onclick="bkNext()" disabled>NEXT &#8594;</button>
+    </div>
+
+  </div><!-- /.modal-sheet -->
 </div>
 
 <script>
   window.addEventListener('scroll', () => {
-    document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 44);
+    const scrolled = window.scrollY > 44;
+    document.getElementById('main-nav').classList.toggle('scrolled', scrolled);
+    document.getElementById('campaign-banner').style.transform = scrolled ? 'translateY(-100%)' : '';
   });
 
   function baGoTo(index) {
@@ -2256,15 +2696,12 @@
     const overlay = document.getElementById('menu-overlay');
     btn.classList.toggle('open');
     overlay.classList.toggle('open');
-    const isOpen = overlay.classList.contains('open');
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-    document.body.classList.toggle('menu-open', isOpen);
+    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
   }
   function closeMenu() {
     document.getElementById('burger-btn').classList.remove('open');
     document.getElementById('menu-overlay').classList.remove('open');
     document.body.style.overflow = '';
-    document.body.classList.remove('menu-open');
     var sub = document.getElementById('services-sub');
     if (sub) { sub.classList.remove('open'); sub.previousElementSibling.classList.remove('services-open'); }
   }
@@ -2278,6 +2715,8 @@
   function openModal() {
     document.getElementById('modal').classList.add('open');
     document.body.style.overflow = 'hidden';
+    bkGoTo(1);
+    if (!bkCalData.year) bkInitCal();
   }
   function closeModal() {
     document.getElementById('modal').classList.remove('open');
@@ -2285,6 +2724,350 @@
   }
   function handleBackdropClick(e) {
     if (e.target === document.getElementById('modal')) closeModal();
+  }
+
+  /* ---- Booking form stepper ---- */
+  var bkCurrentStep = 1;
+  var bkSelectedDate = null;
+  var bkSelectedTime = null;
+  var bkCalData = { year: null, month: null }; // kept for compat
+  var bkStripOffset = 0;
+  var bkSelectedTreat = null;
+
+  function bkRevealEl(id) {
+    var el = document.getElementById(id);
+    if (!el || el.style.display !== 'none') return;
+    el.style.display = '';
+    el.classList.remove('bk-q-anim');
+    void el.offsetWidth; // force reflow
+    el.classList.add('bk-q-anim');
+    setTimeout(function() {
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
+  }
+
+  function bkGoTo(step) {
+    document.querySelectorAll('.bk-step-panel').forEach(function(p) { p.classList.remove('active'); });
+    document.querySelectorAll('.bk-step-item').forEach(function(s) {
+      var n = parseInt(s.dataset.step, 10);
+      s.classList.toggle('active', n === step);
+      s.classList.toggle('done', n < step);
+    });
+    var panel = document.getElementById('bk-step-' + step);
+    if (panel) panel.classList.add('active');
+    bkCurrentStep = step;
+    var btn = document.getElementById('bk-btn-next');
+    var back = document.getElementById('bk-btn-back');
+    if (step === 3) { btn.textContent = 'ADD DETAILS \u2192'; btn.disabled = true; }
+    else if (step === 4) { btn.textContent = 'CONFIRM'; btn.disabled = false; }
+    else if (step === 5) { btn.textContent = 'CLOSE'; btn.disabled = false; }
+    else { btn.textContent = 'NEXT \u2192'; btn.disabled = (step === 1); }
+    // Show back button on steps 2-4, hide on 1 and 5
+    if (back) back.style.display = (step >= 2 && step <= 4) ? 'flex' : 'none';
+    // Reset step 1 progressive disclosure when returning to it
+    if (step === 1) {
+      ['bk-q-experience','bk-q-zone'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) { el.style.display = 'none'; el.classList.remove('bk-q-anim'); }
+      });
+      document.querySelectorAll('#bk-step-1 .bk-option, #bk-step-1 .bk-option-full').forEach(function(b) {
+        b.classList.remove('selected');
+      });
+      btn.disabled = true;
+    }
+    if (step === 2) {
+      document.getElementById('bk-footer').style.display = 'none';
+      bkBuildRec();
+      // Reset zone picker and restore action buttons
+      var zp = document.getElementById('bk-zone-picker');
+      if (zp) { zp.style.display = 'none'; zp.classList.remove('bk-q-anim'); }
+      document.querySelectorAll('#bk-zone-picker .bk-popular-row, #bk-zone-picker .bk-zone-row').forEach(function(b) { b.classList.remove('selected'); });
+      var ys = document.getElementById('bk-your-selection'); if (ys) { ys.style.display = 'none'; ys.classList.remove('bk-q-anim'); }
+      var list = document.getElementById('bk-your-sel-list'); if (list) list.innerHTML = '';
+      var sd = document.getElementById('bk-btn-select-date'); if (sd) sd.disabled = true;
+      var actions = document.getElementById('bk-step2-actions');
+      if (actions) {
+        actions.querySelector('.bk-btn-accept').style.display = '';
+        actions.querySelector('.bk-btn-specify').style.display = '';
+      }
+    } else {
+      document.getElementById('bk-footer').style.display = '';
+    }
+    if (step === 4) {
+      // Populate booking summary card
+      var dateShort = bkSelectedDate ? bkSelectedDate.replace(/(\d+) (\w+) \d+/, '$1 $2') : '\u2013';
+      var timeStr = bkSelectedTime || '';
+      var headStr = timeStr ? dateShort + ' \u00b7 ' + timeStr : dateShort;
+      var el4;
+      el4 = document.getElementById('bk-s4-head'); if (el4) el4.textContent = headStr;
+      el4 = document.getElementById('bk-s4-sub');  if (el4) el4.textContent = bkSelectedTreat ? (bkSelectedTreat.title + (bkSelectedTreat.meta ? ', ' + bkSelectedTreat.meta : '')) : '';
+      var priceText = bkSelectedTreat ? bkSelectedTreat.price : '';
+      el4 = document.getElementById('bk-s4-price'); if (el4) el4.textContent = priceText;
+      el4 = document.getElementById('bk-s4-total'); if (el4) el4.textContent = priceText;
+    }
+    if (step === 3) {
+      // Populate selected treatment card
+      if (bkSelectedTreat) {
+        document.getElementById('bk-st-title').textContent = bkSelectedTreat.title || '\u2013';
+        document.getElementById('bk-st-sub').textContent = bkSelectedTreat.sub || '';
+        document.getElementById('bk-st-meta').textContent = bkSelectedTreat.meta || '';
+        document.getElementById('bk-st-price').textContent = bkSelectedTreat.price || '';
+      }
+      // Reset & render day strip
+      bkSelectedDate = null;
+      bkSelectedTime = null;
+      bkStripOffset = 0;
+      bkRenderDayStrip();
+      var tg = document.getElementById('bk-time-grid'); if (tg) tg.innerHTML = '';
+    }
+    if (body) body.scrollTop = 0;
+  }
+
+  function bkBack() {
+    if (bkCurrentStep > 1) bkGoTo(bkCurrentStep - 1);
+  }
+
+  function bkNext() {
+    if (bkCurrentStep === 4) {
+      // Populate done screen
+      var dtEl = document.getElementById('bk-done-dt');
+      var detailEl = document.getElementById('bk-done-detail');
+      var dateShort = bkSelectedDate ? bkSelectedDate.replace(/(\d+) (\w+) \d+/, '$1 $2') : '\u2013';
+      var timeStr = bkSelectedTime || '';
+      if (dtEl) dtEl.textContent = dateShort + (timeStr ? ' at ' + timeStr : '');
+      if (detailEl && bkSelectedTreat) {
+        detailEl.textContent = bkSelectedTreat.title +
+          (bkSelectedTreat.meta ? ' \u00b7 ' + bkSelectedTreat.meta : '') +
+          (bkSelectedTreat.price ? ' \u00b7 ' + bkSelectedTreat.price : '');
+      }
+      bkGoTo(5);
+    } else if (bkCurrentStep === 5) {
+      closeModal();
+      setTimeout(function() { bkGoTo(1); bkSelectedDate = null; bkSelectedTime = null; bkSelectedTreat = null; }, 400);
+    } else {
+      bkGoTo(bkCurrentStep + 1);
+    }
+  }
+
+  // Recommendation map based on step 1 interests
+  var bkRecMap = {
+    'Laser Hair Removal': { title: 'Free Laser Intake', sub: 'Full Body Laser Hair Removal', meta: 'single session \u00b7 30 min', price: 'Free' },
+    'Anti-aging':         { title: 'Skin Rejuvenation', sub: 'IPL / RF Anti-aging Treatment', meta: 'first session \u00b7 45 min', price: 'Free' },
+    'Skin Concerns':      { title: 'Skin Consultation', sub: 'Personalised skin analysis', meta: 'single session \u00b7 30 min', price: 'Free' },
+    'Hair health':        { title: 'Hair Health Intake', sub: 'Scalp & hair laser therapy', meta: 'single session \u00b7 30 min', price: 'Free' },
+    'Vascular Lesions':   { title: 'Vascular Treatment', sub: 'IPL Vascular Lesion Removal', meta: 'single session \u00b7 45 min', price: 'Free' },
+    'Body Shaping':       { title: 'Body Shaping Intake', sub: 'Non-invasive body contouring', meta: 'single session \u00b7 30 min', price: 'Free' }
+  };
+  var bkSelectedRec = null;
+
+  function bkBuildRec() {
+    var selected = document.querySelector('#bk-q-interest .bk-option.selected');
+    var key = selected ? selected.textContent.trim() : 'Laser Hair Removal';
+    var rec = bkRecMap[key] || bkRecMap['Laser Hair Removal'];
+    bkSelectedRec = rec;
+    document.getElementById('bk-rec-title').textContent = rec.title;
+    document.getElementById('bk-rec-sub').textContent = rec.sub;
+    document.getElementById('bk-rec-meta').textContent = rec.meta;
+    document.getElementById('bk-rec-price').textContent = rec.price;
+  }
+
+  function bkAcceptRec() {
+    bkSelectedTreat = bkSelectedRec ? {
+      title: bkSelectedRec.title,
+      sub: bkSelectedRec.sub,
+      meta: bkSelectedRec.meta,
+      price: bkSelectedRec.price
+    } : null;
+    bkGoTo(3);
+  }
+
+  function bkShowZonePicker() {
+    var zp = document.getElementById('bk-zone-picker');
+    if (zp && zp.style.display === 'none') {
+      // Hide the two CTA buttons so the full picker takes over
+      var actions = document.getElementById('bk-step2-actions');
+      if (actions) {
+        actions.querySelector('.bk-btn-accept').style.display = 'none';
+        actions.querySelector('.bk-btn-specify').style.display = 'none';
+      }
+      bkRevealEl('bk-zone-picker');
+    }
+  }
+
+  function bkPickZone(btn) {
+    // Deselect all rows (popular + zone)
+    document.querySelectorAll('#bk-zone-picker .bk-popular-row, #bk-zone-picker .bk-zone-row').forEach(function(b) { b.classList.remove('selected'); });
+    btn.classList.add('selected');
+    var zoneName = btn.dataset.zone || btn.textContent.trim();
+    var price = parseInt(btn.dataset.price, 10) || 0;
+    var sub = btn.dataset.sub || 'single session, 30min';
+    var pkgPrice = price * 5; // pay 5 get 1 free = -17%
+    // Populate "Your selection" list
+    var list = document.getElementById('bk-your-sel-list');
+    if (list) {
+      list.innerHTML =
+        '<button class="bk-sel-row selected" onclick="bkSelPick(this)">' +
+          '<div class="bk-sel-row-left">' +
+            '<span class="bk-sel-row-name">' + zoneName + '</span>' +
+            '<span class="bk-sel-row-sub">' + sub + '</span>' +
+          '</div>' +
+          '<span class="bk-sel-price">&euro;' + price + '</span>' +
+        '</button>' +
+        '<button class="bk-sel-row" onclick="bkSelPick(this)">' +
+          '<div class="bk-sel-row-left">' +
+            '<div class="bk-sel-row-name-row">' +
+              '<span class="bk-sel-row-name">5+1 package</span>' +
+              '<span class="bk-sel-badge">-17%</span>' +
+            '</div>' +
+            '<span class="bk-sel-row-sub">6 sessions</span>' +
+          '</div>' +
+          '<span class="bk-sel-price">&euro;' + pkgPrice + '</span>' +
+        '</button>';
+    }
+    // Reveal "Your selection" section if not yet visible
+    var ys = document.getElementById('bk-your-selection');
+    if (ys && ys.style.display === 'none') {
+      bkRevealEl('bk-your-selection');
+    }
+    // Enable SELECT DATE button
+    var sd = document.getElementById('bk-btn-select-date');
+    if (sd) sd.disabled = false;
+  }
+
+  function bkSelPick(btn) {
+    var list = document.getElementById('bk-your-sel-list');
+    if (list) list.querySelectorAll('.bk-sel-row').forEach(function(b) { b.classList.remove('selected'); });
+    btn.classList.add('selected');
+  }
+
+  function bkZoneSelectDate() {
+    var zoneBtn = document.querySelector('#bk-zone-picker .bk-popular-row.selected, #bk-zone-picker .bk-zone-row.selected');
+    var selRow = document.querySelector('#bk-your-sel-list .bk-sel-row.selected');
+    var isPkg = selRow && selRow.querySelector('.bk-sel-badge');
+    if (zoneBtn) {
+      var zoneName = zoneBtn.dataset.zone || '';
+      var price = parseInt(zoneBtn.dataset.price, 10) || 0;
+      var sub = zoneBtn.dataset.sub || 'single session, 30min';
+      if (isPkg) {
+        bkSelectedTreat = { title: zoneName, sub: '5+1 package', meta: '6 sessions', price: '\u20ac' + (price * 5) };
+      } else {
+        bkSelectedTreat = { title: zoneName, sub: bkSelectedRec ? bkSelectedRec.sub : 'Full Body Laser Hair Removal', meta: sub, price: '\u20ac' + price };
+      }
+    } else if (bkSelectedRec) {
+      bkSelectedTreat = { title: bkSelectedRec.title, sub: bkSelectedRec.sub, meta: bkSelectedRec.meta, price: bkSelectedRec.price };
+    }
+    bkGoTo(3);
+  }
+
+  function bkToggle(btn) {
+    btn.classList.toggle('selected');
+  }
+
+  function bkRadio(btn) {
+    var siblings = btn.parentElement.querySelectorAll('button');
+    siblings.forEach(function(b) { b.classList.remove('selected'); });
+    btn.classList.add('selected');
+  }
+
+  // Step 1 progressive disclosure
+  function bkSelectInterest(btn) {
+    btn.classList.toggle('selected');
+    var anySelected = document.querySelector('#bk-q-interest .bk-option.selected');
+    if (anySelected && document.getElementById('bk-q-experience').style.display === 'none') {
+      bkRevealEl('bk-q-experience');
+    }
+  }
+
+  function bkSelectExperience(btn) {
+    var siblings = btn.parentElement.querySelectorAll('button');
+    siblings.forEach(function(b) { b.classList.remove('selected'); });
+    btn.classList.add('selected');
+    if (document.getElementById('bk-q-zone').style.display === 'none') {
+      bkRevealEl('bk-q-zone');
+    }
+  }
+
+  function bkSelectZone(btn) {
+    btn.classList.toggle('selected');
+    var anySelected = document.querySelector('#bk-q-zone .bk-option.selected');
+    document.getElementById('bk-btn-next').disabled = !anySelected;
+  }
+
+  function bkInitCal() {
+    bkStripOffset = 0;
+    bkRenderDayStrip();
+  }
+
+  function bkStripPrev() {
+    if (bkStripOffset <= 0) return;
+    bkStripOffset = Math.max(0, bkStripOffset - 5);
+    bkRenderDayStrip();
+    document.getElementById('bk-strip-prev').disabled = (bkStripOffset <= 0);
+  }
+
+  function bkStripNext() {
+    bkStripOffset += 5;
+    bkRenderDayStrip();
+    document.getElementById('bk-strip-prev').disabled = false;
+  }
+
+  function bkRenderDayStrip() {
+    var strip = document.getElementById('bk-day-strip');
+    if (!strip) return;
+    strip.innerHTML = '';
+    var dows  = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var closed = [0, 3]; // Sunday, Wednesday
+    var today = new Date(); today.setHours(0,0,0,0);
+    var count = 0, offset = bkStripOffset;
+    while (count < 5) {
+      var d = new Date(today); d.setDate(today.getDate() + offset);
+      var dow = d.getDay();
+      var isDisabled = closed.indexOf(dow) !== -1;
+      var cell = document.createElement('button');
+      cell.className = 'bk-day-cell' + (isDisabled ? ' disabled' : '');
+      var dateKey = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      if (bkSelectedDate === dateKey) cell.classList.add('selected');
+      cell.innerHTML =
+        '<span class="bk-dc-dow">' + dows[dow] + '</span>' +
+        '<span class="bk-dc-num">' + d.getDate() + '</span>' +
+        '<span class="bk-dc-mon">' + months[d.getMonth()] + '</span>';
+      if (!isDisabled) {
+        (function(label, btn) {
+          btn.onclick = function() {
+            strip.querySelectorAll('.bk-day-cell').forEach(function(c) { c.classList.remove('selected'); });
+            btn.classList.add('selected');
+            bkSelectedDate = label;
+            bkSelectedTime = null;
+            bkRenderTimeSlots();
+            document.getElementById('bk-btn-next').disabled = true;
+          };
+        })(dateKey, cell);
+      }
+      strip.appendChild(cell);
+      offset++; count++;
+    }
+    var prevBtn = document.getElementById('bk-strip-prev');
+    if (prevBtn) prevBtn.disabled = (bkStripOffset <= 0);
+  }
+
+  function bkRenderTimeSlots() {
+    var times = ['9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00'];
+    var tGrid = document.getElementById('bk-time-grid');
+    tGrid.innerHTML = '';
+    bkSelectedTime = null;
+    times.forEach(function(t) {
+      var btn = document.createElement('button');
+      btn.className = 'bk-time-slot';
+      btn.textContent = t;
+      btn.onclick = function() {
+        tGrid.querySelectorAll('.bk-time-slot.selected').forEach(function(b) { b.classList.remove('selected'); });
+        btn.classList.add('selected');
+        bkSelectedTime = t;
+        document.getElementById('bk-btn-next').disabled = false;
+      };
+      tGrid.appendChild(btn);
+    });
   }
 
   const track = document.getElementById('reviews-track');
@@ -2329,36 +3112,7 @@
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
 
-<!-- Concept switcher -->
-<style>
-  .concept-nav {
-    position: fixed; bottom: 0; left: 0;
-    width: 100vw;
-    z-index: 300;
-    display: flex; align-items: stretch;
-    background: rgba(28,58,28,.92); backdrop-filter: blur(12px);
-    box-shadow: 0 -1px 0 rgba(255,255,255,.08);
-    padding-bottom: env(safe-area-inset-bottom);
-    transform: translateZ(0);
-  }
-  .concept-nav a {
-    flex: 1; display: flex; align-items: center; justify-content: center;
-    font-family: 'Karla', sans-serif; font-size: var(--type-label-nav);
-    font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
-    color: rgba(255,255,255,.45); text-decoration: none;
-    padding: 14px 0;
-    border-right: 1px solid rgba(255,255,255,.07);
-    transition: color .2s, background .2s;
-  }
-  .concept-nav a:last-child { border-right: none; }
-  .concept-nav a:hover { color: rgba(255,255,255,.8); background: rgba(255,255,255,.05); }
-  .concept-nav a.current { color: #fff; background: rgba(255,255,255,.1); }
-</style>
-<div class="concept-nav">
-  <a href="index.html" class="current">A</a>
-  <a href="index7.html">B</a>
-  <a href="index8.html">C</a>
-</div>
+
 
 </body>
 </html>
