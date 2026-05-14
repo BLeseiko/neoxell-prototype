@@ -2715,12 +2715,14 @@
   function openModal() {
     document.getElementById('modal').classList.add('open');
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
     bkGoTo(1);
     if (!bkCalData.year) bkInitCal();
   }
   function closeModal() {
     document.getElementById('modal').classList.remove('open');
     document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
   }
   function handleBackdropClick(e) {
     if (e.target === document.getElementById('modal')) closeModal();
