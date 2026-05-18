@@ -2021,16 +2021,25 @@
   .cred-eyebrow { font-family: 'Karla', sans-serif; font-size: 0.75rem; font-weight: 400; letter-spacing: 3px; color: var(--bright-green); text-transform: uppercase; }
   .cred-title { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 500; color: #152518; letter-spacing: -0.64px; line-height: 1; margin: 0; }
   .cred-title em { color: var(--bright-green); font-style: italic; }
-  .cred-grid { display: grid; grid-template-columns: 1fr 1fr; width: 100%; overflow: hidden; }
-  .cred-card { background: #fdfcf9; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; padding: 28px 20px; }
+  .cred-grid { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
+  .cred-card { background: #fdfcf9; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; padding: 28px 20px; overflow: hidden; }
   .cred-card:nth-child(1) { border-right: 1px solid rgba(17,26,17,0.08); }
   .cred-card:nth-child(2) { border-bottom: 1px solid rgba(17,26,17,0.08); }
   .cred-card:nth-child(3) { border-right: 1px solid rgba(17,26,17,0.08); border-top: 1px solid rgba(17,26,17,0.08); }
   .cred-card:nth-child(4) { border-top: 1px solid rgba(17,26,17,0.08); }
   .cred-icon { width: 40px; height: 40px; flex-shrink: 0; }
   .cred-icon img { width: 100%; height: 100%; object-fit: contain; }
-  .cred-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 500; color: #111a11; line-height: 1.1; margin: 0; }
+  .cred-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 500; color: #111a11; line-height: 1.1; margin: 0; word-break: normal; overflow-wrap: break-word; }
   .cred-body { font-family: 'Karla', sans-serif; font-size: 0.875rem; font-weight: 400; line-height: 1.43; color: rgba(17,26,17,0.6); margin: 0; }
+
+  @media (max-width: 400px) {
+    .cred-grid { grid-template-columns: 1fr; }
+    .cred-card { padding: 24px 16px; }
+    .cred-card:nth-child(1) { border-right: none; border-bottom: 1px solid rgba(17,26,17,0.08); }
+    .cred-card:nth-child(2) { border-bottom: 1px solid rgba(17,26,17,0.08); }
+    .cred-card:nth-child(3) { border-right: none; border-top: none; border-bottom: 1px solid rgba(17,26,17,0.08); }
+    .cred-card:nth-child(4) { border-top: none; }
+  }
 
   /* FAQ */
   #faq { background: var(--cream); padding: 40px 20px; display: flex; flex-direction: column; gap: 32px; }

@@ -299,9 +299,24 @@
   /* SERVICES */
 
   .services-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 1px; background: var(--cream3);
-    border-radius: 2px; overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--cream3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 480px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+    .svc-card {
+      padding: 20px 10px;
+    }
+    .svc-name {
+      font-size: 1.2rem;
+    }
   }
   .svc-card {
     background: #FDFCF9; padding: 28px 20px;
