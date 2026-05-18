@@ -917,13 +917,19 @@
   }
   .modal-backdrop.open { opacity: 1; pointer-events: all; }
   .modal-sheet {
-    background: #fafaf7; width: 100%;
+    background: #fafaf7;
+    width: 100%;
+    max-width: 430px;
     border-radius: 28px 28px 0 0;
-    max-height: 92vh;
-    display: flex; flex-direction: column;
+    height: 100dvh;
+    max-height: 100dvh;
+    display: flex;
+    flex-direction: column;
     transform: translateY(100%);
     transition: transform .4s cubic-bezier(.77,0,.18,1);
-    overflow: hidden; position: relative;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
   }
   .modal-backdrop.open .modal-sheet { transform: translateY(0); }
 
@@ -959,7 +965,13 @@
   .bk-header-divider { height: 1px; background: rgba(17,26,17,.08); margin: 12px -24px 0; }
 
   /* Scrollable body */
-  .bk-body { overflow-y: auto; flex: 1; padding: 0 24px 8px; -webkit-overflow-scrolling: touch; }
+  .bk-body {
+    overflow-y: auto;
+    flex: 1;
+    padding: 0 24px 8px;
+    -webkit-overflow-scrolling: touch;
+    max-height: calc(100dvh - 120px); /* header + padding estimate */
+  }
 
   /* Step panels */
   .bk-step-panel { display: none; }
